@@ -21,7 +21,7 @@ class HomeCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 120,
+              height: 90,
               color: Colors.orange,
             ),
             const SizedBox(height: 10.0),
