@@ -1,3 +1,4 @@
+import 'package:course_view/pages/course_view/page.dart';
 import 'package:flutter/material.dart';
 
 class HomeCard extends StatelessWidget {
@@ -14,7 +15,10 @@ class HomeCard extends StatelessWidget {
       width: MediaQuery.sizeOf(context).width * .63,
       margin: EdgeInsets.only(left: isFirst ? 0 : 10),
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const CourseViewPage()));
+        },
         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
         color: Colors.white,
         child: Column(

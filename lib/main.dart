@@ -17,6 +17,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         primaryColor: Colors.orange,
         useMaterial3: true,
+        textTheme: TextTheme(
+          titleMedium: TextStyle(
+            fontSize: 19,
+            letterSpacing: 1,
+            fontWeight: FontWeight.bold,
+            color: Colors.blueGrey.shade800,
+          ),
+        ),
       ),
       home: const HomePage(),
     );
