@@ -36,8 +36,11 @@ class _HomeCardState extends State<HomeCard> {
       margin: EdgeInsets.only(left: widget.isFirst ? 0 : 10),
       child: MaterialButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const CourseViewPage()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CourseViewPage(videoUrl: widget.videoUrl)));
         },
         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
         color: Colors.white,

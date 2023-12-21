@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class CourseViewPage extends StatefulWidget {
-  const CourseViewPage({Key? key}) : super(key: key);
+  const CourseViewPage({
+    Key? key,
+    required this.videoUrl,
+  }) : super(key: key);
+  final String videoUrl;
 
   @override
   State<CourseViewPage> createState() => _CourseViewPageState();
@@ -38,9 +42,9 @@ class _CourseViewPageState extends State<CourseViewPage> {
 
   Future<void> initializePlayer() async {
     _videoPlayerController1 =
-        VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex]));
+        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
     _videoPlayerController2 =
-        VideoPlayerController.networkUrl(Uri.parse(srcs[currPlayIndex]));
+        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
     await Future.wait([
       _videoPlayerController1.initialize(),
       _videoPlayerController2.initialize()
