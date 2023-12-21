@@ -18,6 +18,12 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.orange,
         useMaterial3: true,
         textTheme: TextTheme(
+          titleSmall: TextStyle(
+            color: Colors.blueGrey.shade700,
+            fontWeight: FontWeight.bold,
+            letterSpacing: .8,
+            fontSize: 16,
+          ),
           titleMedium: TextStyle(
             fontSize: 19,
             letterSpacing: 1,
@@ -26,7 +32,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }

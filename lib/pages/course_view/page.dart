@@ -108,19 +108,17 @@ class _CourseViewPageState extends State<CourseViewPage> {
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
 
-      additionalOptions: (context) {
-        return <OptionItem>[
-          OptionItem(
-            onTap: toggleVideo,
-            iconData: Icons.live_tv_sharp,
-            title: 'Toggle Video Src',
-          ),
-        ];
-      },
+      // additionalOptions: (context) {
+      //   return <OptionItem>[
+      //     OptionItem(
+      //       onTap: toggleVideo,
+      //       iconData: Icons.live_tv_sharp,
+      //       title: 'Toggle Video Src',
+      //     ),
+      //   ];
+      // },
       subtitleBuilder: (context, dynamic subtitle) {
-        return Container(
-          color: Colors.yellow,
-          padding: const EdgeInsets.all(10.0),
+        return IgnorePointer(
           child: subtitle is InlineSpan
               ? RichText(
                   text: subtitle,
@@ -132,18 +130,15 @@ class _CourseViewPageState extends State<CourseViewPage> {
         );
       },
 
-      // Try playing around with some of these other options:
-
-      materialProgressColors: ChewieProgressColors(
-        playedColor: Colors.red,
-        handleColor: Colors.blue,
-        backgroundColor: Colors.grey,
-        bufferedColor: Colors.lightGreen,
-      ),
+      // materialProgressColors: ChewieProgressColors(
+      //   playedColor: Colors.red,
+      //   handleColor: Colors.blue,
+      //   backgroundColor: Colors.grey,
+      //   bufferedColor: Colors.lightGreen,
+      // ),
       placeholder: Container(
         color: Colors.red,
       ),
-      // autoInitialize: true,
     );
   }
 

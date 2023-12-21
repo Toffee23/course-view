@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import '../../widgets/card.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  final List<String> _videos = [
+    "https://assets.mixkit.co/videos/preview/mixkit-spinning-around-the-earth-29351-large.mp4",
+    "https://assets.mixkit.co/videos/preview/mixkit-daytime-city-traffic-aerial-view-56-large.mp4",
+    "https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-a-bubble-gum-at-an-amusement-park-1226-large.mp4",
+    "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,7 @@ class HomePage extends StatelessWidget {
                         color: Colors.white70,
                       ),
                       const Text(
-                        'Join the leardersboard',
+                        'Join the leaderboard',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white70,
@@ -63,11 +70,7 @@ class HomePage extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Similar Courses',
-                    style: TextStyle(
-                      color: Colors.blueGrey.shade700,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                   TextButton(
                       onPressed: () {},
@@ -85,8 +88,9 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
                 children: List.generate(
-                  5,
-                  (index) => HomeCard(isFirst: index == 0),
+                  _videos.length,
+                  (index) =>
+                      HomeCard(isFirst: index == 0, videoUrl: _videos[index]),
                 ),
               ),
             ),
@@ -119,10 +123,10 @@ class HomePage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
-                children: List.generate(
-                  5,
-                  (index) => HomeCard(isFirst: index == 0),
-                ),
+                children: _videos.reversed
+                    .map((videoUrl) => HomeCard(
+                        isFirst: _videos.first == videoUrl, videoUrl: videoUrl))
+                    .toList(),
               ),
             )
           ],

@@ -1,19 +1,39 @@
 import 'package:course_view/pages/course_view/page.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
-class HomeCard extends StatelessWidget {
+class HomeCard extends StatefulWidget {
   const HomeCard({
     Key? key,
     this.isFirst = false,
+    required this.videoUrl,
   }) : super(key: key);
   final bool isFirst;
+  final String videoUrl;
+
+  @override
+  State<HomeCard> createState() => _HomeCardState();
+}
+
+class _HomeCardState extends State<HomeCard> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       width: MediaQuery.sizeOf(context).width * .63,
-      margin: EdgeInsets.only(left: isFirst ? 0 : 10),
+      margin: EdgeInsets.only(left: widget.isFirst ? 0 : 10),
       child: MaterialButton(
         onPressed: () {
           Navigator.push(context,
@@ -24,9 +44,19 @@ class HomeCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              height: 90,
-              color: Colors.orange,
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Container(
+                color: Colors.grey.withOpacity(.3),
+                child: Center(
+                  child: _controller.value.isInitialized
+                      ? AspectRatio(
+                          aspectRatio: _controller.value.aspectRatio,
+                          child: VideoPlayer(_controller),
+                        )
+                      : Container(),
+                ),
+              ),
             ),
             const SizedBox(height: 10.0),
             Padding(
@@ -46,14 +76,11 @@ class HomeCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 4.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0),
               child: Text(
                 'Corporate Reporting',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                ),
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
             const SizedBox(height: 15.0),
@@ -89,3 +116,53 @@ class HomeCard extends StatelessWidget {
     );
   }
 }
+
+// class _VideoAppState extends State<VideoApp> {
+//   late VideoPlayerController _controller;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = VideoPlayerController.networkUrl(Uri.parse(
+//         'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
+//       ..initialize().then((_) {
+//         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+//         setState(() {});
+//       });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Video Demo',
+//       home: Scaffold(
+//         body: Center(
+//           child: _controller.value.isInitialized
+//               ? AspectRatio(
+//             aspectRatio: _controller.value.aspectRatio,
+//             child: VideoPlayer(_controller),
+//           )
+//               : Container(),
+//         ),
+//         floatingActionButton: FloatingActionButton(
+//           onPressed: () {
+//             setState(() {
+//               _controller.value.isPlaying
+//                   ? _controller.pause()
+//                   : _controller.play();
+//             });
+//           },
+//           child: Icon(
+//             _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     _controller.dispose();
+//   }
+// }
