@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../model.dart';
 import '../../widgets/card.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-
-  final List<String> _videos = [
-    "https://assets.mixkit.co/videos/preview/mixkit-spinning-around-the-earth-29351-large.mp4",
-    "https://assets.mixkit.co/videos/preview/mixkit-daytime-city-traffic-aerial-view-56-large.mp4",
-    "https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-a-bubble-gum-at-an-amusement-park-1226-large.mp4",
-    "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
-  ];
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +81,10 @@ class HomePage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
-                children: List.generate(
-                  _videos.length,
-                  (index) =>
-                      HomeCard(isFirst: index == 0, videoUrl: _videos[index]),
-                ),
+                children: videos
+                    .map((vid) =>
+                        HomeCard(isFirst: videos.first == vid, videoModel: vid))
+                    .toList(),
               ),
             ),
             const SizedBox(height: 40.0),
@@ -123,9 +116,9 @@ class HomePage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
-                children: _videos.reversed
-                    .map((videoUrl) => HomeCard(
-                        isFirst: _videos.first == videoUrl, videoUrl: videoUrl))
+                children: videos.reversed
+                    .map((vid) =>
+                        HomeCard(isFirst: videos.first == vid, videoModel: vid))
                     .toList(),
               ),
             )

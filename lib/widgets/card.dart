@@ -1,3 +1,4 @@
+import 'package:course_view/model.dart';
 import 'package:course_view/pages/course_view/page.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -6,10 +7,10 @@ class HomeCard extends StatefulWidget {
   const HomeCard({
     Key? key,
     this.isFirst = false,
-    required this.videoUrl,
+    required this.videoModel,
   }) : super(key: key);
   final bool isFirst;
-  final String videoUrl;
+  final VideoModel videoModel;
 
   @override
   State<HomeCard> createState() => _HomeCardState();
@@ -21,11 +22,12 @@ class _HomeCardState extends State<HomeCard> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
+    _controller =
+        VideoPlayerController.networkUrl(Uri.parse(widget.videoModel.url))
+          ..initialize().then((_) {
+            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+            setState(() {});
+          });
   }
 
   @override
@@ -40,7 +42,7 @@ class _HomeCardState extends State<HomeCard> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      CourseViewPage(videoUrl: widget.videoUrl)));
+                      CourseViewPage(videoUrl: widget.videoModel.url)));
         },
         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
         color: Colors.white,
