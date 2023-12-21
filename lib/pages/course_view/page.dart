@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:chewie/chewie.dart';
+import 'package:course_view/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:dio/dio.dart';
 
 class CourseViewPage extends StatefulWidget {
   const CourseViewPage({
@@ -54,107 +59,13 @@ class _CourseViewPageState extends State<CourseViewPage> {
   }
 
   void _createChewieController() {
-    // final subtitles = [
-    //     Subtitle(
-    //       index: 0,
-    //       start: Duration.zero,
-    //       end: const Duration(seconds: 10),
-    //       text: 'Hello from subtitles',
-    //     ),
-    //     Subtitle(
-    //       index: 0,
-    //       start: const Duration(seconds: 10),
-    //       end: const Duration(seconds: 20),
-    //       text: 'Whats up? :)',
-    //     ),
-    //   ];
-
-    final subtitles = [
-      Subtitle(
-        index: 0,
-        start: Duration.zero,
-        end: const Duration(seconds: 10),
-        text: const TextSpan(
-          children: <InlineSpan>[
-            TextSpan(
-              text: 'Hello',
-              style: TextStyle(color: Colors.red, fontSize: 22),
-            ),
-            TextSpan(
-              text: ' from ',
-              style: TextStyle(color: Colors.green, fontSize: 20),
-            ),
-            TextSpan(
-              text: 'subtitles',
-              style: TextStyle(color: Colors.blue, fontSize: 18),
-            )
-          ],
-        ),
-      ),
-      Subtitle(
-        index: 0,
-        start: const Duration(seconds: 10),
-        end: const Duration(seconds: 20),
-        text: 'Whats up? :)',
-        // text: const TextSpan(
-        //   text: 'Whats up? :)',
-        //   style: TextStyle(color: Colors.amber, fontSize: 22, fontStyle: FontStyle.italic),
-        // ),
-      ),
-    ];
-
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController1,
-      // autoPlay: false,
-      // looping: false,
-      // hideControlsTimer: const Duration(seconds: 8),
-      subtitle: Subtitles(subtitles),
+      autoPlay: true,
+      looping: true,
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
-
-      // additionalOptions: (context) {
-      //   return <OptionItem>[
-      //     OptionItem(
-      //       onTap: toggleVideo,
-      //       iconData: Icons.live_tv_sharp,
-      //       title: 'Toggle Video Src',
-      //     ),
-      //   ];
-      // },
-      subtitleBuilder: (context, dynamic subtitle) {
-        return IgnorePointer(
-          child: subtitle is InlineSpan
-              ? RichText(
-                  text: subtitle,
-                )
-              : Text(
-                  subtitle.toString(),
-                  style: const TextStyle(color: Colors.black),
-                ),
-        );
-      },
-
-      // materialProgressColors: ChewieProgressColors(
-      //   playedColor: Colors.red,
-      //   handleColor: Colors.blue,
-      //   backgroundColor: Colors.grey,
-      //   bufferedColor: Colors.lightGreen,
-      // ),
-      placeholder: Container(
-        color: Colors.red,
-      ),
     );
-  }
-
-  int currPlayIndex = 0;
-
-  Future<void> toggleVideo() async {
-    await _videoPlayerController1.pause();
-    currPlayIndex += 1;
-    if (currPlayIndex >= srcs.length) {
-      currPlayIndex = 0;
-    }
-    await initializePlayer();
   }
 
   Widget _subtitleWidget() => Row(
@@ -169,28 +80,6 @@ class _CourseViewPageState extends State<CourseViewPage> {
             style: TextStyle(color: Colors.grey.shade700),
           ),
         ],
-      );
-
-  Widget _shareButton() => MaterialButton(
-        onPressed: () {},
-        elevation: 0.0,
-        color: Colors.grey.shade200,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: const Row(
-          children: <Widget>[
-            Icon(CupertinoIcons.link, size: 16),
-            SizedBox(width: 8.0),
-            Text(
-              'Share',
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 13,
-              ),
-            ),
-          ],
-        ),
       );
 
   Widget _ratingWidget(BuildContext context) => Row(
@@ -236,6 +125,34 @@ class _CourseViewPageState extends State<CourseViewPage> {
       _chewieController != null &&
       _chewieController!.videoPlayerController.value.isInitialized;
 
+  Future<void> downloadVideo() async {
+    final Dio dio = Dio();
+
+    try {
+      final Response<List<int>> response = await dio.get<List<int>>(
+        widget.videoUrl,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+        ),
+      );
+
+      // Get the app's documents directory
+      final Directory appDocumentsDirectory =
+          await getApplicationDocumentsDirectory();
+
+      // Specify the file path to save the video
+      final String savePath = '${appDocumentsDirectory.path}/video.mp4';
+
+      // Write the downloaded bytes to the file
+      await File(savePath).writeAsBytes(response.data!);
+
+      print('Video downloaded successfully to: $savePath');
+    } catch (error) {
+      print('Error downloading video: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -276,7 +193,11 @@ class _CourseViewPageState extends State<CourseViewPage> {
               children: <Widget>[
                 _subtitleWidget(),
                 const Spacer(),
-                _shareButton()
+                ActionButton(
+                  onPressed: () {},
+                  iconData: CupertinoIcons.link,
+                  text: 'Share',
+                )
               ],
             ),
             const SizedBox(height: 4.0),
@@ -285,6 +206,12 @@ class _CourseViewPageState extends State<CourseViewPage> {
                 _ratingWidget(context),
                 const SizedBox(width: 8.0),
                 _watchedWidget(context),
+                const Spacer(),
+                ActionButton(
+                  onPressed: downloadVideo,
+                  iconData: Icons.download,
+                  text: 'Download',
+                )
               ],
             ),
             const SizedBox(height: 10.0),
