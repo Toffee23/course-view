@@ -1,7 +1,12 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:course_view/model.dart';
-import 'package:course_view/pages/course_view/page.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+
+import '../pages/course_view/page.dart';
+import '../utils/download.dart';
 
 class HomeCard extends StatefulWidget {
   const HomeCard({
@@ -18,16 +23,41 @@ class HomeCard extends StatefulWidget {
 
 class _HomeCardState extends State<HomeCard> {
   late VideoPlayerController _controller;
+  bool completed = false;
 
   @override
   void initState() {
+    _initialize();
     super.initState();
-    _controller =
-        VideoPlayerController.networkUrl(Uri.parse(widget.videoModel.url))
-          ..initialize().then((_) {
-            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-            setState(() {});
-          });
+  }
+
+  Future<void> _initialize() async {
+    final offlineFile = await getOfflineVideoFile;
+
+    log('[AZAG]: ${widget.videoModel.id} === $offlineFile');
+
+    if (offlineFile != null) {
+      _controller = VideoPlayerController.file(offlineFile);
+    } else {
+      final url = Uri.parse(widget.videoModel.url);
+      _controller = VideoPlayerController.networkUrl(url);
+    }
+
+    await Future.wait([_controller.initialize()]);
+
+    completed = true;
+    setState(() {});
+  }
+
+  Future<File?> get getOfflineVideoFile async {
+    final Directory dir = await Download.downloadDirectory;
+    final videoPath = '${dir.path}/${widget.videoModel.id}.mp4';
+    final file = File(videoPath);
+    return await file.exists() ? file : null;
+  }
+
+  bool get _isInitialized {
+    return completed && _controller.value.isInitialized;
   }
 
   @override
@@ -42,7 +72,7 @@ class _HomeCardState extends State<HomeCard> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      CourseViewPage(videoUrl: widget.videoModel.url)));
+                      CourseViewPage(videoModel: widget.videoModel)));
         },
         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
         color: Colors.white,
@@ -54,7 +84,7 @@ class _HomeCardState extends State<HomeCard> {
               child: Container(
                 color: Colors.grey.withOpacity(.3),
                 child: Center(
-                  child: _controller.value.isInitialized
+                  child: _isInitialized
                       ? AspectRatio(
                           aspectRatio: _controller.value.aspectRatio,
                           child: VideoPlayer(_controller),

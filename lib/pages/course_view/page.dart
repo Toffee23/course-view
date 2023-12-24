@@ -1,29 +1,35 @@
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
+import 'package:course_view/utils/download.dart';
 import 'package:course_view/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
-import 'package:dio/dio.dart';
+
+import '../../model.dart';
+import '../../widgets/dialog.dart';
+import '../../widgets/snack_bar.dart';
 
 class CourseViewPage extends StatefulWidget {
   const CourseViewPage({
     Key? key,
-    required this.videoUrl,
+    required this.videoModel,
   }) : super(key: key);
-  final String videoUrl;
+  final VideoModel videoModel;
 
   @override
   State<CourseViewPage> createState() => _CourseViewPageState();
 }
 
 class _CourseViewPageState extends State<CourseViewPage> {
-  late VideoPlayerController _videoPlayerController1;
-  late VideoPlayerController _videoPlayerController2;
+  late VideoPlayerController _videoController1;
+  late VideoPlayerController _videoController2;
   ChewieController? _chewieController;
   int? bufferDelay;
+  bool completed = false;
+  bool isDownloaded = false;
+  bool dialogIsOpened = false;
 
   @override
   void initState() {
@@ -33,39 +39,50 @@ class _CourseViewPageState extends State<CourseViewPage> {
 
   @override
   void dispose() {
-    _videoPlayerController1.dispose();
-    _videoPlayerController2.dispose();
+    _videoController1.dispose();
+    _videoController2.dispose();
     _chewieController?.dispose();
     super.dispose();
   }
 
-  List<String> srcs = [
-    "https://assets.mixkit.co/videos/preview/mixkit-spinning-around-the-earth-29351-large.mp4",
-    "https://assets.mixkit.co/videos/preview/mixkit-daytime-city-traffic-aerial-view-56-large.mp4",
-    "https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-a-bubble-gum-at-an-amusement-park-1226-large.mp4"
-  ];
-
   Future<void> initializePlayer() async {
-    _videoPlayerController1 =
-        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
-    _videoPlayerController2 =
-        VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+    final offlineFile = await getOfflineVideoFile;
+
+    if (offlineFile != null) {
+      setState(() => isDownloaded = true);
+      _videoController1 = VideoPlayerController.file(offlineFile);
+      _videoController2 = VideoPlayerController.file(offlineFile);
+    } else {
+      final url = Uri.parse(widget.videoModel.url);
+      _videoController1 = VideoPlayerController.networkUrl(url);
+      _videoController2 = VideoPlayerController.networkUrl(url);
+    }
+
     await Future.wait([
-      _videoPlayerController1.initialize(),
-      _videoPlayerController2.initialize()
+      _videoController1.initialize(),
+      _videoController2.initialize(),
     ]);
+
     _createChewieController();
+    completed = true;
     setState(() {});
   }
 
   void _createChewieController() {
     _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController1,
+      videoPlayerController: _videoController1,
       autoPlay: true,
       looping: true,
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
     );
+  }
+
+  Future<File?> get getOfflineVideoFile async {
+    final Directory dir = await Download.downloadDirectory;
+    final videoPath = '${dir.path}/${widget.videoModel.id}.mp4';
+    final file = File(videoPath);
+    return await file.exists() ? file : null;
   }
 
   Widget _subtitleWidget() => Row(
@@ -121,36 +138,51 @@ class _CourseViewPageState extends State<CourseViewPage> {
         ],
       );
 
-  bool get _canPlayVideo =>
-      _chewieController != null &&
-      _chewieController!.videoPlayerController.value.isInitialized;
+  bool get _canPlayVideo {
+    return completed &&
+        _chewieController != null &&
+        _chewieController!.videoPlayerController.value.isInitialized;
+  }
 
   Future<void> downloadVideo() async {
-    final Dio dio = Dio();
+    final url = widget.videoModel.url;
+    final id = widget.videoModel.id;
 
-    try {
-      final Response<List<int>> response = await dio.get<List<int>>(
-        widget.videoUrl,
-        options: Options(
-          responseType: ResponseType.bytes,
-          followRedirects: false,
-        ),
-      );
+    _showLoadingSpinner();
 
-      // Get the app's documents directory
-      final Directory appDocumentsDirectory =
-          await getApplicationDocumentsDirectory();
+    final result = await Download.downloadForOffline(url, id);
 
-      // Specify the file path to save the video
-      final String savePath = '${appDocumentsDirectory.path}/video.mp4';
-
-      // Write the downloaded bytes to the file
-      await File(savePath).writeAsBytes(response.data!);
-
-      print('Video downloaded successfully to: $savePath');
-    } catch (error) {
-      print('Error downloading video: $error');
+    if (result) {
+      _showSuccessSnackbar();
+      setState(() => isDownloaded = true);
+    } else {
+      _showErrorSnackbar();
     }
+    _dismissLoadingSpinner();
+  }
+
+  void _showLoadingSpinner() {
+    dialogIsOpened = true;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const LoadingSpinnerDialog();
+      },
+    ).then((value) => dialogIsOpened = false);
+  }
+
+  void _dismissLoadingSpinner() {
+    if (dialogIsOpened) {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _showSuccessSnackbar() {
+    showSuccessSnackbar(context, 'Video now available for offline view.');
+  }
+
+  void _showErrorSnackbar() {
+    showErrorSnackbar(context, 'Download failed due to network error!');
   }
 
   @override
@@ -207,11 +239,19 @@ class _CourseViewPageState extends State<CourseViewPage> {
                 const SizedBox(width: 8.0),
                 _watchedWidget(context),
                 const Spacer(),
-                ActionButton(
-                  onPressed: downloadVideo,
-                  iconData: Icons.download,
-                  text: 'Download',
-                )
+                if (isDownloaded)
+                  ActionButton(
+                    onPressed: () {},
+                    iconData: Icons.download_done_rounded,
+                    color: Colors.green,
+                    text: 'Offline',
+                  )
+                else
+                  ActionButton(
+                    onPressed: downloadVideo,
+                    iconData: Icons.download_for_offline,
+                    text: 'Download',
+                  ),
               ],
             ),
             const SizedBox(height: 10.0),

@@ -6,10 +6,12 @@ class ActionButton extends StatelessWidget {
     this.onPressed,
     required this.iconData,
     required this.text,
+    this.color = Colors.black54,
   }) : super(key: key);
   final VoidCallback? onPressed;
   final IconData iconData;
   final String text;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +24,12 @@ class ActionButton extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          Icon(iconData, size: 16),
+          Icon(iconData, size: 16, color: color),
           const SizedBox(width: 8.0),
           Text(
             text,
-            style: const TextStyle(
-              color: Colors.black54,
+            style: TextStyle(
+              color: color,
               fontSize: 13,
             ),
           ),
