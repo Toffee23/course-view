@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class VideoModel {
   VideoModel({
     required this.id,
@@ -28,3 +30,33 @@ final List<VideoModel> videos = [
     url: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
   ),
 ];
+
+class Course {
+  Course({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.thumbnail,
+    required this.videos,
+    required this.creationTime,
+  });
+  final String id;
+  final String title;
+  final String description;
+  final File thumbnail;
+  final List<Video> videos;
+  final DateTime creationTime;
+}
+
+class Video {
+  Video({
+    required this.id,
+    required this.url,
+    required this.duration,
+    required this.isUnlocked,
+  });
+  final String id;
+  final String url;
+  final Duration duration;
+  final bool isUnlocked;
+}

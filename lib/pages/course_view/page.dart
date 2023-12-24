@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../model.dart';
 import '../../widgets/dialog.dart';
+import '../../widgets/list_tile.dart';
 import '../../widgets/snack_bar.dart';
 
 class CourseViewPage extends StatefulWidget {
@@ -202,7 +203,7 @@ class _CourseViewPageState extends State<CourseViewPage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 25.0),
+        padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 25.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -272,6 +273,68 @@ class _CourseViewPageState extends State<CourseViewPage> {
                 color: Colors.grey.shade700,
                 wordSpacing: 1,
               ),
+            ),
+            const SizedBox(height: 30.0),
+            Text(
+              'Curriculum',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey.shade600,
+              ),
+            ),
+            Text(
+              'Learn-by doing with our Exclusion Videos',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            Text(
+              'Our Course is setup to make you learn Advanced Audit and '
+              'Assurance(Revision) by step with a practical detailed note/'
+              'video that focuses 100% on learn-by-doing',
+              style: TextStyle(
+                color: Colors.grey.shade700,
+                wordSpacing: 1,
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            CourseListTile(
+              onPressed: () {},
+              code: 'C1',
+              title: 'Conceptual and regulatory framework',
+              isUnlocked: true,
+            ),
+            CourseListTile(
+              onPressed: () {},
+              code: 'C2',
+              title: 'Conceptual and regulatory framework',
+              isUnlocked: true,
+            ),
+            CourseListTile(
+              onPressed: () {},
+              code: 'C3',
+              title: 'Conceptual and regulatory framework',
+              subtitle: 'Video - 02:56 mins',
+              isUnlocked: false,
+            ),
+            CourseListTile(
+              onPressed: () {},
+              code: 'C4',
+              title: 'Conceptual and regulatory framework',
+              subtitle: 'Video - 02:56 mins',
+              isUnlocked: false,
+            ),
+            CourseListTile(
+              onPressed: () {},
+              code: 'C5',
+              title: 'Conceptual and regulatory framework',
+              subtitle: 'Video - 02:56 mins',
+              isUnlocked: false,
+            ),
+            CourseListTile(
+              onPressed: () {},
+              code: 'C6',
+              title: 'Conceptual and regulatory framework',
+              subtitle: 'Video - 02:56 mins',
+              isUnlocked: false,
             ),
           ],
         ),
