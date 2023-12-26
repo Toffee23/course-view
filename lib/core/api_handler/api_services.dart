@@ -41,7 +41,9 @@ class ClientApi {
   }
 
   Future<ResponseModel> getAllCourseById(String id) async {
-    log('Got here');
+    log('Got here, ${ApiUrl.getCourseById}/$id');
+    // https: //video-streams.onrender.com/api/get-course-details/658942d7a9ee39a2c9ab5fdb
+    // https: //video-streams.onrender.com/api/get-course-details/658a1e074ce68b8ab88bd2fb
     try {
       final response = await _dio.get(
         '${ApiUrl.getCourseById}/$id',

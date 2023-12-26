@@ -50,6 +50,8 @@ class Crypto {
   }
 
   List<int> decryptBytes(String encoded) {
+    print('ASDF');
+    print(encoded);
     final Uint8List buffer = base64.decode(encoded);
     return _encrypter.decryptBytes(Encrypted(buffer), iv: _iv);
   }

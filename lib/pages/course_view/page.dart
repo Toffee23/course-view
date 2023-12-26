@@ -38,15 +38,16 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
 
   @override
   void initState() {
-    // initializePlayer();
     super.initState();
   }
 
   @override
   void dispose() {
-    _videoController1.dispose();
-    _videoController2.dispose();
-    _chewieController?.dispose();
+    if (completed) {
+      _videoController1.dispose();
+      _videoController2.dispose();
+      _chewieController?.dispose();
+    }
     super.dispose();
   }
 
