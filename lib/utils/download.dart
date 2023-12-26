@@ -3,9 +3,29 @@ import 'dart:io';
 
 import 'package:course_view/utils/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Download {
+  late Directory _thumbnailDir;
+  late Directory _videosDir;
+  final Dio _dio = Dio();
+  final Crypto _crypto = Crypto();
+
+  Future<void> initialize() async {
+    final root = await getApplicationDocumentsDirectory();
+    _thumbnailDir = Directory(join(root.path, 'thumbnail'));
+    _videosDir = Directory(join(root.path, 'videos'));
+
+    if (!await _thumbnailDir.exists()) {
+      await _thumbnailDir.create();
+    }
+
+    if (!await _videosDir.exists()) {
+      await _videosDir.create();
+    }
+  }
+
   static Future<Directory> get downloadDirectory async {
     return await getApplicationDocumentsDirectory();
   }
@@ -27,8 +47,6 @@ class Download {
 
       await File(videoPath).writeAsBytes(response.data!);
 
-      decryptFile();
-
       log('Video downloaded successfully to: $videoPath');
       return true;
     } catch (error) {
@@ -37,8 +55,60 @@ class Download {
     }
   }
 
-  static void decryptFile() {
-    final crypto = Crypto();
-    crypto;
+  Future<File?> getThumbnail(String url, String id, String ext) async {
+    final file = File(join(_thumbnailDir.path, '$id.$ext'));
+
+    if (await file.exists()) {
+      // File already download into file_path.
+      return file;
+    } else {
+      // Download file into file_path.
+      final data = await _downloadFile(url);
+
+      if (data != null) {
+        final bytes = _crypto.decryptBytes(data.toString());
+        file.writeAsBytes(bytes);
+        return file;
+      }
+      return null;
+    }
+  }
+
+  Future<File?> getVideo(String url, String id, String ext) async {
+    final file = File(join(_videosDir.path, '$id.$ext'));
+
+    if (await file.exists()) {
+      // File already download into file_path.
+      return file;
+    } else {
+      // Download file into file_path.
+      final data = await _downloadFile(url);
+
+      if (data != null) {
+        print('Got here');
+        print(data);
+        final bytes = _crypto.decryptBytes(data.toString());
+        file.writeAsBytes(bytes);
+        return file;
+      }
+      return null;
+    }
+  }
+
+  Future<Object?> _downloadFile(String url) async {
+    try {
+      final Response<List<int>> response = await _dio.get<List<int>>(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+        ),
+      );
+
+      return response.data!;
+    } catch (error) {
+      log('Error downloading video: $error');
+      return null;
+    }
   }
 }

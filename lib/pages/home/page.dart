@@ -1,7 +1,7 @@
+import 'package:course_view/pages/home/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../model.dart';
 import '../../widgets/card.dart';
 
 class HomePage extends ConsumerWidget {
@@ -9,6 +9,10 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final courses = ref.watch(coursesProvider);
+
+    // ref.watch(coursesProvider.notifier).initialize();
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -82,10 +86,12 @@ class HomePage extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
-                children: videos
-                    .map((vid) =>
-                        HomeCard(isFirst: videos.first == vid, videoModel: vid))
-                    .toList(),
+                children: (courses ?? []).map((course) {
+                  return HomeCard(
+                    isFirst: courses!.first == course,
+                    course: course,
+                  );
+                }).toList(),
               ),
             ),
             const SizedBox(height: 40.0),
@@ -117,10 +123,12 @@ class HomePage extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
-                children: videos.reversed
-                    .map((vid) =>
-                        HomeCard(isFirst: videos.first == vid, videoModel: vid))
-                    .toList(),
+                children: (courses ?? []).reversed.map((course) {
+                  return HomeCard(
+                    isFirst: courses!.first == course,
+                    course: course,
+                  );
+                }).toList(),
               ),
             )
           ],

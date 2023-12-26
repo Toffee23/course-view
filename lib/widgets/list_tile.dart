@@ -22,12 +22,12 @@ class CourseListTile extends StatelessWidget {
       child: MaterialButton(
         onPressed: onPressed,
         elevation: 0,
-        color: Colors.grey.shade200,
+        color: Colors.grey.shade100,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.0),
         ),
         padding: const EdgeInsets.all(8.0),
-        textColor: Colors.grey.shade600,
+        textColor: Colors.blueGrey.shade400,
         child: Row(
           children: <Widget>[
             Expanded(
@@ -52,7 +52,7 @@ class CourseListTile extends StatelessWidget {
                         if (!isUnlocked) ...[
                           const SizedBox(height: 2.0),
                           Text(
-                            subtitle!,
+                            subtitle ?? 'Video - 23:01 min',
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 12,

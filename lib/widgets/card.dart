@@ -1,78 +1,30 @@
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:course_view/model.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 import '../pages/course_view/page.dart';
-import '../utils/download.dart';
+import '../pages/home/model.dart';
+import 'place_holders.dart';
 
-class HomeCard extends StatefulWidget {
+class HomeCard extends StatelessWidget {
   const HomeCard({
     Key? key,
     this.isFirst = false,
-    required this.videoModel,
+    required this.course,
   }) : super(key: key);
   final bool isFirst;
-  final VideoModel videoModel;
-
-  @override
-  State<HomeCard> createState() => _HomeCardState();
-}
-
-class _HomeCardState extends State<HomeCard> {
-  late VideoPlayerController _controller;
-  bool completed = false;
-
-  @override
-  void initState() {
-    _initialize();
-    super.initState();
-  }
-
-  Future<void> _initialize() async {
-    final offlineFile = await getOfflineVideoFile;
-
-    log('[AZAG]: ${widget.videoModel.id} === $offlineFile');
-
-    if (offlineFile != null) {
-      _controller = VideoPlayerController.file(offlineFile);
-    } else {
-      final url = Uri.parse(widget.videoModel.url);
-      _controller = VideoPlayerController.networkUrl(url);
-    }
-
-    await Future.wait([_controller.initialize()]);
-
-    completed = true;
-    setState(() {});
-  }
-
-  Future<File?> get getOfflineVideoFile async {
-    final Directory dir = await Download.downloadDirectory;
-    final videoPath = '${dir.path}/${widget.videoModel.id}.mp4';
-    final file = File(videoPath);
-    return await file.exists() ? file : null;
-  }
-
-  bool get _isInitialized {
-    return completed && _controller.value.isInitialized;
-  }
+  final CoursesModel course;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       width: MediaQuery.sizeOf(context).width * .63,
-      margin: EdgeInsets.only(left: widget.isFirst ? 0 : 10),
+      margin: EdgeInsets.only(left: isFirst ? 0 : 10),
       child: MaterialButton(
         onPressed: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      CourseViewPage(videoModel: widget.videoModel)));
+                  builder: (context) => CourseViewPage(course: course)));
         },
         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
         color: Colors.white,
@@ -81,17 +33,7 @@ class _HomeCardState extends State<HomeCard> {
           children: <Widget>[
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: Container(
-                color: Colors.grey.withOpacity(.3),
-                child: Center(
-                  child: _isInitialized
-                      ? AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          child: VideoPlayer(_controller),
-                        )
-                      : Container(),
-                ),
-              ),
+              child: ImageLoader(imageUrl: course.thumbnail),
             ),
             const SizedBox(height: 10.0),
             Padding(
@@ -114,7 +56,7 @@ class _HomeCardState extends State<HomeCard> {
             Padding(
               padding: const EdgeInsets.only(left: 4.0),
               child: Text(
-                'Corporate Reporting',
+                course.title,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ),

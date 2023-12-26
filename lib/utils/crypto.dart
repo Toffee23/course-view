@@ -1,30 +1,26 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:encrypt/encrypt.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart';
+import 'package:hex/hex.dart';
+
+const String iv = '9b03b05cdd49a972ba82f4c3a92cbb08';
+const String key = '13c648fb7341ad3af0ca55952b7405d8'
+    '284a3113530de28bded96798bc6ad15d';
 
 class Crypto {
-  final String _keyStorageKey = 'encryption_key';
-  final String _ivStorageKey = 'encryption_iv';
-  late IV _iv;
+  final IV _iv = IV(Uint8List.fromList(HEX.decode(iv)));
+  final Key _key = Key(Uint8List.fromList(HEX.decode(key)));
   late Encrypter _encrypter;
 
-  Future<void> generateAndStoreKeyAndIv() async {
-    const storage = FlutterSecureStorage();
-    final key = Key.fromLength(32).base64;
-    final iv = IV.fromLength(16).base64;
-    await storage.write(key: _keyStorageKey, value: key);
-    await storage.write(key: _ivStorageKey, value: iv);
+  Crypto() {
+    _initialize();
   }
 
-  Future<void> getStoredKeyAndIv() async {
-    const storage = FlutterSecureStorage();
-    final key = await storage.read(key: _keyStorageKey);
-    final iv = await storage.read(key: _ivStorageKey);
-    _iv = IV.fromBase64(iv!);
-    _encrypter = Encrypter(AES(Key.fromBase64(key!)));
+  Future<void> _initialize() async {
+    _encrypter = Encrypter(AES(_key, mode: AESMode.cbc));
   }
 
   Encrypted encryptPlainText(String input) {
@@ -53,7 +49,8 @@ class Crypto {
     return encrypted;
   }
 
-  List<int> decryptBytes(Encrypted encrypted) {
-    return _encrypter.decryptBytes(encrypted, iv: _iv);
+  List<int> decryptBytes(String encoded) {
+    final Uint8List buffer = base64.decode(encoded);
+    return _encrypter.decryptBytes(Encrypted(buffer), iv: _iv);
   }
 }
