@@ -11,8 +11,6 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final courses = ref.watch(coursesProvider);
 
-    // ref.watch(coursesProvider.notifier).initialize();
-
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
