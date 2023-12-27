@@ -4,6 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/api_handler/api_services.dart';
 import 'model.dart';
 
+// final courseProvider =
+//     FutureProvider.family<CoursesModel, String>((ref, id) async {
+//   final ClientApi clientApi = ClientApi();
+//
+//   final result = await clientApi.getAllCourseById(id);
+//   return CoursesModel.fromJson(result.data);
+// });
+
 final coursesProvider =
     StateNotifierProvider<CoursesNotifier, List<CoursesModel>?>(
         (ref) => CoursesNotifier(ref));

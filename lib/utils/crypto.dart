@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,10 +5,9 @@ import 'package:encrypt/encrypt.dart';
 import 'package:path/path.dart';
 import 'package:hex/hex.dart';
 
-import '../azag.dart';
-
 const String iv = '9b03b05cdd49a972ba82f4c3a92cbb08';
-const String key = '13c648fb7341ad3af0ca55952b7405d8'
+const String key = //
+    '13c648fb7341ad3af0ca55952b7405d8'
     '284a3113530de28bded96798bc6ad15d';
 
 class Crypto {
@@ -51,10 +49,7 @@ class Crypto {
     return encrypted;
   }
 
-  List<int> decryptBytes(String encoded) {
-    // final Uint8List buffer = base64.decode(me());
-    final Uint8List buffer = base64.decode(encoded);
-    print('QWERTY: $buffer');
+  List<int> decryptBytes(Uint8List buffer) {
     return _encrypter.decryptBytes(Encrypted(buffer), iv: _iv);
   }
 }

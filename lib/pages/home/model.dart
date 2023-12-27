@@ -7,6 +7,7 @@ class CoursesModel {
     required this.thumbnail,
     required this.modules,
     required this.subscribers,
+    this.loading = true,
   });
   final String id;
   final String title;
@@ -15,6 +16,7 @@ class CoursesModel {
   final String thumbnail;
   final List<String> modules;
   final List subscribers;
+  final bool loading;
 
   factory CoursesModel.fromJson(Map<String, dynamic> json) {
     return CoursesModel(
@@ -25,6 +27,7 @@ class CoursesModel {
       thumbnail: json['thumbnail'],
       modules: (json['modules'] as List).cast<String>(),
       subscribers: json['subscribers'],
+      loading: false,
     );
   }
 }

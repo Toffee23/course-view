@@ -1,21 +1,13 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:chewie/chewie.dart';
 import 'package:course_view/utils/download.dart';
 import 'package:course_view/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../widgets/dialog.dart';
 import '../../widgets/list_tile.dart';
-import '../../widgets/snack_bar.dart';
 import '../home/model.dart';
-import '../home/provider.dart';
 import 'model.dart';
 import 'provider.dart';
 
@@ -36,8 +28,6 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   ChewieController? _chewieController;
   int? bufferDelay;
   bool completed = false;
-  bool isDownloaded = false;
-  bool dialogIsOpened = false;
 
   @override
   void initState() {
@@ -57,26 +47,15 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   Future<void> initializePlayer(Module module) async {
     final download = Download();
     await download.initialize();
-    print('Azag ${module.url}');
 
-    return;
+    if (completed) return;
 
     final file = await download.getVideo(module.url, module.id, 'mp4');
 
-    final root = await getDownloadsDirectory();
-    // await File('${root!.path}/new_me.mp4').writeAsBytes(bytes);
-    // final file = File('${root?.path}/new_me.mp4');
-    log('Done $file');
-
     if (file != null) {
-      // setState(() => isDownloaded = true);
       _videoController1 = VideoPlayerController.file(file);
       _videoController2 = VideoPlayerController.file(file);
 
-      // _videoController1 =
-      //     VideoPlayerController.networkUrl(Uri.parse(module.url));
-      // _videoController2 =
-      //     VideoPlayerController.networkUrl(Uri.parse(module.url));
       await Future.wait([
         _videoController1.initialize(),
         _videoController2.initialize(),
@@ -84,20 +63,8 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
 
       _createChewieController();
       completed = true;
-      // setState(() {});
+      ref.read(canPlayVideoProvider.notifier).update((state) => true);
     }
-
-    // final offlineFile = await getOfflineVideoFile;
-
-    // if (offlineFile != null) {
-    //   setState(() => isDownloaded = true);
-    //   _videoController1 = VideoPlayerController.file(offlineFile);
-    //   _videoController2 = VideoPlayerController.file(offlineFile);
-    // } else {
-    //   final url = Uri.parse(widget.course.modules.first);
-    //   _videoController1 = VideoPlayerController.networkUrl(url);
-    //   _videoController2 = VideoPlayerController.networkUrl(url);
-    // }
   }
 
   void _createChewieController() {
@@ -108,13 +75,6 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
     );
-  }
-
-  Future<File?> get getOfflineVideoFile async {
-    final Directory dir = await Download.downloadDirectory;
-    final videoPath = '${dir.path}/${widget.course.modules.first}.mp4';
-    final file = File(videoPath);
-    return await file.exists() ? file : null;
   }
 
   Widget _subtitleWidget() => Row(
@@ -170,53 +130,6 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
         ],
       );
 
-  bool get _canPlayVideo {
-    return completed &&
-        _chewieController != null &&
-        _chewieController!.videoPlayerController.value.isInitialized;
-  }
-
-  Future<void> downloadVideo() async {
-    final url = widget.course.modules.first;
-    final id = widget.course.modules.first;
-
-    _showLoadingSpinner();
-
-    final result = await Download.downloadForOffline(url, id);
-
-    if (result) {
-      _showSuccessSnackbar();
-      setState(() => isDownloaded = true);
-    } else {
-      _showErrorSnackbar();
-    }
-    _dismissLoadingSpinner();
-  }
-
-  void _showLoadingSpinner() {
-    dialogIsOpened = true;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const LoadingSpinnerDialog();
-      },
-    ).then((value) => dialogIsOpened = false);
-  }
-
-  void _dismissLoadingSpinner() {
-    if (dialogIsOpened) {
-      Navigator.of(context).pop();
-    }
-  }
-
-  void _showSuccessSnackbar() {
-    showSuccessSnackbar(context, 'Video now available for offline view.');
-  }
-
-  void _showErrorSnackbar() {
-    showErrorSnackbar(context, 'Download failed due to network error!');
-  }
-
   Widget _smallText(String text) {
     return Text(
       text,
@@ -244,6 +157,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   @override
   Widget build(BuildContext context) {
     final course = ref.watch(courseProvider(widget.course.id));
+    final canPlayVideo = ref.watch(canPlayVideoProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -268,7 +182,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
             children: <Widget>[
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: _canPlayVideo
+                child: canPlayVideo
                     ? Chewie(controller: _chewieController!)
                     : Container(
                         color: Colors.grey.withOpacity(.3),
@@ -295,20 +209,6 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                   _ratingWidget(context),
                   const SizedBox(width: 8.0),
                   _watchedWidget(context),
-                  const Spacer(),
-                  if (isDownloaded)
-                    ActionButton(
-                      onPressed: () {},
-                      iconData: Icons.download_done_rounded,
-                      color: Colors.green,
-                      text: 'Offline',
-                    )
-                  else
-                    ActionButton(
-                      onPressed: downloadVideo,
-                      iconData: Icons.download_for_offline,
-                      text: 'Download',
-                    ),
                 ],
               ),
               const SizedBox(height: 10.0),

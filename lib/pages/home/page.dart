@@ -70,13 +70,14 @@ class HomePage extends ConsumerWidget {
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   TextButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        foregroundColor: MaterialStatePropertyAll(
-                          Theme.of(context).primaryColor,
-                        ),
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStatePropertyAll(
+                        Theme.of(context).primaryColor,
                       ),
-                      child: const Text('See more'))
+                    ),
+                    child: const Text('See more'),
+                  )
                 ],
               ),
             ),

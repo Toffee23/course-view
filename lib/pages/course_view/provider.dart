@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +11,7 @@ final courseProvider =
   final ClientApi clientApi = ClientApi();
 
   final result = await clientApi.getAllCourseById(id);
-  log('AZAG IS HERE ${result.data}');
   return CourseModel.fromJson(result.data);
 });
+
+final canPlayVideoProvider = StateProvider.autoDispose<bool>((ref) => false);
