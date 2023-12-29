@@ -140,6 +140,51 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
     return Text(text, style: Theme.of(context).textTheme.titleMedium);
   }
 
+  void _onDoubleTap(TapDownDetails details) {
+    // Get the width of the screen
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Get the tap position within the screen
+    double tapPosition = details.globalPosition.dx;
+
+    // Calculate the region sizes
+    double leftRegion = screenWidth / 3;
+    double rightRegion = 2 * leftRegion;
+
+    // Get the current position of the video
+    final currentDuration =
+        _chewieController!.videoPlayerController.value.position;
+
+    // Define the seek duration for forward/backward (e.g., 10 seconds)
+    const seekDuration = Duration(seconds: 10);
+
+    // Check the tap position and perform the appropriate action
+    if (tapPosition < leftRegion) {
+      // Double-tap on the left: Seek backward
+      if (currentDuration - seekDuration > Duration.zero) {
+        _chewieController!.seekTo(currentDuration - seekDuration);
+      } else {
+        _chewieController!.seekTo(Duration.zero);
+      }
+    } else if (tapPosition > rightRegion) {
+      // Double-tap on the right: Seek forward
+      if (currentDuration + seekDuration <
+          _chewieController!.videoPlayerController.value.duration) {
+        _chewieController!.seekTo(currentDuration + seekDuration);
+      } else {
+        _chewieController!
+            .seekTo(_chewieController!.videoPlayerController.value.duration);
+      }
+    } else {
+      // Double-tap in the center: Play/Pause
+      if (_chewieController!.videoPlayerController.value.isPlaying) {
+        _chewieController!.pause();
+      } else {
+        _chewieController!.play();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final course = ref.watch(courseProvider(widget.course.id));
@@ -170,11 +215,23 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: canPlayVideo
-                      ? Chewie(controller: _chewieController!)
+                      ? GestureDetector(
+                          onDoubleTapDown: _onDoubleTap,
+                          // onDoubleTap: () {
+                          //   if (!_doubleTapHandled) {
+                          //     _onDoubleTap(TapDownDetails());
+                          //   }
+                          // },
+                          child: Chewie(controller: _chewieController!),
+                        )
                       : Container(
-                          color: Colors.grey.withOpacity(.3),
-                          child: const Center(
-                            child: CircularProgressIndicator(),
+                          // absorbing: _doubleTapHandled,
+                          // absorbing: false,
+                          child: Container(
+                            color: Colors.grey.withOpacity(.3),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           ),
                         ),
                 ),
@@ -269,6 +326,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                         child: TabBarView(
                           children: <Widget>[
                             ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: data.modules.length,
                               itemBuilder: (BuildContext context, int index) {
                                 final module = data.modules.elementAt(index);
@@ -497,7 +555,45 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 10.0),
+                      // Text(
+                      //   'NGN 24,000.00',
+                      //   style: TextStyle(
+                      //     fontSize: 17,
+                      //     fontWeight: FontWeight.bold,
+                      //     color: Colors.black87,
+                      //     decoration: TextDecoration.lineThrough,
+                      //   ),
+                      // ),
+                      const Text(
+                        'NGN 20,000.00',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 15.0),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(
+                            Theme.of(context).primaryColor,
+                          ),
+                          foregroundColor: const MaterialStatePropertyAll(
+                            Colors.white,
+                          ),
+                          shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          minimumSize: const MaterialStatePropertyAll(
+                            Size(double.infinity, 48),
+                          ),
+                        ),
+                        child: const Text('Enroll now'),
+                      ),
                     ],
                   ),
                 ),
@@ -554,15 +650,15 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          'NGN 24,000.00',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
+                        // Text(
+                        //   'NGN 24,000.00',
+                        //   style: TextStyle(
+                        //     fontSize: 17,
+                        //     fontWeight: FontWeight.bold,
+                        //     color: Colors.black87,
+                        //     decoration: TextDecoration.lineThrough,
+                        //   ),
+                        // ),
                         Text(
                           'NGN 20,000.00',
                           style: TextStyle(
