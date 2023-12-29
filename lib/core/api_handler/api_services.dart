@@ -18,12 +18,14 @@ class ClientApi {
 
   Future<ResponseModel> getAllCourses() async {
     try {
+      log('message');
       final response = await _dio.get(
         ApiUrl.allCourses,
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ),
       );
+      log('Ended');
       final body = response.data;
       final statusCode = response.statusCode;
       return ResponseModel.fromJson(body).copyWith(
