@@ -138,15 +138,18 @@ class HomePage extends ConsumerWidget {
                 ),
               );
             },
-            error: (_, __) => Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text('An error as occurred, please try again'),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Retry'),
-                )
-              ],
+            error: (_, __) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('An error as occurred, please try again'),
+                  const SizedBox(height: 15.0),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Retry'),
+                  )
+                ],
+              ),
             ),
             loading: () => Padding(
               padding: const EdgeInsets.all(20),
