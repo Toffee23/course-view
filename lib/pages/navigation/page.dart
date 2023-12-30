@@ -41,12 +41,13 @@ class _NavigationPageState extends State<NavigationPage> {
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           onPageChanged: (index) => tabIndexNotifier.value = index,
-          children: const <Widget>[
-            HomePage(),
-            Placeholder(),
-            Placeholder(),
-            CartPage(),
-            Placeholder(),
+          children: <Widget>[
+            const HomePage(),
+            const Placeholder(),
+            const Placeholder(),
+            CartPage(
+                onArrowBackPressed: () => widget.switchTab(_pageController, 0)),
+            const Placeholder(),
           ],
         ),
         bottomNavigationBar: ValueListenableBuilder(

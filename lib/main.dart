@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'pages/navigation/page.dart';
 
-void main() => runApp(const ProviderScope(child: MyApp()));
+void main() => runApp(const ProviderScope(child: ExcelAcademy()));
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ExcelAcademy extends StatelessWidget {
+  const ExcelAcademy({super.key});
 
   @override
   Widget build(BuildContext context) {

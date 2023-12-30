@@ -5,7 +5,7 @@ class CourseModel {
     required this.creator,
     required this.description,
     required this.thumbnail,
-    required this.modules,
+    required this.lessons,
     required this.subscribers,
   });
   final String id;
@@ -13,7 +13,7 @@ class CourseModel {
   final String creator;
   final String description;
   final String thumbnail;
-  final List<Module> modules;
+  final List<Lessons> lessons;
   final List subscribers;
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
@@ -23,8 +23,31 @@ class CourseModel {
       creator: json['creator'],
       description: json['description'],
       thumbnail: json['thumbnail'],
-      modules: json['modules'].map<Module>((e) => Module.fromJson(e)).toList(),
+      lessons:
+          json['lessons'].map<Lessons>((e) => Lessons.fromJson(e)).toList(),
       subscribers: json['subscribers'],
+    );
+  }
+}
+
+class Lessons {
+  Lessons({
+    required this.id,
+    required this.name,
+    required this.modules,
+    required this.subscriptionRequired,
+  });
+  final String id;
+  final String name;
+  final List<Module> modules;
+  final bool subscriptionRequired;
+
+  factory Lessons.fromJson(Map<String, dynamic> json) {
+    return Lessons(
+      id: json['_id'],
+      name: json['lesson_name'],
+      modules: json['modules'].map<Module>((e) => Module.fromJson(e)).toList(),
+      subscriptionRequired: json['subscriptionRequired'],
     );
   }
 }
@@ -42,7 +65,6 @@ class Module {
   final bool subscriptionRequired;
 
   factory Module.fromJson(Map<String, dynamic> json) {
-    print('ODUN $json');
     return Module(
       id: json['_id'],
       name: json['module_name'],

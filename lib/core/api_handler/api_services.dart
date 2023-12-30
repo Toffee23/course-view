@@ -18,15 +18,14 @@ class ClientApi {
 
   Future<ResponseModel> getAllCourses() async {
     try {
-      log('message');
       final response = await _dio.get(
         ApiUrl.allCourses,
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ),
       );
-      log('Ended');
       final body = response.data;
+      log(ApiUrl.allCourses.toString());
       final statusCode = response.statusCode;
       return ResponseModel.fromJson(body).copyWith(
         status: statusCode == 202
@@ -50,6 +49,7 @@ class ClientApi {
           headers: {'Content-Type': 'application/json'},
         ),
       );
+      log('${ApiUrl.getCourseById}/$id');
       final body = response.data;
       final statusCode = response.statusCode;
       return ResponseModel.fromJson(body).copyWith(

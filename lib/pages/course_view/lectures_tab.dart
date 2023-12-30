@@ -13,10 +13,9 @@ class LecturesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      // physics: const NeverScrollableScrollPhysics(),
-      itemCount: data.modules.length,
+      itemCount: data.lessons.length,
       itemBuilder: (BuildContext context, int index) {
-        final module = data.modules.elementAt(index);
+        final module = data.lessons.elementAt(index);
         return CourseListTile(
           onPressed: () {},
           code: 'C${index + 1}',

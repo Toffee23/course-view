@@ -162,7 +162,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
       ),
       body: course.when(
         data: (data) {
-          initializePlayer(data.modules.first);
+          initializePlayer(data.lessons.first.modules.first);
           return Column(
             children: <Widget>[
               AspectRatio(
@@ -614,7 +614,20 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
           );
         },
         error: (_, __) {
-          return Text('Error $_');
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text('An error as occurred, please try again'),
+                const SizedBox(height: 15.0),
+                ElevatedButton(
+                  onPressed: () =>
+                      ref.refresh(courseProvider(widget.course.id)),
+                  child: const Text('Retry'),
+                )
+              ],
+            ),
+          );
         },
         loading: () {
           return const Center(child: CircularProgressIndicator());
