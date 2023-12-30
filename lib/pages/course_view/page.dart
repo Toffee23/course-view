@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../widgets/list_tile.dart';
 import '../home/model.dart';
 import 'model.dart';
 import 'notes_tab.dart';
@@ -81,70 +80,13 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
     );
   }
 
-  Widget _ratingWidget(BuildContext context) => Row(
-        children: <Widget>[
-          Icon(
-            Icons.star,
-            color: Theme.of(context).primaryColor,
-          ),
-          const Text('4.1'),
-        ],
-      );
-
-  Widget _watchedWidget(BuildContext context) => Row(
-        children: <Widget>[
-          Icon(
-            Icons.people_alt,
-            color: Theme.of(context).primaryColor,
-          ),
-          const Text('2,363'),
-        ],
-      );
-
-  Widget _infoWidget() => const Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Icon(
-            CupertinoIcons.info,
-            color: Colors.grey,
-          ),
-          SizedBox(width: 8.0),
-          Expanded(
-            child: Text(
-              'This package selected on choice of offer for the course, we strongly advice to go for a better choice.',
-              style: TextStyle(
-                color: Colors.grey,
-              ),
-            ),
-          ),
-        ],
-      );
-
-  Widget _smallText(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 12,
-        color: Colors.grey.shade600,
-      ),
-    );
-  }
-
-  Widget _bodyText(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        color: Colors.grey.shade700,
-        wordSpacing: 1,
-      ),
-    );
-  }
-
-  Widget _titleText(String text) {
-    return Text(text, style: Theme.of(context).textTheme.titleMedium);
-  }
-
   void _onDoubleTap(TapDownDetails details) {
+    if (ref.watch(doubleTapHandledProvider)) {
+      // ref.read(doubleTapHandledProvider.notifier).update((state) => false);
+      return;
+    }
+
+    ref.read(doubleTapHandledProvider.notifier).update((state) => true);
     // Get the width of the screen
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -167,8 +109,10 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
       // Double-tap on the left: Seek backward
       if (currentDuration - seekDuration > Duration.zero) {
         _chewieController!.seekTo(currentDuration - seekDuration);
+        ref.read(isBackwardingProvider.notifier).update((state) => true);
       } else {
         _chewieController!.seekTo(Duration.zero);
+        ref.read(isForwardingProvider.notifier).update((state) => true);
       }
     } else if (tapPosition > rightRegion) {
       // Double-tap on the right: Seek forward
@@ -187,12 +131,19 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
         _chewieController!.play();
       }
     }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      ref.read(doubleTapHandledProvider.notifier).update((state) => false);
+      ref.read(isForwardingProvider.notifier).update((state) => false);
+      ref.read(isBackwardingProvider.notifier).update((state) => false);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final course = ref.watch(courseProvider(widget.course.id));
     final canPlayVideo = ref.watch(canPlayVideoProvider);
+    final isForwarding = ref.watch(isForwardingProvider);
+    final isBackwarding = ref.watch(isBackwardingProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -218,36 +169,88 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                 child: canPlayVideo
                     ? GestureDetector(
                         onDoubleTapDown: _onDoubleTap,
-                        // onDoubleTap: () {
-                        //   if (!_doubleTapHandled) {
-                        //     _onDoubleTap(TapDownDetails());
-                        //   }
-                        // },
-                        child: Chewie(controller: _chewieController!),
+                        child: IgnorePointer(
+                          ignoring: ref.watch(doubleTapHandledProvider),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: <Widget>[
+                              Chewie(controller: _chewieController!),
+                              if (isForwarding)
+                                Positioned(
+                                  left: 10,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: <Widget>[
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.refresh,
+                                          color: Colors.grey.shade200,
+                                          size: 40,
+                                        ),
+                                      ),
+                                      const Text(
+                                        '10',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              if (isBackwarding)
+                                Positioned(
+                                  right: 10,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: <Widget>[
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.refresh,
+                                          color: Colors.grey.shade200,
+                                          size: 40,
+                                        ),
+                                      ),
+                                      const Text(
+                                        '10',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                       )
                     : Container(
-                        // absorbing: _doubleTapHandled,
-                        // absorbing: false,
-                        child: Container(
-                          color: Colors.grey.withOpacity(.3),
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                        color: Colors.grey.withOpacity(.3),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
                         ),
                       ),
               ),
-              const SizedBox(height: 12.0),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      _titleText(widget.course.title),
-                      const SizedBox(height: 8.0),
                       Row(
                         children: <Widget>[
-                          const Spacer(),
+                          Expanded(
+                            child: Text(
+                              widget.course.title,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
                           ActionButton(
                             onPressed: () {},
                             iconData: CupertinoIcons.link,
@@ -308,7 +311,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10.0),
+                      const SizedBox(height: 4.0),
                       Expanded(
                         child: DefaultTabController(
                           length: 4,

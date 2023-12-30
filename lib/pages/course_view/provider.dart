@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/api_handler/api_services.dart';
@@ -15,3 +12,7 @@ final courseProvider =
 });
 
 final canPlayVideoProvider = StateProvider.autoDispose<bool>((ref) => false);
+final isForwardingProvider = StateProvider.autoDispose<bool>((ref) => false);
+final isBackwardingProvider = StateProvider.autoDispose<bool>((ref) => false);
+final doubleTapHandledProvider =
+    StateProvider.autoDispose<bool>((ref) => false);

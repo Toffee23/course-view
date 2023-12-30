@@ -13,7 +13,7 @@ class LecturesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
+      // physics: const NeverScrollableScrollPhysics(),
       itemCount: data.modules.length,
       itemBuilder: (BuildContext context, int index) {
         final module = data.modules.elementAt(index);
