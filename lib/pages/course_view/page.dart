@@ -146,6 +146,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
     final isBackwarding = ref.watch(isBackwardingProvider);
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F8F8),
       appBar: AppBar(
         title: const Text('Course View'),
         centerTitle: true,

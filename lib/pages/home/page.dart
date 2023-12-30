@@ -10,11 +10,8 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-      ),
-      body: ref.watch(coursesProvider).when(
+    return Container(
+      child: ref.watch(coursesProvider).when(
             data: (courses) {
               return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
