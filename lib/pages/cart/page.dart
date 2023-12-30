@@ -18,7 +18,21 @@ class CartPage extends StatelessWidget {
           title: const Text('Course cart'),
         ),
         const SizedBox(height: 10.0),
-        Image.asset('assets/images/excel-icon.png'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Image.asset('assets/images/excel-icon.png'),
+              Spacer(),
+              Column(
+                children: [
+                  Text('Cart Items'),
+                  Text('5'),
+                ],
+              )
+            ],
+          ),
+        ),
       ],
     );
   }
