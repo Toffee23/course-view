@@ -71,3 +71,99 @@ class CustomIconButton extends StatelessWidget {
     );
   }
 }
+
+class PaymentButton extends StatelessWidget {
+  const PaymentButton({
+    Key? key,
+    required this.total,
+    required this.onPressed,
+  }) : super(key: key);
+  final String total;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(5.0),
+          decoration: BoxDecoration(
+            color: const Color(0XFFF3F3F1),
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          child: Row(
+            children: <Widget>[
+              CircleAvatar(
+                backgroundColor: const Color(0xFFFFE6D5),
+                child: Image.asset('assets/images/cardpos.png'),
+              ),
+              const SizedBox(width: 5.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text(
+                    'Total payment',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    'NGN $total',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Stack(
+                alignment: Alignment.centerRight,
+                children: <Widget>[
+                  const SizedBox(width: 90),
+                  Positioned(
+                    left: 0,
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(4.0, 4.0, 10.0, 4.0),
+                      color: const Color(0XFFD2EFE3),
+                      child: const Text(
+                        'boxed',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Color(0xFF1A8A92),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Image.asset('assets/images/emoji_wrapped_present_.png'),
+                ],
+              ),
+            ],
+          ),
+        ),
+        ElevatedButton(
+          onPressed: onPressed,
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(
+              Theme.of(context).primaryColor,
+            ),
+            foregroundColor: const MaterialStatePropertyAll(
+              Colors.white,
+            ),
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
+            minimumSize: const MaterialStatePropertyAll(
+              Size(double.infinity, 40),
+            ),
+          ),
+          child: const Text('Explore course'),
+        ),
+      ],
+    );
+  }
+}
