@@ -1,3 +1,4 @@
+import 'package:course_view/pages/cart/cart_payment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -84,7 +85,10 @@ class CartPage extends StatelessWidget {
                   // ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+              MaterialPageRoute(builder: (context) => (const CartPayment())),);
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(
                       Theme.of(context).primaryColor,
@@ -101,7 +105,7 @@ class CartPage extends StatelessWidget {
                       Size(double.infinity, 40),
                     ),
                   ),
-                  child: const Text('Explore course'),
+                  child: const Text('Explore courses'),
                 ),
               ],
             ),
