@@ -18,6 +18,7 @@ class HomeCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       width: MediaQuery.sizeOf(context).width * .63,
+      height: 260,
       margin: EdgeInsets.only(left: isFirst ? 0 : 10),
       child: MaterialButton(
         onPressed: () {
@@ -57,10 +58,12 @@ class HomeCard extends StatelessWidget {
               padding: const EdgeInsets.only(left: 4.0),
               child: Text(
                 course.title,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
-            const SizedBox(height: 15.0),
+            const Spacer(),
             Row(
               children: <Widget>[
                 TextButton(

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:course_view/utils/crypto.dart';
 import 'package:dio/dio.dart';
@@ -66,8 +67,8 @@ class Download {
       final data = await _downloadFile(url);
 
       if (data != null) {
-        final bytes = _crypto.decryptBytes(data.toString());
-        file.writeAsBytes(bytes);
+        final bytes = _crypto.decryptBytes(data);
+        await file.writeAsBytes(bytes);
         return file;
       }
       return null;
@@ -78,26 +79,28 @@ class Download {
     final file = File(join(_videosDir.path, '$id.$ext'));
 
     if (await file.exists()) {
+      log('Already exits');
+      // if (false) {
       // File already download into file_path.
       return file;
     } else {
+      log('Just downloading');
       // Download file into file_path.
       final data = await _downloadFile(url);
 
       if (data != null) {
-        print('Got here');
-        print(data);
-        final bytes = _crypto.decryptBytes(data.toString());
-        file.writeAsBytes(bytes);
+        final bytes = _crypto.decryptBytes(data);
+        await file.writeAsBytes(bytes);
+
         return file;
       }
       return null;
     }
   }
 
-  Future<Object?> _downloadFile(String url) async {
+  Future<Uint8List?> _downloadFile(String url) async {
     try {
-      final Response<List<int>> response = await _dio.get<List<int>>(
+      final Response<Uint8List> response = await _dio.get<Uint8List>(
         url,
         options: Options(
           responseType: ResponseType.bytes,

@@ -38,3 +38,36 @@ class ActionButton extends StatelessWidget {
     );
   }
 }
+
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton({
+    Key? key,
+    required this.text,
+    required this.iconData,
+    required this.onPressed,
+  }) : super(key: key);
+  final String text;
+  final IconData iconData;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      onPressed: () {},
+      color: Colors.white,
+      elevation: 0,
+      textColor: Colors.blueGrey,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(text),
+          const SizedBox(width: 5.0),
+          Icon(iconData),
+        ],
+      ),
+    );
+  }
+}

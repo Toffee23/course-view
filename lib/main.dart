@@ -2,19 +2,20 @@ import 'package:course_view/pages/home/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() => runApp(const ProviderScope(child: MyApp()));
+import 'pages/navigation/page.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() => runApp(const ProviderScope(child: ExcelAcademy()));
 
-  // This widget is the root of your application.
+class ExcelAcademy extends StatelessWidget {
+  const ExcelAcademy({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        primaryColor: Colors.orange,
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+        primaryColor: const Color(0xFFFF822B),
         useMaterial3: true,
         textTheme: TextTheme(
           titleSmall: TextStyle(
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(),
+      home: const NavigationPage(),
     );
   }
 }

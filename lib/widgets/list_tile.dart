@@ -74,3 +74,40 @@ class CourseListTile extends StatelessWidget {
     );
   }
 }
+
+class QuestionListTile extends StatelessWidget {
+  const QuestionListTile({
+    Key? key,
+    required this.question,
+    this.onPressed,
+  }) : super(key: key);
+  final String question;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: MaterialButton(
+        onPressed: onPressed,
+        elevation: 0,
+        color: Colors.grey.shade100,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+        textColor: Colors.blueGrey.shade400,
+        child: Row(
+          children: <Widget>[
+            const Icon(Icons.chevron_right),
+            const SizedBox(width: 4.0),
+            Text(
+              question,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

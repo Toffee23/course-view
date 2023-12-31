@@ -25,6 +25,7 @@ class ClientApi {
         ),
       );
       final body = response.data;
+      log(ApiUrl.allCourses.toString());
       final statusCode = response.statusCode;
       return ResponseModel.fromJson(body).copyWith(
         status: statusCode == 202
@@ -41,7 +42,6 @@ class ClientApi {
   }
 
   Future<ResponseModel> getAllCourseById(String id) async {
-    log('Got here');
     try {
       final response = await _dio.get(
         '${ApiUrl.getCourseById}/$id',
@@ -49,9 +49,8 @@ class ClientApi {
           headers: {'Content-Type': 'application/json'},
         ),
       );
-      log('Got here');
+      log('${ApiUrl.getCourseById}/$id');
       final body = response.data;
-      log(response.statusCode.toString());
       final statusCode = response.statusCode;
       return ResponseModel.fromJson(body).copyWith(
         data: response.data['courseDetails'],

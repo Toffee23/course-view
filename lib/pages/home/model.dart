@@ -5,7 +5,7 @@ class CoursesModel {
     required this.creator,
     required this.description,
     required this.thumbnail,
-    required this.modules,
+    required this.lessons,
     required this.subscribers,
   });
   final String id;
@@ -13,7 +13,7 @@ class CoursesModel {
   final String creator;
   final String description;
   final String thumbnail;
-  final List<String> modules;
+  final List<Map<String, dynamic>> lessons;
   final List subscribers;
 
   factory CoursesModel.fromJson(Map<String, dynamic> json) {
@@ -23,7 +23,7 @@ class CoursesModel {
       creator: json['creator'],
       description: json['description'],
       thumbnail: json['thumbnail'],
-      modules: (json['modules'] as List).cast<String>(),
+      lessons: (json['lessons'] as List).cast<Map<String, dynamic>>(),
       subscribers: json['subscribers'],
     );
   }
