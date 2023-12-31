@@ -328,12 +328,70 @@ class CartBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      padding: EdgeInsets.all(15.0),
       child: Column(
         children: <Widget>[
           CircleAvatar(
             radius: 48,
             backgroundColor: const Color(0xFFD2EDEF),
             child: Image.asset('assets/images/emoji_wrapped_present_.png'),
+          ),
+          Text('You have earned a N3,500 off the course package'),
+          Container(
+            padding: const EdgeInsets.all(5.0),
+            decoration: BoxDecoration(
+              color: const Color(0XFFF1F1EF),
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Row(
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: const Color(0xFFFFE6D5),
+                  child: Image.asset('assets/images/cardpos.png'),
+                ),
+                const SizedBox(width: 5.0),
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Total payment'),
+                    Text(
+                      'NGN 20,000.00',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Container(
+                  color: Colors.blueGrey,
+                  child: Text('boxed'),
+                ),
+                Image.asset('assets/images/emoji_wrapped_present_.png'),
+              ],
+            ),
+          ),
+          Spacer(),
+          ElevatedButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+                Theme.of(context).primaryColor,
+              ),
+              foregroundColor: const MaterialStatePropertyAll(
+                Colors.white,
+              ),
+              shape: MaterialStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+              ),
+              minimumSize: const MaterialStatePropertyAll(
+                Size(double.infinity, 40),
+              ),
+            ),
+            child: const Text('Explore course'),
           ),
         ],
       ),
