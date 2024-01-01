@@ -27,62 +27,82 @@ class CartPage extends StatelessWidget {
             padding: const EdgeInsets.all(12.0),
             child: Column(
               children: <Widget>[
+                // Expanded(
+                //   child: Column(
+                //     children: <Widget>[
+                //       Row(
+                //         children: <Widget>[
+                //           Column(
+                //             children: <Widget>[
+                //               Image.asset('assets/images/excel-icon.png'),
+                //               Row(
+                //                 children: <Widget>[
+                //                   Text(
+                //                     'Excel',
+                //                     style: TextStyle(
+                //                       color: Theme.of(context).primaryColor,
+                //                       fontWeight: FontWeight.w500,
+                //                     ),
+                //                   ),
+                //                   const SizedBox(width: 3.0),
+                //                   const Text(
+                //                     'Academy',
+                //                     style: TextStyle(
+                //                       fontWeight: FontWeight.w500,
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ],
+                //           ),
+                //           const Spacer(),
+                //           const Column(
+                //             children: <Widget>[
+                //               Text('Cart Items'),
+                //               Text('5'),
+                //             ],
+                //           )
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                //   // child: Center(
+                //   //   child: Column(
+                //   //     mainAxisAlignment: MainAxisAlignment.center,
+                //   //     children: <Widget>[
+                //   //       Image.asset('assets/images/emoji_shopping_trolley.png'),
+                //   //       Text(
+                //   //         'No courses Found',
+                //   //         style: Theme.of(context).textTheme.titleMedium,
+                //   //       ),
+                //   //       const SizedBox(height: 2.0),
+                //   //       Text(
+                //   //         'Your cart is empty',
+                //   //         style: Theme.of(context).textTheme.bodySmall,
+                //   //       ),
+                //   //     ],
+                //   //   ),
+                //   // ),
+
+                  
+                // ),
                 Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Row(
+                  child: Center(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Image.asset('assets/images/excel-icon.png'),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Excel',
-                                    style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 3.0),
-                                  const Text(
-                                    'Academy',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          Image.asset('assets/images/emoji_shopping_trolley.png'),
+                          Text(
+                            'No courses Found',
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          const Spacer(),
-                          const Column(
-                            children: <Widget>[
-                              Text('Cart Items'),
-                              Text('5'),
-                            ],
-                          )
+                          const SizedBox(height: 2.0),
+                          Text(
+                            'Your cart is empty',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ],
-                      ),
-                    ],
-                  ),
-                  // child: Center(
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: <Widget>[
-                  //       Image.asset('assets/images/emoji_shopping_trolley.png'),
-                  //       Text(
-                  //         'No courses Found',
-                  //         style: Theme.of(context).textTheme.titleMedium,
-                  //       ),
-                  //       const SizedBox(height: 2.0),
-                  //       Text(
-                  //         'Your cart is empty',
-                  //         style: Theme.of(context).textTheme.bodySmall,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                      ),),
                 ),
                 ElevatedButton(
                   onPressed: () {
