@@ -1,4 +1,3 @@
-import 'package:course_view/pages/home/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +13,6 @@ class ExcelAcademy extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         primaryColor: const Color(0xFFFF822B),
         useMaterial3: true,
         textTheme: TextTheme(

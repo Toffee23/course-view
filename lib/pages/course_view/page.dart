@@ -1,4 +1,5 @@
 import 'package:chewie/chewie.dart';
+import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/pages/course_view/challenges_tab.dart';
 import 'package:course_view/pages/course_view/comments_tab.dart';
 import 'package:course_view/pages/course_view/lectures_tab.dart';
@@ -633,6 +634,45 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
           return const Center(child: CircularProgressIndicator());
         },
       ),
+    );
+  }
+}
+
+class MyExpansionTileList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        MyExpansionTile(
+          title: 'Section 1',
+          content: 'Content for Section 1 goes here.',
+        ),
+        MyExpansionTile(
+          title: 'Section 2',
+          content: 'Content for Section 2 goes here.',
+        ),
+        // Add more MyExpansionTile widgets as needed
+      ],
+    );
+  }
+}
+
+class MyExpansionTile extends StatelessWidget {
+  final String title;
+  final String content;
+
+  MyExpansionTile({required this.title, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: Text(title),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(content),
+        ),
+      ],
     );
   }
 }

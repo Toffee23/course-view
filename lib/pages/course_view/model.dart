@@ -57,11 +57,13 @@ class Module {
     required this.id,
     required this.name,
     required this.url,
+    required this.duration,
     required this.subscriptionRequired,
   });
   final String id;
   final String name;
   final String url;
+  final Duration duration;
   final bool subscriptionRequired;
 
   factory Module.fromJson(Map<String, dynamic> json) {
@@ -69,7 +71,9 @@ class Module {
       id: json['_id'],
       name: json['module_name'],
       url: json['firebase_id'],
-      subscriptionRequired: json['subscriptionRequired'],
+      // duration: json['duration'],
+      duration: const Duration(seconds: 13, minutes: 23),
+      subscriptionRequired: json['subscriptionRequired'] ?? true,
     );
   }
 }

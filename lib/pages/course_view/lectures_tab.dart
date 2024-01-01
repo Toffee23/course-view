@@ -15,12 +15,13 @@ class LecturesTab extends StatelessWidget {
     return ListView.builder(
       itemCount: data.lessons.length,
       itemBuilder: (BuildContext context, int index) {
-        final module = data.lessons.elementAt(index);
+        final lessons = data.lessons.elementAt(index);
         return CourseListTile(
           onPressed: () {},
           code: 'C${index + 1}',
-          title: module.name,
-          isUnlocked: !module.subscriptionRequired,
+          lessons: lessons,
+          // title: lessons.name,
+          // isUnlocked: !lessons.subscriptionRequired,
         );
       },
     );

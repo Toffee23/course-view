@@ -1,18 +1,23 @@
+import 'package:course_view/core/constants/images.dart';
 import 'package:flutter/material.dart';
+
+import '../pages/course_view/model.dart';
 
 class CourseListTile extends StatelessWidget {
   const CourseListTile({
     Key? key,
+    required this.lessons,
     required this.code,
-    required this.title,
-    this.subtitle,
-    required this.isUnlocked,
+    // required this.title,
+    // this.subtitle,
+    // required this.isUnlocked,
     this.onPressed,
   }) : super(key: key);
+  final Lessons lessons;
   final String code;
-  final String title;
-  final String? subtitle;
-  final bool isUnlocked;
+  // final String title;
+  // final String? subtitle;
+  // final bool isUnlocked;
   final VoidCallback? onPressed;
 
   @override
@@ -22,7 +27,7 @@ class CourseListTile extends StatelessWidget {
       child: MaterialButton(
         onPressed: onPressed,
         elevation: 0,
-        color: Colors.grey.shade100,
+        color: const Color(0xFFF0F0F0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.0),
         ),
@@ -34,10 +39,23 @@ class CourseListTile extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  if (isUnlocked)
-                    const Icon(Icons.check_circle, color: Colors.green)
-                  else
-                    Icon(Icons.lock, color: Colors.grey.shade500),
+                  Container(
+                    // color: Colors.red,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        if (!lessons.subscriptionRequired)
+                          AssetImages.checkmark
+                        else
+                          AssetImages.padlock,
+                        // Icon(Icons.lock, color: Colors.grey.shade500),
+                        Container(
+                          height: 30,
+                          child: VerticalDivider(),
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(width: 5.0),
                   Text('$code :'),
                   const SizedBox(width: 5.0),
@@ -45,16 +63,59 @@ class CourseListTile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          title,
-                          overflow: TextOverflow.ellipsis,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              lessons.name,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 4.0),
+                            const Icon(Icons.chevron_right)
+                          ],
                         ),
-                        if (!isUnlocked) ...[
+                        ...lessons.modules.asMap().entries.map((e) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                '${e.key + 1}:',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                ),
+                              ),
+                              const SizedBox(width: 4.0),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      e.value.name,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Video - ${e.value.duration.toString()}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const Icon(Icons.play_circle_fill_rounded)
+                            ],
+                          );
+                        }),
+                        if (!lessons.subscriptionRequired) ...[
                           const SizedBox(height: 2.0),
-                          Text(
-                            subtitle ?? 'Video - 23:01 min',
+                          const Text(
+                            'Video - 23:01 min',
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey,
                             ),
@@ -66,8 +127,6 @@ class CourseListTile extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 4.0),
-            const Icon(Icons.chevron_right)
           ],
         ),
       ),

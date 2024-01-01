@@ -158,10 +158,10 @@ class PaymentButton extends StatelessWidget {
               ),
             ),
             minimumSize: const MaterialStatePropertyAll(
-              Size(double.infinity, 40),
+              Size(double.infinity, 48.0),
             ),
           ),
-          child: const Text('Explore course'),
+          child: const Text('Proceed to payment'),
         ),
       ],
     );
