@@ -1,3 +1,4 @@
+import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/widgets/button.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,7 @@ class CartPage extends StatelessWidget {
                           children: <Widget>[
                             Column(
                               children: <Widget>[
-                                Image.asset('assets/images/excel-icon.png'),
+                                AssetImages.excelIcon,
                                 Row(
                                   children: <Widget>[
                                     Text(

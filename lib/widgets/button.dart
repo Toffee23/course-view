@@ -1,3 +1,4 @@
+import 'package:course_view/core/constants/images.dart';
 import 'package:flutter/material.dart';
 
 class ActionButton extends StatelessWidget {
@@ -95,7 +96,7 @@ class PaymentButton extends StatelessWidget {
             children: <Widget>[
               CircleAvatar(
                 backgroundColor: const Color(0xFFFFE6D5),
-                child: Image.asset('assets/images/cardpos.png'),
+                child: AssetImages.cardPos,
               ),
               const SizedBox(width: 5.0),
               Column(
@@ -137,7 +138,7 @@ class PaymentButton extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Image.asset('assets/images/emoji_wrapped_present_.png'),
+                  AssetImages.wrappedPresent,
                 ],
               ),
             ],
