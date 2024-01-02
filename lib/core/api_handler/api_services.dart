@@ -18,6 +18,7 @@ class ClientApi {
 
   Future<ResponseModel> getAllCourses() async {
     try {
+      log(ApiUrl.allCourses.toString());
       final response = await _dio.get(
         ApiUrl.allCourses,
         options: Options(
@@ -25,7 +26,6 @@ class ClientApi {
         ),
       );
       final body = response.data;
-      log(ApiUrl.allCourses.toString());
       final statusCode = response.statusCode;
       return ResponseModel.fromJson(body).copyWith(
         status: statusCode == 202
@@ -54,6 +54,38 @@ class ClientApi {
       final statusCode = response.statusCode;
       return ResponseModel.fromJson(body).copyWith(
         data: response.data['courseDetails'],
+        status: statusCode == 202
+            ? ResponseStatus.successful
+            : ResponseStatus.failed,
+      );
+    } on SocketException catch (e) {
+      log('[SOCKET_EXCEPTION_ERROR]\n$e');
+      return ResponseModel.fromSocketException();
+    } catch (e) {
+      log('[UNKNOWN_ERROR] (Most likely caused from server)\n$e');
+      return ResponseModel.fromUnknownError();
+    }
+  }
+
+  Future<ResponseModel> pay() async {
+    try {
+      log(ApiUrl.payment.toString());
+      final response = await _dio.post(ApiUrl.payment,
+          options: Options(
+            headers: {'Content-Type': 'application/json'},
+          ),
+          data: {
+            'email': 'test@gmail.com',
+            'amount': 200,
+            'metadata': {
+              'cart_id': '65903e60843e928342785693',
+              'user_id': '',
+            },
+          });
+      final body = response.data;
+      log(body.toString());
+      final statusCode = response.statusCode;
+      return ResponseModel.fromJson(body).copyWith(
         status: statusCode == 202
             ? ResponseStatus.successful
             : ResponseStatus.failed,

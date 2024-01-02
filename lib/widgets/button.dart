@@ -144,7 +144,10 @@ class PaymentButton extends StatelessWidget {
                       ),
                     ),
                   ),
-                  AssetImages.wrappedPresent,
+                  SizedBox(
+                    width: 55,
+                    child: AssetImages.wrappedPresent,
+                  ),
                 ],
               ),
             ],

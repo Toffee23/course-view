@@ -52,15 +52,16 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   }
 
   Future<void> initializePlayer(Module module) async {
-    // final download = Download();
-    // await download.initialize();
-
     if (!_download.isInitialized) {
       await _download.initialize();
     }
+    log(completed.toString());
+    // if (completed) return;
+    ref.read(canPlayVideoProvider.notifier).update((state) => false);
 
-    if (completed) return;
-
+    if (completed) {
+      await _videoController1.pause();
+    }
     // final file = await download.getVideo(module.url, module.id, 'mp4');
 
     final file = await _download.getVideo(module.url, module.id, 'mp4');
@@ -371,8 +372,8 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                                     children: <Widget>[
                                       LecturesTab(
                                         data: data,
-                                        onPressed: (module) {
-                                          initializePlayer(module);
+                                        onPressed: (module) async {
+                                          await initializePlayer(module);
                                         },
                                       ),
                                       const NotesTab(),

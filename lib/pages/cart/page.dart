@@ -1,3 +1,4 @@
+import 'package:course_view/core/api_handler/api_services.dart';
 import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +11,10 @@ class CartPage extends StatelessWidget {
   final VoidCallback onArrowBackPressed;
 
   void _onPressed(BuildContext context) {
-    print(MediaQuery.sizeOf(context).height);
-
-    // height: MediaQuery.sizeOf(context).height * 1,
-    // height: 200,
     showModalBottomSheet(
       context: context,
-      showDragHandle: true,
-      backgroundColor: const Color(0xFFFAFAFA),
       isScrollControlled: true,
+      clipBehavior: Clip.hardEdge,
       builder: (BuildContext context) {
         return const CartBottomSheet();
       },
@@ -126,9 +122,9 @@ class CartPage extends StatelessWidget {
                                       Row(
                                         children: <Widget>[
                                           const SizedBox(width: 12.0),
-                                          Image.asset(
-                                            'assets/images/excel-icon.png',
+                                          SizedBox(
                                             width: 32,
+                                            child: AssetImages.excelIcon,
                                           ),
                                           const SizedBox(width: 8.0),
                                           Column(
@@ -281,42 +277,54 @@ class CartPage extends StatelessWidget {
 class CartBottomSheet extends StatelessWidget {
   const CartBottomSheet({Key? key}) : super(key: key);
 
+  void _onPressed() {
+    ClientApi().pay();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFFFAFAFA),
-      height: MediaQuery.sizeOf(context).height * .65,
+      height: MediaQuery.sizeOf(context).height * .7,
+      padding: const EdgeInsets.all(10.0),
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(
+        color: Color(0xFFFAFAFA),
+      ),
       child: Column(
         children: <Widget>[
+          const SizedBox(height: 10.0),
+          Container(
+            width: 60,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade800,
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+          ),
+          const SizedBox(height: 30.0),
           CircleAvatar(
             radius: 72,
             backgroundColor: const Color(0xFFD2EDEF),
-            child: Image.asset(
-              'assets/images/emoji _wrapped_present.png',
-            ),
+            child: AssetImages.wrappedPresent,
           ),
+          const SizedBox(height: 20.0),
           Expanded(
             child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'You have earned a N3,500 off the course package',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
+                  Text(
+                    'You have earned a N3,500 off the course package',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const SizedBox(height: 8.0),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'A total of N3,500 had been saved to add up on '
-                      'your next purchase of any course because you have '
-                      'bought a course above a certain amount from our system.',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
+                  Text(
+                    'A total of N3,500 had been saved to add up on '
+                    'your next purchase of any course because you have '
+                    'bought a course above a certain amount from our system.',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
@@ -324,7 +332,7 @@ class CartBottomSheet extends StatelessWidget {
           ),
           PaymentButton(
             total: '20,000.00',
-            onPressed: () {},
+            onPressed: _onPressed,
           ),
         ],
       ),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:course_view/pages/home/provider.dart';
 import 'package:course_view/widgets/place_holders.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    log('Azag in build');
     return Container(
       child: ref.watch(coursesProvider).when(
         data: (courses) {

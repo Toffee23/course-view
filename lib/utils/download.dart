@@ -15,8 +15,9 @@ class Download {
   bool isInitialized = false;
 
   Future<void> initialize() async {
-    final root = await getApplicationDocumentsDirectory();
-    _thumbnailDir = Directory(join(root.path, 'thumbnail'));
+    // final root = await getApplicationDocumentsDirectory();
+    final root = await getDownloadsDirectory();
+    _thumbnailDir = Directory(join(root!.path, 'thumbnail'));
     _videosDir = Directory(join(root.path, 'videos'));
 
     if (!await _thumbnailDir.exists()) {
@@ -93,8 +94,11 @@ class Download {
       log('done here');
 
       if (data != null) {
+        log('Encrypting starts');
         final bytes = _crypto.decryptBytes(data);
+        log('Encrypting ends, saving...');
         await file.writeAsBytes(bytes);
+        log('saving ends');
 
         return file;
       }
