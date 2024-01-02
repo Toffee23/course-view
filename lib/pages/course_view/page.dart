@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chewie/chewie.dart';
 import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/pages/course_view/challenges_tab.dart';
@@ -32,6 +34,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   ChewieController? _chewieController;
   int? bufferDelay;
   bool completed = false;
+  final _download = Download();
 
   @override
   void initState() {
@@ -49,12 +52,21 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   }
 
   Future<void> initializePlayer(Module module) async {
-    final download = Download();
-    await download.initialize();
+    // final download = Download();
+    // await download.initialize();
+
+    if (!_download.isInitialized) {
+      await _download.initialize();
+    }
 
     if (completed) return;
 
-    final file = await download.getVideo(module.url, module.id, 'mp4');
+    // final file = await download.getVideo(module.url, module.id, 'mp4');
+
+    final file = await _download.getVideo(module.url, module.id, 'mp4');
+
+    log('AZAG ${module.url}');
+    log('AZAG ${file?.path}');
 
     if (file != null) {
       _videoController1 = VideoPlayerController.file(file);
@@ -71,10 +83,34 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
     }
   }
 
+  Future<void> downloadAllVideos(List<Lessons> lessons) async {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return DownloadDialog(lessons: lessons);
+      },
+    );
+
+    if (!_download.isInitialized) {
+      await _download.initialize();
+    }
+
+    for (var lesson in lessons) {
+      for (var module in lesson.modules) {
+        print(module.url);
+        await _download.getVideo(module.url, module.id, 'mp4');
+      }
+    }
+    _popDialog();
+  }
+
+  void _popDialog() => Navigator.of(context).pop();
+
   void _createChewieController() {
     _chewieController = ChewieController(
       videoPlayerController: _videoController1,
-      autoPlay: true,
+      // autoPlay: true,
       looping: true,
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
@@ -163,7 +199,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
       ),
       body: course.when(
         data: (data) {
-          initializePlayer(data.lessons.first.modules.first);
+          // initializePlayer(data.lessons.first.modules.first);
           return Column(
             children: <Widget>[
               AspectRatio(
@@ -240,7 +276,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -260,9 +296,8 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                           )
                         ],
                       ),
-                      const SizedBox(height: 4.0),
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () => downloadAllVideos(data.lessons),
                         elevation: 0,
                         padding:
                             const EdgeInsets.fromLTRB(5.0, 10.0, 10.0, 10.0),
@@ -275,11 +310,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                                   color: Theme.of(context).primaryColor,
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                child: const Icon(
-                                  Icons.folder,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
+                                child: AssetImages.folder2,
                               ),
                             ),
                             const SizedBox(width: 8.0),
@@ -313,7 +344,6 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 4.0),
                       Expanded(
                         child: DefaultTabController(
                           length: 4,
@@ -339,7 +369,12 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                                   padding: const EdgeInsets.only(top: 15.0),
                                   child: TabBarView(
                                     children: <Widget>[
-                                      LecturesTab(data: data),
+                                      LecturesTab(
+                                        data: data,
+                                        onPressed: (module) {
+                                          initializePlayer(module);
+                                        },
+                                      ),
                                       const NotesTab(),
                                       const CommentsTab(),
                                       const ChallengesTab(),
@@ -638,41 +673,45 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   }
 }
 
-class MyExpansionTileList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        MyExpansionTile(
-          title: 'Section 1',
-          content: 'Content for Section 1 goes here.',
-        ),
-        MyExpansionTile(
-          title: 'Section 2',
-          content: 'Content for Section 2 goes here.',
-        ),
-        // Add more MyExpansionTile widgets as needed
-      ],
-    );
-  }
-}
-
-class MyExpansionTile extends StatelessWidget {
-  final String title;
-  final String content;
-
-  MyExpansionTile({required this.title, required this.content});
+class DownloadDialog extends StatelessWidget {
+  const DownloadDialog({
+    Key? key,
+    required this.lessons,
+  }) : super(key: key);
+  final List<Lessons> lessons;
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Text(title),
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(content),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: AlertDialog(
+        title: const Text('Downloading'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: lessons.asMap().entries.map((lessonEntry) {
+            return lessonEntry.value.modules.asMap().entries.map((moduleEntry) {
+              return ListTile(
+                leading: Text('${lessonEntry.key + moduleEntry.key + 1}.'),
+                minLeadingWidth: 0,
+                title: Text(moduleEntry.value.name),
+                trailing: const SizedBox.square(
+                  dimension: 18,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                ),
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                visualDensity:
+                    const VisualDensity(vertical: -4, horizontal: -4),
+              );
+            }).toList();
+          }).expand((modules) {
+            return modules;
+          }).toList(),
         ),
-      ],
+      ),
     );
   }
 }

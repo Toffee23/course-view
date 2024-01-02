@@ -12,6 +12,7 @@ class Download {
   late Directory _videosDir;
   final Dio _dio = Dio();
   final Crypto _crypto = Crypto();
+  bool isInitialized = false;
 
   Future<void> initialize() async {
     final root = await getApplicationDocumentsDirectory();
@@ -25,6 +26,8 @@ class Download {
     if (!await _videosDir.exists()) {
       await _videosDir.create();
     }
+
+    isInitialized = true;
   }
 
   static Future<Directory> get downloadDirectory async {
@@ -87,6 +90,7 @@ class Download {
       log('Just downloading');
       // Download file into file_path.
       final data = await _downloadFile(url);
+      log('done here');
 
       if (data != null) {
         final bytes = _crypto.decryptBytes(data);
@@ -100,6 +104,7 @@ class Download {
 
   Future<Uint8List?> _downloadFile(String url) async {
     try {
+      log('Download about to start');
       final Response<Uint8List> response = await _dio.get<Uint8List>(
         url,
         options: Options(
@@ -107,6 +112,8 @@ class Download {
           followRedirects: false,
         ),
       );
+
+      log('Download complete');
 
       return response.data!;
     } catch (error) {

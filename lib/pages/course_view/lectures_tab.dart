@@ -7,8 +7,10 @@ class LecturesTab extends StatelessWidget {
   const LecturesTab({
     Key? key,
     required this.data,
+    required this.onPressed,
   }) : super(key: key);
   final CourseModel data;
+  final ValueChanged<Module> onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +19,9 @@ class LecturesTab extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         final lessons = data.lessons.elementAt(index);
         return CourseListTile(
-          onPressed: () {},
-          code: 'C${index + 1}',
+          onPressed: onPressed,
+          index: index,
           lessons: lessons,
-          // title: lessons.name,
-          // isUnlocked: !lessons.subscriptionRequired,
         );
       },
     );

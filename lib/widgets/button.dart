@@ -57,14 +57,20 @@ class CustomIconButton extends StatelessWidget {
       onPressed: () {},
       color: Colors.white,
       elevation: 0,
-      textColor: Colors.blueGrey,
+      textColor: const Color(0xFF323232),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(
+          color: Color(0xFFD6D6D6),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(text),
+          Text(
+            text,
+            style: const TextStyle(fontWeight: FontWeight.w400),
+          ),
           const SizedBox(width: 5.0),
           Icon(iconData),
         ],

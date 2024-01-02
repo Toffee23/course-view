@@ -3,132 +3,133 @@ import 'package:flutter/material.dart';
 
 import '../pages/course_view/model.dart';
 
-class CourseListTile extends StatelessWidget {
+class CourseListTile extends StatefulWidget {
   const CourseListTile({
     Key? key,
     required this.lessons,
-    required this.code,
-    // required this.title,
-    // this.subtitle,
-    // required this.isUnlocked,
+    required this.index,
     this.onPressed,
   }) : super(key: key);
   final Lessons lessons;
-  final String code;
-  // final String title;
-  // final String? subtitle;
-  // final bool isUnlocked;
-  final VoidCallback? onPressed;
+  final int index;
+  final ValueChanged<Module>? onPressed;
+
+  @override
+  State<CourseListTile> createState() => _CourseListTileState();
+}
+
+class _CourseListTileState extends State<CourseListTile> {
+  int selected = 0; //attention
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: MaterialButton(
-        onPressed: onPressed,
-        elevation: 0,
-        color: const Color(0xFFF0F0F0),
+      child: ExpansionTile(
+        tilePadding: const EdgeInsets.symmetric(horizontal: 10.0),
+        childrenPadding: const EdgeInsets.fromLTRB(10.0, 0.0, 20.0, 10.0),
+        backgroundColor: const Color(0xFFF0F0F0),
+        collapsedBackgroundColor: const Color(0xFFF0F0F0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.0),
         ),
-        padding: const EdgeInsets.all(8.0),
-        textColor: Colors.blueGrey.shade400,
-        child: Row(
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        title: Row(
           children: <Widget>[
+            if (!widget.lessons.subscriptionRequired)
+              AssetImages.checkmark
+            else
+              AssetImages.padlock,
+            const SizedBox(width: 6.0),
+            Text(
+              'C${widget.index + 1}:',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.blueGrey.shade600,
+              ),
+            ),
+            const SizedBox(width: 5.0),
             Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    // color: Colors.red,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        if (!lessons.subscriptionRequired)
-                          AssetImages.checkmark
-                        else
-                          AssetImages.padlock,
-                        // Icon(Icons.lock, color: Colors.grey.shade500),
-                        Container(
-                          height: 30,
-                          child: VerticalDivider(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 5.0),
-                  Text('$code :'),
-                  const SizedBox(width: 5.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              lessons.name,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(width: 4.0),
-                            const Icon(Icons.chevron_right)
-                          ],
-                        ),
-                        ...lessons.modules.asMap().entries.map((e) {
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                '${e.key + 1}:',
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                ),
-                              ),
-                              const SizedBox(width: 4.0),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      e.value.name,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Video - ${e.value.duration.toString()}',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const Icon(Icons.play_circle_fill_rounded)
-                            ],
-                          );
-                        }),
-                        if (!lessons.subscriptionRequired) ...[
-                          const SizedBox(height: 2.0),
-                          const Text(
-                            'Video - 23:01 min',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          )
-                        ],
-                      ],
-                    ),
-                  ),
-                ],
+              child: Text(
+                widget.lessons.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blueGrey.shade600,
+                ),
               ),
             ),
           ],
         ),
+        key: Key(widget.index.toString()),
+        initiallyExpanded: widget.index == selected,
+        onExpansionChanged: ((newState) {
+          if (newState) {
+            setState(() {
+              const Duration(seconds: 20000);
+              selected = widget.index;
+            });
+          } else {
+            setState(() {
+              selected = -1;
+            });
+          }
+        }),
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widget.lessons.modules.asMap().entries.map((e) {
+              return MaterialButton(
+                onPressed: () => widget.onPressed?.call(e.value),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                textColor: Colors.blueGrey,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            '${e.key + 1}:',
+                            style: const TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(width: 4.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  e.value.name,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  'Video - ${e.value.duration.toString()}',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 5.0),
+                    const Icon(Icons.play_circle_fill_rounded)
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
