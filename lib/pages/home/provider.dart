@@ -16,3 +16,5 @@ final coursesProvider = StreamProvider<List<CoursesModel>?>((ref) async* {
     return CoursesModel.fromJson(json);
   }).toList());
 });
+
+final cartsProvider = StateProvider<List<CoursesModel>>((ref) => []);

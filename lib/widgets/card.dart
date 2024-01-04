@@ -9,9 +9,13 @@ class HomeCard extends StatelessWidget {
     Key? key,
     this.isFirst = false,
     required this.course,
+    required this.buttonText,
+    this.toggleCartButton,
   }) : super(key: key);
   final bool isFirst;
   final CoursesModel course;
+  final String buttonText;
+  final VoidCallback? toggleCartButton;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +71,7 @@ class HomeCard extends StatelessWidget {
             Row(
               children: <Widget>[
                 TextButton(
-                  onPressed: () {},
+                  onPressed: toggleCartButton,
                   style: ButtonStyle(
                     padding: const MaterialStatePropertyAll(
                       EdgeInsets.symmetric(
@@ -77,9 +81,10 @@ class HomeCard extends StatelessWidget {
                     ),
                     minimumSize: const MaterialStatePropertyAll(Size.zero),
                     foregroundColor: MaterialStatePropertyAll(
-                        Theme.of(context).primaryColor),
+                      Theme.of(context).primaryColor,
+                    ),
                   ),
-                  child: const Text('Add to cart'),
+                  child: Text(buttonText),
                 ),
                 const Spacer(),
                 Icon(

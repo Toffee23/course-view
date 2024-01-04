@@ -17,11 +17,13 @@ class ImageLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
+    return Container(
+      clipBehavior: Clip.hardEdge,
       decoration: decoration ??
           BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(20)),
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(20),
+          ),
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         height: height,

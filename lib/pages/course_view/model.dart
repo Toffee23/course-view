@@ -55,8 +55,8 @@ class Lessons {
 class Module {
   Module({
     required this.id,
-    required this.name,
-    required this.url,
+      required this.name,
+      required this.url,
     required this.duration,
     required this.subscriptionRequired,
   });

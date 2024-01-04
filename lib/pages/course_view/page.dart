@@ -270,9 +270,9 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                       )
                     : Container(
                         color: Colors.grey.withOpacity(.3),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        // child: const Center(
+                        //   child: CircularProgressIndicator(),
+                        // ),
                       ),
               ),
               Expanded(
