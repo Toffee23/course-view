@@ -11,4 +11,7 @@ class AssetImages {
   static final Image importCurve = Image.asset('$base/import-curve.png');
   static final Image padlock = Image.asset('$base/padlock.png');
   static final Image wrappedPresent = Image.asset('$base/wrapped-present.png');
+  static final Image gameLogo = Image.asset('$base/gameLogo.png');
+  static final Image leaderBoard = Image.asset('$base/leaderboard.png');
+  static final Image femaleDP = Image.asset('$base/femaleDP.png');
 }

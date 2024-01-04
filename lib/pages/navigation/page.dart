@@ -1,3 +1,5 @@
+import 'package:course_view/pages/quiz_view/quizView1.dart';
+import 'package:course_view/pages/quiz_view/quizView2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +45,7 @@ class _NavigationPageState extends State<NavigationPage> {
           onPageChanged: (index) => tabIndexNotifier.value = index,
           children: <Widget>[
             const HomePage(),
-            const Placeholder(),
+            const quizView(),
             const Placeholder(),
             CartPage(
                 onArrowBackPressed: () => widget.switchTab(_pageController, 0)),
