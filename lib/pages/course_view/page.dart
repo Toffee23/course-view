@@ -488,7 +488,10 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text('Pay today'),
+                          Text(
+                            'Pay today',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: SizedBox.square(
@@ -501,7 +504,10 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                               ),
                             ),
                           ),
-                          Text('save NGN 6,200.00'),
+                          Text(
+                            'save NGN 6,200.00',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
