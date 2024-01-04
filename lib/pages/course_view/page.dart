@@ -475,6 +475,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                 const SizedBox(),
                 const SizedBox(height: 30),
                 Container(
+                  margin: const EdgeInsets.all(20),
                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
