@@ -1,8 +1,8 @@
+import 'package:course_view/core/constants/images.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/course_view/page.dart';
 import '../pages/home/model.dart';
-import 'place_holders.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({
@@ -22,7 +22,7 @@ class HomeCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       width: MediaQuery.sizeOf(context).width * .63,
-      height: 260,
+      height: 280,
       margin: EdgeInsets.only(left: isFirst ? 0 : 10),
       child: MaterialButton(
         onPressed: () {
@@ -38,7 +38,10 @@ class HomeCard extends StatelessWidget {
           children: <Widget>[
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: ImageLoader(imageUrl: course.thumbnail),
+              child: Container(
+                child: AssetImages.course1,
+              ),
+              // child: ImageLoader(imageUrl: course.thumbnail),
             ),
             const SizedBox(height: 10.0),
             Padding(

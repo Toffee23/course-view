@@ -7,6 +7,7 @@ import 'package:course_view/pages/course_view/comments_tab.dart';
 import 'package:course_view/pages/course_view/lectures_tab.dart';
 import 'package:course_view/utils/download.dart';
 import 'package:course_view/widgets/button.dart';
+import 'package:course_view/widgets/list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -210,349 +211,500 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
       ),
       body: course.when(
         data: (data) {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: canPlayVideo
-                      ? GestureDetector(
-                          onDoubleTapDown: _onDoubleTap,
-                          child: IgnorePointer(
-                            ignoring: ref.watch(doubleTapHandledProvider),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: <Widget>[
-                                Chewie(controller: _chewieController!),
-                                if (isForwarding)
-                                  Positioned(
-                                    left: 10,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: <Widget>[
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.refresh,
-                                            color: Colors.grey.shade200,
-                                            size: 40,
-                                          ),
-                                        ),
-                                        const Text(
-                                          '10',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                if (isBackwarding)
-                                  Positioned(
-                                    right: 10,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: <Widget>[
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.refresh,
-                                            color: Colors.grey.shade200,
-                                            size: 40,
-                                          ),
-                                        ),
-                                        const Text(
-                                          '10',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : Container(
-                          color: Colors.grey.withOpacity(.3),
-                          // child: const Center(
-                          //   child: CircularProgressIndicator(),
-                          // ),
-                        ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 4.0, 15.0, 12.0),
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              widget.course.title,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          const SizedBox(width: 8.0),
-                          ActionButton(
-                            onPressed: () {},
-                            iconData: CupertinoIcons.link,
-                            text: 'Share',
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        'Wooah! Fully Loaded',
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
-                      Text(
-                        'This course includes',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 8.0),
-                      ..._items.map((item) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 8, bottom: 8),
-                          child: Row(
-                            children: <Widget>[
-                              const Icon(
-                                CupertinoIcons.checkmark_seal,
-                                size: 18,
-                              ),
-                              const SizedBox(width: 5.0),
-                              Text(
-                                item,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              )
-                            ],
-                          ),
-                        );
-                      }),
-                      const SizedBox(height: 12.0),
-                      Text(
-                        'Instructor',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      const SizedBox(height: 5.0),
-                      Row(
-                        children: <Widget>[
-                          SizedBox.square(
-                            dimension: 45,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey.shade900,
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  'A',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Ahmed Suluka ACA, ASSA',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium),
-                              Text('Head of school ExcelAcademy',
-                                  style: Theme.of(context).textTheme.bodySmall),
-                            ],
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 12.0),
-                      MaterialButton(
-                        onPressed: () => downloadAllVideos(data.lessons),
-                        elevation: 0,
-                        padding:
-                            const EdgeInsets.fromLTRB(5.0, 10.0, 10.0, 10.0),
-                        child: Row(
-                          children: <Widget>[
-                            SizedBox.square(
-                              dimension: 48.0,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                child: AssetImages.folder2,
-                              ),
-                            ),
-                            const SizedBox(width: 8.0),
-                            const Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    'Course Material Available',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blueGrey,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Download the course files before '
-                                    'proceeding to watch the course',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8.0),
-                            const Icon(
-                              Icons.file_download_outlined,
-                              color: Colors.grey,
-                            )
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        child: DefaultTabController(
-                          length: 4,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              TabBar(
-                                isScrollable: true,
-                                labelColor: Colors.blueGrey,
-                                unselectedLabelStyle: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                ),
-                                indicatorColor: Theme.of(context).primaryColor,
-                                tabs: const <Widget>[
-                                  Tab(text: 'Lectures', height: 40),
-                                  Tab(text: 'Notes', height: 40),
-                                  Tab(text: 'Comments', height: 40),
-                                  Tab(text: 'Challenges', height: 40),
-                                ],
-                              ),
-                              Flexible(
-                                child: Container(
-                                  height: 200,
-                                  padding: const EdgeInsets.only(top: 15.0),
-                                  child: TabBarView(
+                      AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: canPlayVideo
+                            ? GestureDetector(
+                                onDoubleTapDown: _onDoubleTap,
+                                child: IgnorePointer(
+                                  ignoring: ref.watch(doubleTapHandledProvider),
+                                  child: Stack(
+                                    alignment: Alignment.center,
                                     children: <Widget>[
-                                      LecturesTab(
-                                        data: data,
-                                        onPressed: (module) async {
-                                          await initializePlayer(module);
-                                        },
-                                      ),
-                                      const NotesTab(),
-                                      const CommentsTab(),
-                                      const ChallengesTab(),
+                                      Chewie(controller: _chewieController!),
+                                      if (isForwarding)
+                                        Positioned(
+                                          left: 10,
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: <Widget>[
+                                              IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.refresh,
+                                                  color: Colors.grey.shade200,
+                                                  size: 40,
+                                                ),
+                                              ),
+                                              const Text(
+                                                '10',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      if (isBackwarding)
+                                        Positioned(
+                                          right: 10,
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: <Widget>[
+                                              IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons.refresh,
+                                                  color: Colors.grey.shade200,
+                                                  size: 40,
+                                                ),
+                                              ),
+                                              const Text(
+                                                '10',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                     ],
                                   ),
                                 ),
+                              )
+                            : Container(
+                                color: Colors.grey.withOpacity(.3),
+                                // child: const Center(
+                                //   child: CircularProgressIndicator(),
+                                // ),
                               ),
-                            ],
-                          ),
-                        ),
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(),
-                const SizedBox(height: 30),
-                Container(
-                  margin: const EdgeInsets.all(20),
-                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    border: Border.all(
-                      color: Theme.of(context).primaryColor.withOpacity(.3),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Pay today',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox.square(
-                              dimension: 5.0,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade400,
-                                  shape: BoxShape.circle,
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(15.0, 4.0, 15.0, 12.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    widget.course.title,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                ActionButton(
+                                  onPressed: () {},
+                                  iconData: CupertinoIcons.link,
+                                  text: 'Share',
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              'Wooah! Fully Loaded',
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                            Text(
+                              'This course includes',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 8.0),
+                            ..._items.map((item) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8, bottom: 8),
+                                child: Row(
+                                  children: <Widget>[
+                                    const Icon(
+                                      CupertinoIcons.checkmark_seal,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(width: 5.0),
+                                    Text(
+                                      item,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    )
+                                  ],
+                                ),
+                              );
+                            }),
+                            const SizedBox(height: 12.0),
+                            Text(
+                              'Instructor',
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                            const SizedBox(height: 5.0),
+                            Row(
+                              children: <Widget>[
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueGrey.shade900,
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'A',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text('Ahmed Suluka ACA, ASSA',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium),
+                                    Text('Head of school ExcelAcademy',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall),
+                                  ],
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 12.0),
+                            MaterialButton(
+                              onPressed: () => downloadAllVideos(data.lessons),
+                              elevation: 0,
+                              padding: const EdgeInsets.fromLTRB(
+                                  5.0, 10.0, 10.0, 10.0),
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox.square(
+                                    dimension: 48.0,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: AssetImages.folder2,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8.0),
+                                  const Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          'Course Material Available',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blueGrey,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Download the course files before '
+                                          'proceeding to watch the course',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8.0),
+                                  const Icon(
+                                    Icons.file_download_outlined,
+                                    color: Colors.grey,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Flexible(
+                              child: DefaultTabController(
+                                length: 4,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    TabBar(
+                                      isScrollable: true,
+                                      labelColor: Colors.blueGrey,
+                                      unselectedLabelStyle: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 14,
+                                      ),
+                                      indicatorColor:
+                                          Theme.of(context).primaryColor,
+                                      tabs: const <Widget>[
+                                        Tab(text: 'Lectures', height: 40),
+                                        Tab(text: 'Notes', height: 40),
+                                        Tab(text: 'Comments', height: 40),
+                                        Tab(text: 'Challenges', height: 40),
+                                      ],
+                                    ),
+                                    Flexible(
+                                      child: Container(
+                                        height: 200,
+                                        padding:
+                                            const EdgeInsets.only(top: 15.0),
+                                        child: TabBarView(
+                                          children: <Widget>[
+                                            LecturesTab(
+                                              data: data,
+                                              onPressed: (module) async {
+                                                await initializePlayer(module);
+                                              },
+                                            ),
+                                            const NotesTab(),
+                                            const CommentsTab(),
+                                            const ChallengesTab(),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                          Text(
-                            'save NGN 6,200.00',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      const SizedBox(height: 5.0),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(
-                            Icons.warning_amber_rounded,
-                            color: Colors.blueGrey.shade400,
-                          ),
-                          const SizedBox(width: 5.0),
-                          Flexible(
-                            child: Text(
-                              'This package is exclusive to '
-                              'this particular course only',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.blueGrey.shade800,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10.0),
-                      // Text(
-                      //   'NGN 24,000.00',
-                      //   style: TextStyle(
-                      //     fontSize: 17,
-                      //     fontWeight: FontWeight.bold,
-                      //     color: Colors.black87,
-                      //     decoration: TextDecoration.lineThrough,
-                      //   ),
-                      // ),
-                      const Text(
-                        'NGN 20,000.00',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 15.0),
-                      ElevatedButton(
+                      const SizedBox(),
+                      const SizedBox(height: 30),
+                      Container(
+                        margin: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(
+                            color:
+                                Theme.of(context).primaryColor.withOpacity(.3),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Pay today',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox.square(
+                                    dimension: 5.0,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade400,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'save NGN 6,200.00',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            const SizedBox(height: 5.0),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.warning_amber_rounded,
+                                  color: Colors.blueGrey.shade400,
+                                ),
+                                const SizedBox(width: 5.0),
+                                Flexible(
+                                  child: Text(
+                                    'This package is exclusive to '
+                                    'this particular course only',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.blueGrey.shade800,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10.0),
+                            // Text(
+                            //   'NGN 24,000.00',
+                            //   style: TextStyle(
+                            //     fontSize: 17,
+                            //     fontWeight: FontWeight.bold,
+                            //     color: Colors.black87,
+                            //     decoration: TextDecoration.lineThrough,
+                            //   ),
+                            // ),
+                            const Text(
+                              'NGN 20,000.00',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(height: 15.0),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                  Theme.of(context).primaryColor,
+                                ),
+                                foregroundColor: const MaterialStatePropertyAll(
+                                  Colors.white,
+                                ),
+                                shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                minimumSize: const MaterialStatePropertyAll(
+                                  Size(double.infinity, 48),
+                                ),
+                              ),
+                              child: const Text('Enroll now'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      // SizedBox(),
+                      // ...[
+                      // const SizedBox(height: 30.0),
+                      // _titleText('Course Description'),
+                      // _bodyText(widget.course.description),
+                      // const SizedBox(height: 30.0),
+                      // _smallText('Curriculum'),
+                      // _titleText('Learn-by doing with our Exclusion Videos'),
+                      // _bodyText(
+                      //   'Our Course is setup to make you learn Advanced Audit and '
+                      //   'Assurance(Revision) by step with a practical detailed note/'
+                      //   'video that focuses 100% on learn-by-doing',
+                      // ),
+                      // const SizedBox(height: 30.0),
+                      // _smallText('On Course Completion'),
+                      // _titleText('Course Requirements'),
+                      // _bodyText('On successful completion of this cour'),
+                      // _smallText('COURSE PRICING'),
+                      // _titleText('Simple, transparent pricing'),
+                      // _bodyText(
+                      //   'We keep track of the pricing of the '
+                      //   'course from onset without computing',
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _titleText('Got few questions for us?'),
+                            _bodyText(
+                              'We keep track of the pricing of the '
+                              'course from onset without compromising',
+                            ),
+                            QuestionListTile(
+                              onPressed: () {},
+                              question: 'How do we have access to the course?',
+                            ),
+                            QuestionListTile(
+                              onPressed: () {},
+                              question: 'How do we have access to the course?',
+                            ),
+                            QuestionListTile(
+                              onPressed: () {},
+                              question: 'How do we have access to the course?',
+                            ),
+                            const SizedBox(height: 30),
+                            _titleText('Still not conceived with Q&A?'),
+                            _bodyText(
+                              'We keep track of the pricing of the '
+                              'course from onset without compromising',
+                            ),
+                            const SizedBox(height: 15.0),
+                            OutlinedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                foregroundColor: MaterialStatePropertyAll(
+                                  Theme.of(context).primaryColor,
+                                ),
+                                side: MaterialStatePropertyAll(
+                                  BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                minimumSize: const MaterialStatePropertyAll(
+                                  Size(double.infinity, 48),
+                                ),
+                              ),
+                              child: const Text('Send us a message'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 30.0),
+
+                      // ]
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: <Widget>[
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'NGN 24,000.00',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                        Text(
+                          'NGN 20,000.00',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 15.0),
+                    Expanded(
+                      child: ElevatedButton(
                         onPressed: () {},
                         style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll(
@@ -567,138 +719,17 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                             ),
                           ),
                           minimumSize: const MaterialStatePropertyAll(
-                            Size(double.infinity, 48),
+                            Size(0, 48),
                           ),
                         ),
                         child: const Text('Enroll now'),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 30),
-                SizedBox(),
-                // ...[
-                //   const SizedBox(height: 30.0),
-                //   _titleText('Course Description'),
-                //   _bodyText(widget.course.description),
-                //   const SizedBox(height: 30.0),
-                //   _smallText('Curriculum'),
-                //   _titleText('Learn-by doing with our Exclusion Videos'),
-                //   _bodyText(
-                //     'Our Course is setup to make you learn Advanced Audit and '
-                //     'Assurance(Revision) by step with a practical detailed note/'
-                //     'video that focuses 100% on learn-by-doing',
-                //   ),
-                //   const SizedBox(height: 30.0),
-                //   _smallText('On Course Completion'),
-                //   _titleText('Course Requirements'),
-                //   _bodyText('On successful completion of this cour'),
-                //   _smallText('COURSE PRICING'),
-                //   _titleText('Simple, transparent pricing'),
-                //   _bodyText(
-                //     'We keep track of the pricing of the '
-                //     'course from onset without computing',
-                //   ),
-                //   _titleText('Got few questions for us?'),
-                //   _bodyText(
-                //     'We keep track of the pricing of the '
-                //     'course from onset without compromising',
-                //   ),
-                //   QuestionListTile(
-                //     onPressed: () {},
-                //     question: 'How do we have access to the course?',
-                //   ),
-                //   QuestionListTile(
-                //     onPressed: () {},
-                //     question: 'How do we have access to the course?',
-                //   ),
-                //   QuestionListTile(
-                //     onPressed: () {},
-                //     question: 'How do we have access to the course?',
-                //   ),
-                //   const SizedBox(height: 30),
-                //   _titleText('Still not conceived with Q&A'),
-                //   _bodyText(
-                //     'We keep track of the pricing of the '
-                //     'course from onset without compromising',
-                //   ),
-                //   const SizedBox(height: 15.0),
-                //   OutlinedButton(
-                //     onPressed: () {},
-                //     style: ButtonStyle(
-                //       foregroundColor: MaterialStatePropertyAll(
-                //         Theme.of(context).primaryColor,
-                //       ),
-                //       side: MaterialStatePropertyAll(
-                //         BorderSide(
-                //           color: Theme.of(context).primaryColor,
-                //         ),
-                //       ),
-                //       shape: MaterialStatePropertyAll(
-                //         RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(8.0),
-                //         ),
-                //       ),
-                //       minimumSize: const MaterialStatePropertyAll(
-                //         Size(double.infinity, 48),
-                //       ),
-                //     ),
-                //     child: const Text('Send us a message'),
-                //   ),
-                //   const SizedBox(height: 30.0),
-                //   Row(
-                //     children: <Widget>[
-                //       const Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: <Widget>[
-                //           // Text(
-                //           //   'NGN 24,000.00',
-                //           //   style: TextStyle(
-                //           //     fontSize: 17,
-                //           //     fontWeight: FontWeight.bold,
-                //           //     color: Colors.black87,
-                //           //     decoration: TextDecoration.lineThrough,
-                //           //   ),
-                //           // ),
-                //           Text(
-                //             'NGN 20,000.00',
-                //             style: TextStyle(
-                //               fontSize: 24,
-                //               fontWeight: FontWeight.bold,
-                //               color: Colors.black87,
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //       const SizedBox(width: 15.0),
-                //       Expanded(
-                //         child: ElevatedButton(
-                //           onPressed: () {},
-                //           style: ButtonStyle(
-                //             backgroundColor: MaterialStatePropertyAll(
-                //               Theme.of(context).primaryColor,
-                //             ),
-                //             foregroundColor: const MaterialStatePropertyAll(
-                //               Colors.white,
-                //             ),
-                //             shape: MaterialStatePropertyAll(
-                //               RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(8.0),
-                //               ),
-                //             ),
-                //             minimumSize: const MaterialStatePropertyAll(
-                //               Size(0, 48),
-                //             ),
-                //           ),
-                //           child: const Text('Enroll now'),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                //   const SizedBox(height: 30),
-                // ]
-              ],
-            ),
+              ),
+              const SizedBox(height: 30),
+            ],
           );
         },
         error: (_, __) {
@@ -721,6 +752,27 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
           return const Center(child: CircularProgressIndicator());
         },
       ),
+    );
+  }
+
+  Widget _titleText(String text) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.titleMedium,
+    );
+  }
+
+  Widget _bodyText(String text) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.bodySmall,
+    );
+  }
+
+  Widget _smallText(String text) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.labelSmall,
     );
   }
 }
