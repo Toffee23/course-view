@@ -36,6 +36,16 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   bool completed = false;
   final _download = Download();
 
+  final _items = <String>[
+    '195 Lessons well-tutored',
+    'Full Lifetime access',
+    '85 Exclusive Lessons & Details Notes',
+    'Past Questions Tread',
+    '50+ Exam-standard Q&A detailed explanation',
+    'Play the leaderboard game with others',
+    'Solved past question on each topic',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -99,7 +109,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
 
     for (var lesson in lessons) {
       for (var module in lesson.modules) {
-        print(module.url);
+        log(module.url);
         await _download.getVideo(module.url, module.id, 'mp4');
       }
     }
@@ -200,85 +210,86 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
       ),
       body: course.when(
         data: (data) {
-          // initializePlayer(data.lessons.first.modules.first);
-          return Column(
-            children: <Widget>[
-              AspectRatio(
-                aspectRatio: 16 / 9,
-                child: canPlayVideo
-                    ? GestureDetector(
-                        onDoubleTapDown: _onDoubleTap,
-                        child: IgnorePointer(
-                          ignoring: ref.watch(doubleTapHandledProvider),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              Chewie(controller: _chewieController!),
-                              if (isForwarding)
-                                Positioned(
-                                  left: 10,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: <Widget>[
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          Icons.refresh,
-                                          color: Colors.grey.shade200,
-                                          size: 40,
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: canPlayVideo
+                      ? GestureDetector(
+                          onDoubleTapDown: _onDoubleTap,
+                          child: IgnorePointer(
+                            ignoring: ref.watch(doubleTapHandledProvider),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: <Widget>[
+                                Chewie(controller: _chewieController!),
+                                if (isForwarding)
+                                  Positioned(
+                                    left: 10,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.refresh,
+                                            color: Colors.grey.shade200,
+                                            size: 40,
+                                          ),
                                         ),
-                                      ),
-                                      const Text(
-                                        '10',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],
+                                        const Text(
+                                          '10',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              if (isBackwarding)
-                                Positioned(
-                                  right: 10,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: <Widget>[
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          Icons.refresh,
-                                          color: Colors.grey.shade200,
-                                          size: 40,
+                                if (isBackwarding)
+                                  Positioned(
+                                    right: 10,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.refresh,
+                                            color: Colors.grey.shade200,
+                                            size: 40,
+                                          ),
                                         ),
-                                      ),
-                                      const Text(
-                                        '10',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],
+                                        const Text(
+                                          '10',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
+                        )
+                      : Container(
+                          color: Colors.grey.withOpacity(.3),
+                          // child: const Center(
+                          //   child: CircularProgressIndicator(),
+                          // ),
                         ),
-                      )
-                    : Container(
-                        color: Colors.grey.withOpacity(.3),
-                        // child: const Center(
-                        //   child: CircularProgressIndicator(),
-                        // ),
-                      ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 12.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 4.0, 15.0, 12.0),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
@@ -297,6 +308,75 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                           )
                         ],
                       ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        'Wooah! Fully Loaded',
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                      Text(
+                        'This course includes',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8.0),
+                      ..._items.map((item) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 8, bottom: 8),
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(
+                                CupertinoIcons.checkmark_seal,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 5.0),
+                              Text(
+                                item,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                      const SizedBox(height: 12.0),
+                      Text(
+                        'Instructor',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      const SizedBox(height: 5.0),
+                      Row(
+                        children: <Widget>[
+                          SizedBox.square(
+                            dimension: 45,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.blueGrey.shade900,
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'A',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('Ahmed Suluka ACA, ASSA',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium),
+                              Text('Head of school ExcelAcademy',
+                                  style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 12.0),
                       MaterialButton(
                         onPressed: () => downloadAllVideos(data.lessons),
                         elevation: 0,
@@ -345,10 +425,11 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                           ],
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         child: DefaultTabController(
                           length: 4,
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               TabBar(
                                 isScrollable: true,
@@ -365,8 +446,9 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                                   Tab(text: 'Challenges', height: 40),
                                 ],
                               ),
-                              Expanded(
+                              Flexible(
                                 child: Container(
+                                  height: 200,
                                   padding: const EdgeInsets.only(top: 15.0),
                                   child: TabBarView(
                                     children: <Widget>[
@@ -390,264 +472,226 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                     ],
                   ),
                 ),
-              ),
-              // ...[
-              //   const SizedBox(height: 30.0),
-              //   _titleText('Course Description'),
-              //   _bodyText(widget.course.description),
-              //   const SizedBox(height: 30.0),
-              //   _smallText('Curriculum'),
-              //   _titleText('Learn-by doing with our Exclusion Videos'),
-              //   _bodyText(
-              //     'Our Course is setup to make you learn Advanced Audit and '
-              //     'Assurance(Revision) by step with a practical detailed note/'
-              //     'video that focuses 100% on learn-by-doing',
-              //   ),
-              //   const SizedBox(height: 30.0),
-              //   _smallText('On Course Completion'),
-              //   _titleText('Course Requirements'),
-              //   _bodyText('On successful completion of this cour'),
-              //   _smallText('Wooah! Fully Loaded'),
-              //   _titleText('This course includes'),
-              //   Row(
-              //     children: <Widget>[
-              //       const Icon(CupertinoIcons.checkmark_seal),
-              //       _bodyText('195 Lessons & Details otes')
-              //     ],
-              //   ),
-              //   _titleText('Instructor'),
-              //   Row(
-              //     children: <Widget>[
-              //       SizedBox.square(
-              //         dimension: 45,
-              //         child: DecoratedBox(
-              //           decoration: BoxDecoration(
-              //             color: Colors.blueGrey.shade900,
-              //             borderRadius: BorderRadius.circular(4.0),
-              //           ),
-              //           child: const Center(
-              //             child: Text(
-              //               'A',
-              //               style: TextStyle(
-              //                 fontWeight: FontWeight.bold,
-              //                 color: Colors.white,
-              //                 fontSize: 18,
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //       const SizedBox(width: 5.0),
-              //       Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: <Widget>[
-              //           _titleText('Ahmed Suluka ACA, ASSA'),
-              //           _bodyText('ead of scool ExcelAcadey'),
-              //         ],
-              //       )
-              //     ],
-              //   ),
-              //   _smallText('COURSE PRICING'),
-              //   _titleText('Simple, transparent pricing'),
-              //   _bodyText(
-              //     'We keep track of the pricing of the '
-              //     'course from onset without computing',
-              //   ),
-              //   const SizedBox(height: 30),
-              //   Container(
-              //     padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(8.0),
-              //       border: Border.all(
-              //         color: Theme.of(context).primaryColor.withOpacity(.3),
-              //       ),
-              //     ),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: <Widget>[
-              //         Row(
-              //           crossAxisAlignment: CrossAxisAlignment.center,
-              //           children: <Widget>[
-              //             _bodyText('Pay today'),
-              //             Padding(
-              //               padding: const EdgeInsets.all(8.0),
-              //               child: SizedBox.square(
-              //                 dimension: 5.0,
-              //                 child: DecoratedBox(
-              //                   decoration: BoxDecoration(
-              //                     color: Colors.grey.shade400,
-              //                     shape: BoxShape.circle,
-              //                   ),
-              //                 ),
-              //               ),
-              //             ),
-              //             _bodyText('save NGN 6,200.00'),
-              //           ],
-              //         ),
-              //         const SizedBox(height: 20),
-              //         const SizedBox(height: 5.0),
-              //         Row(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: <Widget>[
-              //             Icon(
-              //               Icons.warning_amber_rounded,
-              //               color: Colors.blueGrey.shade400,
-              //             ),
-              //             const SizedBox(width: 5.0),
-              //             Flexible(
-              //               child: Text(
-              //                 'This package is exclusive to '
-              //                 'this particular course only',
-              //                 style: TextStyle(
-              //                   fontSize: 12,
-              //                   color: Colors.blueGrey.shade800,
-              //                 ),
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //         const SizedBox(height: 10.0),
-              //         // Text(
-              //         //   'NGN 24,000.00',
-              //         //   style: TextStyle(
-              //         //     fontSize: 17,
-              //         //     fontWeight: FontWeight.bold,
-              //         //     color: Colors.black87,
-              //         //     decoration: TextDecoration.lineThrough,
-              //         //   ),
-              //         // ),
-              //         const Text(
-              //           'NGN 20,000.00',
-              //           style: TextStyle(
-              //             fontSize: 24,
-              //             fontWeight: FontWeight.bold,
-              //             color: Colors.black87,
-              //           ),
-              //         ),
-              //         const SizedBox(height: 15.0),
-              //         ElevatedButton(
-              //           onPressed: () {},
-              //           style: ButtonStyle(
-              //             backgroundColor: MaterialStatePropertyAll(
-              //               Theme.of(context).primaryColor,
-              //             ),
-              //             foregroundColor: const MaterialStatePropertyAll(
-              //               Colors.white,
-              //             ),
-              //             shape: MaterialStatePropertyAll(
-              //               RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.circular(8.0),
-              //               ),
-              //             ),
-              //             minimumSize: const MaterialStatePropertyAll(
-              //               Size(double.infinity, 48),
-              //             ),
-              //           ),
-              //           child: const Text('Enroll now'),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              //   const SizedBox(height: 30),
-              //   _titleText('Got few questions for us?'),
-              //   _bodyText(
-              //     'We keep track of the pricing of the '
-              //     'course from onset without compromising',
-              //   ),
-              //   QuestionListTile(
-              //     onPressed: () {},
-              //     question: 'How do we have access to the course?',
-              //   ),
-              //   QuestionListTile(
-              //     onPressed: () {},
-              //     question: 'How do we have access to the course?',
-              //   ),
-              //   QuestionListTile(
-              //     onPressed: () {},
-              //     question: 'How do we have access to the course?',
-              //   ),
-              //   const SizedBox(height: 30),
-              //   _titleText('Still not conceived with Q&A'),
-              //   _bodyText(
-              //     'We keep track of the pricing of the '
-              //     'course from onset without compromising',
-              //   ),
-              //   const SizedBox(height: 15.0),
-              //   OutlinedButton(
-              //     onPressed: () {},
-              //     style: ButtonStyle(
-              //       foregroundColor: MaterialStatePropertyAll(
-              //         Theme.of(context).primaryColor,
-              //       ),
-              //       side: MaterialStatePropertyAll(
-              //         BorderSide(
-              //           color: Theme.of(context).primaryColor,
-              //         ),
-              //       ),
-              //       shape: MaterialStatePropertyAll(
-              //         RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(8.0),
-              //         ),
-              //       ),
-              //       minimumSize: const MaterialStatePropertyAll(
-              //         Size(double.infinity, 48),
-              //       ),
-              //     ),
-              //     child: const Text('Send us a message'),
-              //   ),
-              //   const SizedBox(height: 30.0),
-              //   Row(
-              //     children: <Widget>[
-              //       const Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: <Widget>[
-              //           // Text(
-              //           //   'NGN 24,000.00',
-              //           //   style: TextStyle(
-              //           //     fontSize: 17,
-              //           //     fontWeight: FontWeight.bold,
-              //           //     color: Colors.black87,
-              //           //     decoration: TextDecoration.lineThrough,
-              //           //   ),
-              //           // ),
-              //           Text(
-              //             'NGN 20,000.00',
-              //             style: TextStyle(
-              //               fontSize: 24,
-              //               fontWeight: FontWeight.bold,
-              //               color: Colors.black87,
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //       const SizedBox(width: 15.0),
-              //       Expanded(
-              //         child: ElevatedButton(
-              //           onPressed: () {},
-              //           style: ButtonStyle(
-              //             backgroundColor: MaterialStatePropertyAll(
-              //               Theme.of(context).primaryColor,
-              //             ),
-              //             foregroundColor: const MaterialStatePropertyAll(
-              //               Colors.white,
-              //             ),
-              //             shape: MaterialStatePropertyAll(
-              //               RoundedRectangleBorder(
-              //                 borderRadius: BorderRadius.circular(8.0),
-              //               ),
-              //             ),
-              //             minimumSize: const MaterialStatePropertyAll(
-              //               Size(0, 48),
-              //             ),
-              //           ),
-              //           child: const Text('Enroll now'),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              //   const SizedBox(height: 30),
-              // ]
-            ],
+                const SizedBox(),
+                const SizedBox(height: 30),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor.withOpacity(.3),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text('Pay today'),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox.square(
+                              dimension: 5.0,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade400,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text('save NGN 6,200.00'),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      const SizedBox(height: 5.0),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            color: Colors.blueGrey.shade400,
+                          ),
+                          const SizedBox(width: 5.0),
+                          Flexible(
+                            child: Text(
+                              'This package is exclusive to '
+                              'this particular course only',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.blueGrey.shade800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10.0),
+                      // Text(
+                      //   'NGN 24,000.00',
+                      //   style: TextStyle(
+                      //     fontSize: 17,
+                      //     fontWeight: FontWeight.bold,
+                      //     color: Colors.black87,
+                      //     decoration: TextDecoration.lineThrough,
+                      //   ),
+                      // ),
+                      const Text(
+                        'NGN 20,000.00',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 15.0),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(
+                            Theme.of(context).primaryColor,
+                          ),
+                          foregroundColor: const MaterialStatePropertyAll(
+                            Colors.white,
+                          ),
+                          shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          minimumSize: const MaterialStatePropertyAll(
+                            Size(double.infinity, 48),
+                          ),
+                        ),
+                        child: const Text('Enroll now'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(),
+                // ...[
+                //   const SizedBox(height: 30.0),
+                //   _titleText('Course Description'),
+                //   _bodyText(widget.course.description),
+                //   const SizedBox(height: 30.0),
+                //   _smallText('Curriculum'),
+                //   _titleText('Learn-by doing with our Exclusion Videos'),
+                //   _bodyText(
+                //     'Our Course is setup to make you learn Advanced Audit and '
+                //     'Assurance(Revision) by step with a practical detailed note/'
+                //     'video that focuses 100% on learn-by-doing',
+                //   ),
+                //   const SizedBox(height: 30.0),
+                //   _smallText('On Course Completion'),
+                //   _titleText('Course Requirements'),
+                //   _bodyText('On successful completion of this cour'),
+                //   _smallText('COURSE PRICING'),
+                //   _titleText('Simple, transparent pricing'),
+                //   _bodyText(
+                //     'We keep track of the pricing of the '
+                //     'course from onset without computing',
+                //   ),
+                //   _titleText('Got few questions for us?'),
+                //   _bodyText(
+                //     'We keep track of the pricing of the '
+                //     'course from onset without compromising',
+                //   ),
+                //   QuestionListTile(
+                //     onPressed: () {},
+                //     question: 'How do we have access to the course?',
+                //   ),
+                //   QuestionListTile(
+                //     onPressed: () {},
+                //     question: 'How do we have access to the course?',
+                //   ),
+                //   QuestionListTile(
+                //     onPressed: () {},
+                //     question: 'How do we have access to the course?',
+                //   ),
+                //   const SizedBox(height: 30),
+                //   _titleText('Still not conceived with Q&A'),
+                //   _bodyText(
+                //     'We keep track of the pricing of the '
+                //     'course from onset without compromising',
+                //   ),
+                //   const SizedBox(height: 15.0),
+                //   OutlinedButton(
+                //     onPressed: () {},
+                //     style: ButtonStyle(
+                //       foregroundColor: MaterialStatePropertyAll(
+                //         Theme.of(context).primaryColor,
+                //       ),
+                //       side: MaterialStatePropertyAll(
+                //         BorderSide(
+                //           color: Theme.of(context).primaryColor,
+                //         ),
+                //       ),
+                //       shape: MaterialStatePropertyAll(
+                //         RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(8.0),
+                //         ),
+                //       ),
+                //       minimumSize: const MaterialStatePropertyAll(
+                //         Size(double.infinity, 48),
+                //       ),
+                //     ),
+                //     child: const Text('Send us a message'),
+                //   ),
+                //   const SizedBox(height: 30.0),
+                //   Row(
+                //     children: <Widget>[
+                //       const Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: <Widget>[
+                //           // Text(
+                //           //   'NGN 24,000.00',
+                //           //   style: TextStyle(
+                //           //     fontSize: 17,
+                //           //     fontWeight: FontWeight.bold,
+                //           //     color: Colors.black87,
+                //           //     decoration: TextDecoration.lineThrough,
+                //           //   ),
+                //           // ),
+                //           Text(
+                //             'NGN 20,000.00',
+                //             style: TextStyle(
+                //               fontSize: 24,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.black87,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //       const SizedBox(width: 15.0),
+                //       Expanded(
+                //         child: ElevatedButton(
+                //           onPressed: () {},
+                //           style: ButtonStyle(
+                //             backgroundColor: MaterialStatePropertyAll(
+                //               Theme.of(context).primaryColor,
+                //             ),
+                //             foregroundColor: const MaterialStatePropertyAll(
+                //               Colors.white,
+                //             ),
+                //             shape: MaterialStatePropertyAll(
+                //               RoundedRectangleBorder(
+                //                 borderRadius: BorderRadius.circular(8.0),
+                //               ),
+                //             ),
+                //             minimumSize: const MaterialStatePropertyAll(
+                //               Size(0, 48),
+                //             ),
+                //           ),
+                //           child: const Text('Enroll now'),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                //   const SizedBox(height: 30),
+                // ]
+              ],
+            ),
           );
         },
         error: (_, __) {
