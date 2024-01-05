@@ -1,4 +1,4 @@
-import 'package:course_view/core/constants/images.dart';
+import 'package:course_view/widgets/place_holders.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/course_view/page.dart';
@@ -22,7 +22,7 @@ class HomeCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       width: MediaQuery.sizeOf(context).width * .63,
-      height: 280,
+      height: 260,
       margin: EdgeInsets.only(left: isFirst ? 0 : 10),
       child: MaterialButton(
         onPressed: () {
@@ -31,19 +31,21 @@ class HomeCard extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => CourseViewPage(course: course)));
         },
-        padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+        padding: EdgeInsets.zero,
         color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: Container(
-                child: AssetImages.course1,
+              child: ImageLoader(
+                imageUrl: course.thumbnail,
+                fit: BoxFit.cover,
+                decoration:
+                    const BoxDecoration(borderRadius: BorderRadius.zero),
               ),
-              // child: ImageLoader(imageUrl: course.thumbnail),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 4.0),
             Padding(
               padding: const EdgeInsets.only(left: 4.0),
               child: Row(
@@ -62,12 +64,15 @@ class HomeCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 4.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 course.title,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(height: 1.2),
               ),
             ),
             const Spacer(),
@@ -76,12 +81,6 @@ class HomeCard extends StatelessWidget {
                 TextButton(
                   onPressed: toggleCartButton,
                   style: ButtonStyle(
-                    padding: const MaterialStatePropertyAll(
-                      EdgeInsets.symmetric(
-                        horizontal: 4.0,
-                        vertical: 5.0,
-                      ),
-                    ),
                     minimumSize: const MaterialStatePropertyAll(Size.zero),
                     foregroundColor: MaterialStatePropertyAll(
                       Theme.of(context).primaryColor,

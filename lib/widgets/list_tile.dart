@@ -151,7 +151,7 @@ class QuestionListTile extends StatelessWidget {
       child: MaterialButton(
         onPressed: onPressed,
         elevation: 0,
-        color: Colors.grey.shade100,
+        color: const Color(0xFFF2F2F2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.0),
         ),

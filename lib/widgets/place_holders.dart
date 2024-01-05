@@ -8,11 +8,13 @@ class ImageLoader extends StatelessWidget {
     required this.imageUrl,
     this.height,
     this.width,
+    this.fit,
     this.decoration,
   }) : super(key: key);
   final String imageUrl;
   final double? height;
   final double? width;
+  final BoxFit? fit;
   final Decoration? decoration;
 
   @override
@@ -28,6 +30,7 @@ class ImageLoader extends StatelessWidget {
         imageUrl: imageUrl,
         height: height,
         width: width,
+        fit: fit,
         placeholder: (context, url) => Shimmer.fromColors(
           baseColor: Colors.grey.shade300,
           highlightColor: Colors.grey.shade100,
