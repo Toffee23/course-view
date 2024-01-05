@@ -780,7 +780,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
 }
 
 class DownloadDialog extends StatelessWidget {
-  const DownloadDialog({
+  DownloadDialog({
     Key? key,
     required this.lessons,
   }) : super(key: key);
@@ -788,6 +788,10 @@ class DownloadDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('hi');
+    final valueNotifier = ValueNotifier<List<bool>>(
+        List.generate(lessons.length, (index) => false));
+
     return WillPopScope(
       onWillPop: () async => false,
       child: AlertDialog(
@@ -836,10 +840,17 @@ class DownloadDialog extends StatelessWidget {
                             //     strokeWidth: 2,
                             //   ),
                             // ),
-                            trailing: Checkbox(
-                              value: true,
-                              onChanged: (value) {},
-                            ),
+                            trailing: ValueListenableBuilder<List<bool>>(
+                                valueListenable: valueNotifier,
+                                builder: (context, isChecked, _) {
+                                  return Checkbox(
+                                    value: isChecked.elementAt(lessonEntry.key),
+                                    onChanged: (value) {
+                                      valueNotifier.value =
+                                          !isChecked.elementAt(lessonEntry.key);
+                                    },
+                                  );
+                                }),
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             dense: true,
