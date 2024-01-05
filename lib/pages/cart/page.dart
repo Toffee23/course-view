@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:course_view/core/api_handler/api_endpoints.dart';
 import 'package:course_view/core/api_handler/api_handler_models.dart';
 import 'package:course_view/core/api_handler/api_services.dart';
@@ -333,6 +335,8 @@ class CartBottomSheet extends StatelessWidget {
     );
 
     final response = await ClientApi().pay(data);
+
+    log(response.data.toString());
 
     if (response.status == ResponseStatus.successful) {
       final url = response.data['authorization_url'];

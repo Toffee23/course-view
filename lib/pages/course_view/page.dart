@@ -74,12 +74,8 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
     if (completed) {
       await _videoController1.pause();
     }
-    // final file = await download.getVideo(module.url, module.id, 'mp4');
 
     final file = await _download.getVideo(module.url, module.id, 'mp4');
-
-    log('AZAG ${module.url}');
-    log('AZAG ${file?.path}');
 
     if (file != null) {
       _videoController1 = VideoPlayerController.file(file);
@@ -97,33 +93,32 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
   }
 
   Future<void> downloadAllVideos(List<Lessons> lessons) async {
+    List<Module> modules = [];
+    List<ValueNotifier<bool>> valueNotifiers = [];
+
+    for (var lesson in lessons) {
+      for (var module in lesson.modules) {
+        modules.add(module);
+        valueNotifiers.add(ValueNotifier<bool>(false));
+      }
+    }
+
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return DownloadDialog(lessons: lessons);
+        return DownloadDialog(
+          modules: modules,
+          valueNotifiers: valueNotifiers,
+        );
       },
     );
-
-    if (!_download.isInitialized) {
-      await _download.initialize();
-    }
-
-    for (var lesson in lessons) {
-      for (var module in lesson.modules) {
-        log(module.url);
-        await _download.getVideo(module.url, module.id, 'mp4');
-      }
-    }
-    // _popDialog();
   }
-
-  void _popDialog() => Navigator.of(context).pop();
 
   void _createChewieController() {
     _chewieController = ChewieController(
       videoPlayerController: _videoController1,
-      // autoPlay: true,
+      autoPlay: true,
       looping: true,
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
@@ -780,89 +775,137 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
 }
 
 class DownloadDialog extends StatelessWidget {
-  const DownloadDialog({
+  DownloadDialog({
     Key? key,
-    required this.lessons,
+    required this.modules,
+    required this.valueNotifiers,
   }) : super(key: key);
-  final List<Lessons> lessons;
+  final List<Module> modules;
+  final List<ValueNotifier<bool>> valueNotifiers;
+
+  final isStartedNotifier = ValueNotifier<bool>(false);
+
+  Future<void> _startDownload(context) async {
+    final download = Download();
+
+    if (!download.isInitialized) {
+      await download.initialize();
+    }
+
+    isStartedNotifier.value = true;
+    int index = 0;
+    for (var module in modules) {
+      if (valueNotifiers.elementAt(index).value) {
+        log(module.url);
+        await download.getVideo(module.url, module.id, 'mp4');
+      }
+      index++;
+    }
+    _popDialog(context);
+  }
+
+  void _popDialog(BuildContext context) => Navigator.of(context).pop();
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: AlertDialog(
-        title: const Text('Downloading'),
-        content: Container(
-          constraints: const BoxConstraints(
-            maxHeight: 350,
-          ),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.grey.shade400,
+      child: ValueListenableBuilder(
+          valueListenable: isStartedNotifier,
+          builder: (context, isStarted, _) {
+            return AlertDialog(
+              titlePadding: EdgeInsets.zero,
+              clipBehavior: Clip.hardEdge,
+              title: Column(
+                children: <Widget>[
+                  if (isStarted) const LinearProgressIndicator(),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                    child: Text('Select files to download'),
                   ),
+                ],
+              ),
+              content: Container(
+                constraints: const BoxConstraints(
+                  maxHeight: 350,
                 ),
-                child: Text(
-                  'Select the course you want to download, '
-                  'you may download others later as you watch.',
-                  style: Theme.of(context).textTheme.bodySmall,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      child: Text(
+                        'Select the course you want to download, '
+                        'you may download others later as you watch.',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ...modules.asMap().entries.map(
+                                  (e) => ListTile(
+                                    onTap: () => valueNotifiers
+                                            .elementAt(e.key)
+                                            .value =
+                                        !valueNotifiers.elementAt(e.key).value,
+                                    leading: Text('${e.key + 1}.'),
+                                    minLeadingWidth: 0,
+                                    title: Text(e.value.name),
+                                    // trailing: ,
+                                    trailing: isStarted
+                                        ? const SizedBox.square(
+                                            dimension: 18,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : ValueListenableBuilder<bool>(
+                                            valueListenable:
+                                                valueNotifiers.elementAt(e.key),
+                                            builder: (context, isSelected, _) {
+                                              return IgnorePointer(
+                                                child: Checkbox(
+                                                  value: isSelected,
+                                                  onChanged: (value) {},
+                                                ),
+                                              );
+                                            }),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0),
+                                    dense: true,
+                                    visualDensity: const VisualDensity(
+                                      vertical: -4,
+                                      horizontal: -4,
+                                    ),
+                                  ),
+                                ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ...lessons.asMap().entries.map((lessonEntry) {
-                        return lessonEntry.value.modules
-                            .asMap()
-                            .entries
-                            .map((moduleEntry) {
-                          return ListTile(
-                            onTap: () {},
-                            leading: Text(
-                                '${lessonEntry.key + moduleEntry.key + 1}.'),
-                            minLeadingWidth: 0,
-                            title: Text(moduleEntry.value.name),
-                            // trailing: const SizedBox.square(
-                            //   dimension: 18,
-                            //   child: CircularProgressIndicator(
-                            //     strokeWidth: 2,
-                            //   ),
-                            // ),
-                            trailing: Checkbox(
-                              value: true,
-                              onChanged: (value) {},
-                            ),
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            dense: true,
-                            visualDensity: const VisualDensity(
-                                vertical: -4, horizontal: -4),
-                          );
-                        }).toList();
-                      }).expand((modules) {
-                        return modules;
-                      }).toList(),
-                    ],
-                  ),
+              contentPadding: EdgeInsets.zero,
+              actionsPadding: const EdgeInsets.only(right: 16.0, bottom: 8.0),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => _startDownload(context),
+                  child: const Text('Download selected'),
                 ),
-              ),
-            ],
-          ),
-        ),
-        contentPadding: EdgeInsets.zero,
-        actionsPadding: const EdgeInsets.only(right: 16.0, bottom: 8.0),
-        actions: <Widget>[
-          TextButton(onPressed: () {}, child: const Text('Download selected')),
-        ],
-      ),
+              ],
+            );
+          }),
     );
   }
 }
