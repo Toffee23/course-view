@@ -1,6 +1,8 @@
 // ignore_for_file: camel_case_types, file_names
 
 import 'package:course_view/core/constants/images.dart';
+import 'package:course_view/core/constants/leaderboard_courses.dart';
+import 'package:course_view/pages/quiz_view/quizView4.dart';
 import 'package:flutter/material.dart';
 
 class quizView3 extends StatelessWidget {
@@ -8,7 +10,8 @@ class quizView3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+        body: Container(
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -42,46 +45,27 @@ class quizView3 extends StatelessWidget {
                 child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 20.0,
+                mainAxisSpacing: 20.0,
               ),
-              itemCount: 6,
+              itemCount: courses.length,
               itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.all(8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Title $index',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text('Subtitle $index'),
-                        const SizedBox(height: 8.0),
-                        Text('Description $index'),
-                        const SizedBox(height: 8.0),
-                        Expanded(
-                          child: Container(
-                            width: double.infinity,
-                            color:
-                                Colors.blueGrey, // Color of the long rectangle
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                return Container(
+                    color: Colors.white,
+                    child: itemCard(
+                      courses: courses[index],
+                    ));
               },
             )),
 
             //payment button
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => (const quizView4())),
+                );
+              },
               style: ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll(
                   Theme.of(context).primaryColor,
@@ -98,10 +82,105 @@ class quizView3 extends StatelessWidget {
                   Size(double.infinity, 48.0),
                 ),
               ),
-              child: const Text('Continue'),
+              child: const Text('CONTINUE'),
             ),
           ],
         ),
+      ),
+    ));
+  }
+}
+
+class itemCard extends StatelessWidget {
+  const itemCard({
+    required this.courses,
+    super.key,
+  });
+
+  final Courses courses;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.grey[200],
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 3,
+            // height: MediaQuery.of(context).size.height / 3,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Flexible(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          courses.abbrv,
+                          style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.grey),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: SizedBox(
+                            height: MediaQuery.of(context).size.height / 17,
+                            child:
+                                // Image.asset(courses.image)
+                                Image(
+                              image: AssetImage(courses.image),
+                            )),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              courses.title,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              courses.footnote,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
+                )
+              ],
+            ),
+          ),
+          Container(
+            color: courses.color,
+            height: MediaQuery.of(context).size.height / 5,
+            width: MediaQuery.of(context).size.width / 60,
+          )
+        ],
       ),
     );
   }
