@@ -95,16 +95,6 @@ class MainLeaderboard extends StatelessWidget {
                           ),
                           child: Stack(
                             children: [
-                              // Align(
-                              //   alignment: Alignment.topRight,
-                              //   child: CircleAvatar(
-                              //     radius: 10,
-                              //     child: Image.asset(
-                              //       'assets/images/leaderboardLarge.png',
-                              //       scale: 5,
-                              //     ),
-                              //   ),
-                              // ),
                               Positioned(
                                 top: 0,
                                 right: 0,
@@ -113,7 +103,7 @@ class MainLeaderboard extends StatelessWidget {
                                   child: CircleAvatar(
                                     radius: 10,
                                     child: Image.asset(
-                                      'assets/images/padlock.png',
+                                      'assets/images/Iconsax.png',
                                       // scale: .5,
                                     ),
                                   ),

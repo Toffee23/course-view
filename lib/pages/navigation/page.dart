@@ -1,5 +1,5 @@
+import 'package:course_view/pages/leaderboard_view/leaderboard1.dart';
 import 'package:course_view/pages/quiz_view/quizView1.dart';
-import 'package:course_view/pages/quiz_view/quizView2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +45,7 @@ class _NavigationPageState extends State<NavigationPage> {
           onPageChanged: (index) => tabIndexNotifier.value = index,
           children: <Widget>[
             const HomePage(),
-            const quizView(),
+            const quizView1(),
             const Placeholder(),
             CartPage(
                 onArrowBackPressed: () => widget.switchTab(_pageController, 0)),
@@ -133,48 +133,69 @@ class _NavigationPageState extends State<NavigationPage> {
                   })),
 
               //side nav items
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.leaderboard),
                     ),
-                    SizedBox(width: 10),
-                    Text("Leaderboard",style: TextStyle(
-                                color: Colors.black
-                              ))
+                    const SizedBox(width: 10),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (const Leaderboard())),
+                          );
+                        },
+                        child: const Text("Leaderboard",
+                            style: TextStyle(color: Colors.black)))
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+               Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.quiz),
                     ),
-                    SizedBox(width: 10),
-                    Text("Quiz",style: TextStyle(
-                                color: Colors.black
-                              ))
+                    const SizedBox(width: 10),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (const quizView1())),
+                          );
+                        },
+                        child: const Text("Quiz",
+                            style: TextStyle(color: Colors.black)))
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+               Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.support_agent),
                     ),
-                    SizedBox(width: 10),
-                    Text("Live Chat with Admin",style: TextStyle(
-                                color: Colors.black
-                              ))
+                    const SizedBox(width: 10),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (const quizView1())),
+                          );
+                        },
+                        child: const Text("Live Chat with Admin",
+                            style: TextStyle(color: Colors.black)))
                   ],
                 ),
               ),
