@@ -97,29 +97,50 @@ class quizView5 extends StatelessWidget {
           //end of points section
 
           const SizedBox(
-            height: 70,
+            height: 20,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey[100]),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text("What are the different types of costs in management accounting?",style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20
+                                  )),
+                            ),
+                          ),
+            ),
           ),
 
           //quiz section
           Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 15.0,
-                mainAxisSpacing: 15.0,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15.0,
+                  mainAxisSpacing: 15.0,
+                ),
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey[100]),
+                      child: const Center(
+                          child: Text("Quiz Options",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,fontSize: 17
+                              ))));
+                },
               ),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey[100]),
-                    child: const Center(
-                        child: Text("Quiz Options",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ))));
-              },
             ),
           ),
 
