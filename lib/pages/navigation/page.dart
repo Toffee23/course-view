@@ -85,6 +85,102 @@ class _NavigationPageState extends State<NavigationPage> {
             );
           },
         ),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                  decoration: const BoxDecoration(
+                      // color: Colors.blueAccent,
+                      ),
+                  child: Builder(builder: (context) {
+                    return Row(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 40.0, // Set the desired width
+                          height: 40.0,
+                          child: CircleAvatar(
+                            radius: 90,
+                            // backgroundColor: Colors.white,
+                            child: Image.asset("assets/images/femaleDP.png"),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "User",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 20),
+                              ),
+                              Text(
+                                "User details",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container()
+                      ],
+                    );
+                  })),
+
+              //side nav items
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.leaderboard),
+                    ),
+                    SizedBox(width: 10),
+                    Text("Leaderboard",style: TextStyle(
+                                color: Colors.black
+                              ))
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.quiz),
+                    ),
+                    SizedBox(width: 10),
+                    Text("Quiz",style: TextStyle(
+                                color: Colors.black
+                              ))
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.support_agent),
+                    ),
+                    SizedBox(width: 10),
+                    Text("Live Chat with Admin",style: TextStyle(
+                                color: Colors.black
+                              ))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

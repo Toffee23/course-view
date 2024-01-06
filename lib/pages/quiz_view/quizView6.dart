@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, file_names
 
 import 'package:course_view/core/constants/images.dart';
+import 'package:course_view/pages/leaderboard_view/main_leaderboard.dart';
 import 'package:course_view/pages/quiz_view/quizView4.dart';
 import 'package:flutter/material.dart';
 
@@ -134,7 +135,7 @@ class quizView6 extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => (const quizView4())),
+                MaterialPageRoute(builder: (context) => (const MainLeaderboard())),
               );
             },
             style: ButtonStyle(
