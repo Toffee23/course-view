@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types, file_names
 
+import 'package:course_view/core/constants/images.dart';
+import 'package:course_view/pages/quiz_view/quizView5.dart';
 import 'package:flutter/material.dart';
 
 class quizView4 extends StatelessWidget {
@@ -72,44 +74,229 @@ class quizView4 extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: [
-              Container(
-                width: 150.0,
-                height: 150.0,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green,
-                    border: Border.all(color: Colors.yellow, width: 3)),
-                child: Container(
-                  child: Container(
-                    width: 100.0,
-                    height: 100.0,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
-                        border: Border.all(color: Colors.red, width: 2)),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("data"),
-                          Text("data"),
-                          Text("data"),
-                        ]),
-                  ),
-                ),
-              )
-            ],
+
+          const SizedBox(
+            height: 70,
           ),
-          const Expanded(
-              child: Row(
-            children: [Text("Ranking Row")],
-          )),
+
+          //Game avatar1
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 180.0,
+                          height: 180.0,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              // color: Colors.green,
+                              border: Border.all(
+                                  color: Colors.grey.shade200, width: 3)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  // color: Colors.blue,
+                                  border: Border.all(
+                                      color: Colors.grey.shade600, width: 2)),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(child: AssetImages.quizdp1),
+                                    Text("Game Score",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey.shade600)),
+                                    const Text("0",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 40)),
+                                  ]),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: SizedBox(
+                        width: 150,
+                        height: 80,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Highest Rank",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    )),
+                                Text("#4",
+                                    style: TextStyle(
+                                      color: Colors.orange,
+                                    )),
+                              ],
+                            ),
+                            Divider(
+                              height: 0.2,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Game Score",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    )),
+                                Text("24",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    )),
+                              ],
+                            ),
+                            Divider(
+                              height: 0.2,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Highest Score",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    )),
+                                Text("9,982",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                //Game Avatar2
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 180.0,
+                          height: 180.0,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              // color: Colors.green,
+                              border: Border.all(
+                                  color: Colors.grey.shade200, width: 3)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  // color: Colors.blue,
+                                  border: Border.all(
+                                      color: Colors.grey.shade600, width: 2)),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(child: AssetImages.quizdp2),
+                                    Text("Game Score",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey.shade600)),
+                                    const Text("0",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 40)),
+                                  ]),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: SizedBox(
+                        width: 150,
+                        height: 80,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Highest Rank",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    )),
+                                Text("#19",
+                                    style: TextStyle(
+                                      color: Colors.orange,
+                                    )),
+                              ],
+                            ),
+                            Divider(
+                              height: 0.2,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Game Score",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    )),
+                                Text("17",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    )),
+                              ],
+                            ),
+                            Divider(
+                              height: 0.2,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Highest Score",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    )),
+                                Text("3,391",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
           ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => (const quizView4())),
+                MaterialPageRoute(builder: (context) => (const quizView5())),
               );
             },
             style: ButtonStyle(

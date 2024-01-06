@@ -14,4 +14,6 @@ class AssetImages {
   static final Image gameLogo = Image.asset('$base/gameLogo.png');
   static final Image leaderBoard = Image.asset('$base/leaderboard.png');
   static final Image femaleDP = Image.asset('$base/femaleDP.png');
+  static final Image quizdp1 = Image.asset('$base/theme.png');
+  static final Image quizdp2 = Image.asset('$base/theme 2.png');
 }

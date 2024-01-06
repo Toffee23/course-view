@@ -56,7 +56,8 @@ class quizView3 extends StatelessWidget {
                       courses: courses[index],
                     ));
               },
-            )),
+            )
+            ),
 
             //payment button
             ElevatedButton(
