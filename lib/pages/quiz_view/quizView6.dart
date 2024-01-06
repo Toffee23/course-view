@@ -2,11 +2,10 @@
 
 import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/pages/quiz_view/quizView4.dart';
-import 'package:course_view/pages/quiz_view/quizView6.dart';
 import 'package:flutter/material.dart';
 
-class quizView5 extends StatelessWidget {
-  const quizView5({super.key});
+class quizView6 extends StatelessWidget {
+  const quizView6({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,7 @@ class quizView5 extends StatelessWidget {
                       // color: Colors.green,
                       border: Border.all(color: Colors.orange, width: 1.5)),
                   child: const Center(
-                    child: Text("00.25",
+                    child: Text("00.04",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -98,58 +97,44 @@ class quizView5 extends StatelessWidget {
           //end of points section
 
           const SizedBox(
-            height: 20,
+            height: 100,
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 100,
-              decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey[100]),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Text("What are the different types of costs in management accounting?",style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20
-                                  )),
-                            ),
-                          ),
-            ),
+          Center(
+            child: Text("Your Final Score",
+                style: TextStyle(color: Colors.grey[700])),
           ),
 
           //quiz section
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15.0,
-                  mainAxisSpacing: 15.0,
+              child: Center(
+            child: Column(
+              children: [
+                const Text("34",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 100,
+                        color: Colors.orange)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/Vector.png'),
+                     Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Points Overall",
+                          style: TextStyle(color: Colors.grey[700], fontSize: 18)),
+                    )
+                  ],
                 ),
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey[100]),
-                      child: const Center(
-                          child: Text("Quiz Options",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,fontSize: 17
-                              ))));
-                },
-              ),
+              ],
             ),
-          ),
+          )),
 
           ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => (const quizView6())),
+                MaterialPageRoute(builder: (context) => (const quizView4())),
               );
             },
             style: ButtonStyle(
@@ -168,7 +153,7 @@ class quizView5 extends StatelessWidget {
                 Size(double.infinity, 48.0),
               ),
             ),
-            child: const Text('CONTINUE'),
+            child: const Text('VIEW LEADERBOARD'),
           ),
         ]),
       ),
