@@ -34,7 +34,7 @@ class HomePage extends ConsumerWidget {
                           .headlineSmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     )),
-                    SizedBox(width: 8.0),
+                    const SizedBox(width: 8.0),
                     SizedBox.square(
                       dimension: 60,
                       child: DecoratedBox(
@@ -48,16 +48,22 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
               Container(
-                color: Color(0xFFF1F1EF),
-                child: const Row(
+                color: const Color(0xFFF1F1EF),
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
                   children: <Widget>[
-                    Expanded(
+                    const Expanded(
                       child:
                           Text('You have 12 Notifications and 4 carts items'),
                     ),
+                    AssetImages.notification,
+                    const SizedBox(width: 5.0),
+                    AssetImages.bag,
                   ],
                 ),
               ),
+              const SizedBox(height: 8.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Container(
