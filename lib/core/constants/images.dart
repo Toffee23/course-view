@@ -11,9 +11,7 @@ class AssetImages {
   static final Image importCurve = Image.asset('$base/import-curve.png');
   static final Image padlock = Image.asset('$base/padlock.png');
   static final Image wrappedPresent = Image.asset('$base/wrapped-present.png');
-  static final Image course1 = Image.asset('$base/AAA Course Picture.png');
-  static final Image course2 = Image.asset('$base/ATAX Course Picture.png');
-  static final Image course3 = Image.asset('$base/CR Course Picture.png');
-  static final Image course4 = Image.asset('$base/CS Course Picture.png');
-  static final Image course5 = Image.asset('$base/SFM Course Picture.png');
+  static final Image examCountTimer = Image.asset('$base/exam-count-timer.png');
+  static final Image bag = Image.asset('$base/bag.png');
+  static final Image notification = Image.asset('$base/notification-bing.png');
 }

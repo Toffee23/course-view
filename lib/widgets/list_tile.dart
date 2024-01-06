@@ -19,7 +19,7 @@ class CourseListTile extends StatefulWidget {
 }
 
 class _CourseListTileState extends State<CourseListTile> {
-  int selected = 0; //attention
+  int selected = -1;
 
   @override
   Widget build(BuildContext context) {

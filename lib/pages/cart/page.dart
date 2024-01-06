@@ -4,6 +4,7 @@ import 'package:course_view/core/api_handler/api_endpoints.dart';
 import 'package:course_view/core/api_handler/api_handler_models.dart';
 import 'package:course_view/core/api_handler/api_services.dart';
 import 'package:course_view/core/constants/images.dart';
+import 'package:course_view/core/extensions/string.dart';
 import 'package:course_view/pages/home/model.dart';
 import 'package:course_view/pages/home/provider.dart';
 import 'package:course_view/widgets/button.dart';
@@ -89,7 +90,7 @@ class CartPage extends ConsumerWidget {
               child: const Text('Explore courses'),
             ),
           ),
-        ] else ...[
+        ] else ...<Widget>[
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(
@@ -226,10 +227,10 @@ class CartPage extends ConsumerWidget {
                                 fontSize: 13,
                               ),
                             ),
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Column(
+                                const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
@@ -249,8 +250,8 @@ class CartPage extends ConsumerWidget {
                                   ],
                                 ),
                                 Text(
-                                  'NGN 20,000.00',
-                                  style: TextStyle(
+                                  'NGN ${course.price.toString().formatToPrice}',
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87,
                                   ),
@@ -296,7 +297,11 @@ class CartPage extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: PaymentButton(
-              total: '${1 * carts.length}0,000.00',
+              total: carts
+                  .map((c) => c.price)
+                  .reduce((a, b) => a + b)
+                  .toString()
+                  .formatToPrice,
               onPressed: () => _onPressed(context, carts),
             ),
           ),
@@ -315,11 +320,11 @@ class CartBottomSheet extends StatelessWidget {
 
   Future<void> _onPressed(context) async {
     final data = {
-      'email': 'test@gmail.com',
-      'amount': 10000 * courses.length,
+      'email': 'azag@gmail.com',
+      'amount': courses.map((c) => c.price).reduce((a, b) => a + b),
       'metadata': {
-        'cart_id': courses[0].id,
-        'user_id': '6590bd7fe2fe288336be8361',
+        'cart_id': courses.map((e) => e.id).toList(),
+        'user_id': '6599b3ffcb35baa479a98db8',
       },
     };
 
@@ -436,7 +441,11 @@ class CartBottomSheet extends StatelessWidget {
             ),
           ),
           PaymentButton(
-            total: '${1 * courses.length}0,000.00',
+            total: courses
+                .map((c) => c.price)
+                .reduce((a, b) => a + b)
+                .toString()
+                .formatToPrice,
             onPressed: () => _onPressed(context),
           ),
         ],

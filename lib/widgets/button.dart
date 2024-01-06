@@ -177,3 +177,37 @@ class PaymentButton extends StatelessWidget {
     );
   }
 }
+
+class CustomElevatedButton extends StatelessWidget {
+  const CustomElevatedButton({
+    Key? key,
+    required this.text,
+    this.onPressed,
+  }) : super(key: key);
+  final String text;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll(
+          Theme.of(context).primaryColor,
+        ),
+        foregroundColor: const MaterialStatePropertyAll(
+          Colors.white,
+        ),
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+        ),
+        minimumSize: const MaterialStatePropertyAll(
+          Size(double.infinity, 48.0),
+        ),
+      ),
+      child: Text(text),
+    );
+  }
+}

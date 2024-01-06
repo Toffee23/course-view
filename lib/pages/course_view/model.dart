@@ -5,6 +5,7 @@ class CourseModel {
     required this.creator,
     required this.description,
     required this.thumbnail,
+    required this.price,
     required this.lessons,
     required this.subscribers,
   });
@@ -13,6 +14,7 @@ class CourseModel {
   final String creator;
   final String description;
   final String thumbnail;
+  final int price;
   final List<Lessons> lessons;
   final List subscribers;
 
@@ -23,6 +25,7 @@ class CourseModel {
       creator: json['creator'],
       description: json['description'],
       thumbnail: json['thumbnail'],
+      price: json['price'],
       lessons:
           json['lessons'].map<Lessons>((e) => Lessons.fromJson(e)).toList(),
       subscribers: json['subscribers'],
@@ -55,8 +58,8 @@ class Lessons {
 class Module {
   Module({
     required this.id,
-      required this.name,
-      required this.url,
+    required this.name,
+    required this.url,
     required this.duration,
     required this.subscriptionRequired,
   });

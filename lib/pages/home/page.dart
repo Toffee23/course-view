@@ -3,6 +3,7 @@ import 'package:course_view/widgets/place_holders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/images.dart';
 import '../../widgets/card.dart';
 import '../../widgets/snack_bar.dart';
 
@@ -17,6 +18,46 @@ class HomePage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 12.0),
           child: Column(
             children: <Widget>[
+              AssetImages.examCountTimer,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 10.0,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Text(
+                      'Welcome back, Simisola',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    )),
+                    SizedBox(width: 8.0),
+                    SizedBox.square(
+                      dimension: 60,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                color: Color(0xFFF1F1EF),
+                child: const Row(
+                  children: <Widget>[
+                    Expanded(
+                      child:
+                          Text('You have 12 Notifications and 4 carts items'),
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Container(
