@@ -1,11 +1,13 @@
 import 'package:course_view/pages/home/provider.dart';
 import 'package:course_view/widgets/place_holders.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/images.dart';
 import '../../widgets/card.dart';
 import '../../widgets/snack_bar.dart';
+import '../search/page.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,8 +19,9 @@ class HomePage extends ConsumerWidget {
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 12.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              AssetImages.examCountTimer,
+              Center(child: AssetImages.examCountTimer),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -53,9 +56,13 @@ class HomePage extends ConsumerWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   children: <Widget>[
-                    const Expanded(
-                      child:
-                          Text('You have 12 Notifications and 4 carts items'),
+                    Expanded(
+                      child: Text(
+                        'You have 12 Notifications and 4 carts items',
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
                     ),
                     AssetImages.notification,
                     const SizedBox(width: 5.0),
@@ -64,6 +71,63 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8.0),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  'What would you want to learn today?',
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 8.0,
+                ),
+                child: TextField(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SearchPage()));
+                  },
+                  onTapOutside: (_) =>
+                      FocusManager.instance.primaryFocus?.unfocus(),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey.shade200,
+                      ),
+                    ),
+                    hintText: 'Courses',
+                    hintStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    prefixIcon: Icon(
+                      CupertinoIcons.search,
+                      color: Colors.grey.shade600,
+                    ),
+                    suffixIcon: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12.0),
+                          child: Text(
+                            'Search',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Container(

@@ -62,7 +62,7 @@ class _NavigationPageState extends State<NavigationPage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.wand_rays),
-                  label: 'Programmes',
+                  label: 'Categories',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.widgets_outlined),
