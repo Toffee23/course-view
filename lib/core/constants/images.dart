@@ -14,4 +14,15 @@ class AssetImages {
   static final Image examCountTimer = Image.asset('$base/exam-count-timer.png');
   static final Image bag = Image.asset('$base/bag.png');
   static final Image notification = Image.asset('$base/notification-bing.png');
+  static final Image achievement = Image.asset('$base/achievement.png');
+  static final Image profile = Image.asset('$base/profile.png');
+  static final Image notification2 = Image.asset('$base/notification.png');
+  static final Image payment = Image.asset('$base/payment.png');
+  static final Image policy = Image.asset('$base/policy.png');
+  static final Image support = Image.asset('$base/support.png');
+  static final Image darkMode = Image.asset('$base/dark-mode.png');
+  static final Image security = Image.asset('$base/security.png');
+  static final Image language = Image.asset('$base/language.png');
+  static final Image logout = Image.asset('$base/logout.png');
+  static final Image arrowRight = Image.asset('$base/arrow-right.png');
 }

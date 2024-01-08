@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../cart/page.dart';
 import '../home/page.dart';
+import '../profile/page.dart';
 import 'controller.dart';
 
 class NavigationPage extends StatefulWidget with NavigationController {
@@ -47,7 +48,7 @@ class _NavigationPageState extends State<NavigationPage> {
             const Placeholder(),
             CartPage(
                 onArrowBackPressed: () => widget.switchTab(_pageController, 0)),
-            const Placeholder(),
+            const ProfilePage(),
           ],
         ),
         bottomNavigationBar: ValueListenableBuilder(
@@ -61,8 +62,8 @@ class _NavigationPageState extends State<NavigationPage> {
                   label: 'Explore',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.wand_rays),
-                  label: 'Categories',
+                  icon: Icon(Icons.category_rounded),
+                  label: 'Program',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.widgets_outlined),

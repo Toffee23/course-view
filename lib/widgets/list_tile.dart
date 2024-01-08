@@ -171,3 +171,80 @@ class QuestionListTile extends StatelessWidget {
     );
   }
 }
+
+class SettingsListTile extends StatelessWidget {
+  const SettingsListTile({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    this.leading,
+    this.trailing,
+    this.textColor,
+    this.onTap,
+    this.isComingSoon = false,
+    this.hideTrailing = false,
+  }) : super(key: key);
+  final String title;
+  final String subtitle;
+  final Widget? leading;
+  final Widget? trailing;
+  final Color? textColor;
+  final VoidCallback? onTap;
+  final bool isComingSoon;
+  final bool hideTrailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      horizontalTitleGap: 18.0,
+      minVerticalPadding: 0.0,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+      visualDensity: const VisualDensity(
+        vertical: -4,
+        horizontal: -4,
+      ),
+      leading: leading,
+      title: Row(
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: textColor,
+            ),
+          ),
+          if (isComingSoon) ...[
+            const SizedBox(width: 8.0),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 4.0,
+              ),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFE6D5),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                'coming soon',
+                style: TextStyle(
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(
+          fontSize: 12.0,
+          color: textColor ?? Colors.grey.shade600,
+        ),
+      ),
+      trailing: hideTrailing ? null : trailing ?? AssetImages.arrowRight,
+    );
+  }
+}
