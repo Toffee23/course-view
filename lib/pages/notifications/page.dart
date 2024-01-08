@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers.dart';
 import 'widgets.dart';
+import 'controller.dart';
 
-class NotificationPage extends ConsumerWidget {
+class NotificationPage extends ConsumerWidget with NotificationController {
   const NotificationPage({Key? key}) : super(key: key);
 
   @override
@@ -41,13 +42,47 @@ class NotificationPage extends ConsumerWidget {
               child: Column(
                 children: <Widget>[
                   NotificationListTile(
-                    onTap: () {
-                      ref.read(notificationsProvider.notifier).user?.copyWith(
-                            vibrate: true,
-                          );
-                    },
-                    value: notifications?.vibrate ?? false,
-                    title: 'Vibrate',
+                    onChanged: (value) => onToggle(ref, value, 'vibrate'),
+                    value: notifications?.vibrate,
+                    title: 'vibrate',
+                    subtitle: 'Allow vibration with no sounds on notifying you',
+                  ),
+                  NotificationListTile(
+                    onChanged: (value) => onToggle(ref, value, 'sound'),
+                    value: notifications?.sound,
+                    title: 'Sound',
+                    subtitle: 'Allow vibration with no sounds on notifying you',
+                  ),
+                  NotificationListTile(
+                    onChanged: (value) => onToggle(ref, value, 'payments'),
+                    value: notifications?.payments,
+                    title: 'Payments',
+                    subtitle: 'Allow vibration with no sounds on notifying you',
+                  ),
+                  NotificationListTile(
+                    onChanged: (value) =>
+                        onToggle(ref, value, 'generalNotifications'),
+                    value: notifications?.generalNotifications,
+                    title: 'General Notifications',
+                    subtitle: 'Allow vibration with no sounds on notifying you',
+                  ),
+                  NotificationListTile(
+                    onChanged: (value) => onToggle(ref, value, 'appUpdates'),
+                    value: notifications?.appUpdates,
+                    title: 'App Updates',
+                    subtitle: 'Allow vibration with no sounds on notifying you',
+                  ),
+                  NotificationListTile(
+                    onChanged: (value) => onToggle(ref, value, 'challenges'),
+                    value: notifications?.challenges,
+                    title: 'Challenges',
+                    subtitle: 'Allow vibration with no sounds on notifying you',
+                  ),
+                  NotificationListTile(
+                    onChanged: (value) =>
+                        onToggle(ref, value, 'learningReminder'),
+                    value: notifications?.learningReminder,
+                    title: 'Learning Reminder',
                     subtitle: 'Allow vibration with no sounds on notifying you',
                   ),
                 ],

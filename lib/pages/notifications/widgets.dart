@@ -3,22 +3,20 @@ import 'package:flutter/material.dart';
 class NotificationListTile extends StatelessWidget {
   const NotificationListTile({
     Key? key,
-    this.onTap,
-    this.value = false,
+    this.onChanged,
+    this.value,
     required this.title,
     required this.subtitle,
   }) : super(key: key);
-  final VoidCallback? onTap;
-  final bool value;
+  final ValueChanged<bool>? onChanged;
+  final bool? value;
   final String title;
   final String subtitle;
 
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
-      value: value,
-      activeColor: Theme.of(context).primaryColor,
-      onChanged: (value) {},
+    return ListTile(
+      onTap: () => onChanged?.call(!value!),
       title: Text(
         title,
         style: const TextStyle(
@@ -30,6 +28,17 @@ class NotificationListTile extends StatelessWidget {
         style: TextStyle(
           fontSize: 13,
           color: Colors.grey.shade600,
+        ),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+      trailing: IgnorePointer(
+        child: Transform.scale(
+          scale: .7,
+          child: Switch(
+            value: value ?? false,
+            activeColor: Theme.of(context).primaryColor,
+            onChanged: onChanged,
+          ),
         ),
       ),
     );

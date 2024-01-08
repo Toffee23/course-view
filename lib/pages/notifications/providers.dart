@@ -6,7 +6,10 @@ final notificationsProvider =
 });
 
 class UserNotifier extends StateNotifier<NotificationModel?> {
-  UserNotifier(this.ref, {this.user}) : super(user) {
+  UserNotifier(
+    this.ref, {
+    this.user,
+  }) : super(user) {
     initialize();
   }
   final Ref ref;
@@ -21,6 +24,26 @@ class UserNotifier extends StateNotifier<NotificationModel?> {
       appUpdates: false,
       challenges: false,
       learningReminder: false,
+    );
+  }
+
+  void update({
+    bool? vibrate,
+    bool? sound,
+    bool? payments,
+    bool? generalNotifications,
+    bool? appUpdates,
+    bool? challenges,
+    bool? learningReminder,
+  }) {
+    state = state?.copyWith(
+      vibrate: vibrate,
+      sound: sound,
+      payments: payments,
+      generalNotifications: generalNotifications,
+      appUpdates: appUpdates,
+      challenges: challenges,
+      learningReminder: learningReminder,
     );
   }
 }
