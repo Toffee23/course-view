@@ -109,6 +109,10 @@ class ManageProfilePage extends StatelessWidget {
                     margin: EdgeInsets.only(bottom: 15.0),
                     hintText: 'Phone number',
                   ),
+                  SizedBox(height: 50.0),
+                  Divider(),
+                  Text(
+                      'Email and username can only be changed twice in a month. While Gender & DOB are optional.')
                 ],
               ),
             ),
