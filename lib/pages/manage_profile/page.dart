@@ -5,6 +5,15 @@ import 'package:flutter/material.dart';
 class ManageProfilePage extends StatelessWidget {
   const ManageProfilePage({Key? key}) : super(key: key);
 
+  void _onSave(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const ProfileSaveDialog();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +21,7 @@ class ManageProfilePage extends StatelessWidget {
         title: const Text('Profile'),
         actions: <Widget>[
           MaterialButton(
-            onPressed: () {},
+            onPressed: () => _onSave(context),
             color: Colors.black87,
             visualDensity: const VisualDensity(vertical: -2, horizontal: -2),
             shape: RoundedRectangleBorder(
@@ -39,6 +48,7 @@ class ManageProfilePage extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(width: 20.0),
         ],
       ),
       body: Column(
@@ -77,11 +87,11 @@ class ManageProfilePage extends StatelessWidget {
                   ),
                   const CustomTextField(
                     margin: EdgeInsets.only(bottom: 15.0),
-                    hintText: 'Username',
+                    hintText: 'Email',
                   ),
                   const CustomTextField(
                     margin: EdgeInsets.only(bottom: 15.0),
-                    hintText: 'Email',
+                    hintText: 'Username',
                   ),
                   CustomTextField(
                     margin: const EdgeInsets.only(bottom: 15.0),
@@ -105,18 +115,163 @@ class ManageProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 15.0),
+                    child: MaterialButton(
+                      onPressed: () {},
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 12.0,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        side: BorderSide(
+                          color: Colors.grey.shade400,
+                          width: 1.2,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Select Gender',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                          Icon(
+                            Icons.expand_more,
+                            color: Colors.grey.shade600,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   const CustomTextField(
                     margin: EdgeInsets.only(bottom: 15.0),
                     hintText: 'Phone number',
                   ),
-                  SizedBox(height: 50.0),
-                  Divider(),
-                  Text(
-                      'Email and username can only be changed twice in a month. While Gender & DOB are optional.')
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 15.0),
+                    child: MaterialButton(
+                      onPressed: () {},
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 12.0,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        side: BorderSide(
+                          color: Colors.grey.shade400,
+                          width: 1.2,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Date of Birth',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                          Icon(
+                            CupertinoIcons.calendar_circle,
+                            color: Colors.grey.shade600,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40.0),
+                  Divider(color: Colors.grey.shade300, height: 30),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
+                      'Email and username can only be changed twice in a month. '
+                      'While Gender & DOB are optional.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40.0),
                 ],
               ),
             ),
-          )
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileSaveDialog extends StatelessWidget {
+  const ProfileSaveDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Center(child: Text('Save')),
+      contentPadding: EdgeInsets.zero,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            child: Text(
+              'Please rethink about your decision. '
+              'Once you delete, there will be no going back. '
+              'Please be certain.',
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            child: Divider(
+              height: 30.0,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('Discard'),
+              ),
+              const SizedBox(width: 10.0),
+              ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                    Theme.of(context).primaryColor,
+                  ),
+                  foregroundColor: const MaterialStatePropertyAll(
+                    Colors.white,
+                  ),
+                  shape: MaterialStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  padding: const MaterialStatePropertyAll(
+                    EdgeInsets.symmetric(horizontal: 12.0),
+                  ),
+                  textStyle: const MaterialStatePropertyAll(
+                    TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                child: const Text('Yes, I want to save it'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 50.0),
         ],
       ),
     );

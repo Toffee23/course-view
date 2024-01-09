@@ -34,15 +34,7 @@ mixin ProfileController on Widget {
     pushTo(context, const Placeholder());
   }
 
-  void onSecurity(BuildContext context) {
-    pushTo(context, const Placeholder());
-  }
-
-  void onLanguage(BuildContext context) {
-    pushTo(context, const Placeholder());
-  }
-
   void onLogout(BuildContext context) {
-    pushTo(context, const Placeholder());
+    // pushTo(context, const Placeholder());
   }
 }
