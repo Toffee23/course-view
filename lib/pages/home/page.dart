@@ -171,7 +171,14 @@ class HomePage extends ConsumerWidget {
                     //       )),
                     // ),
                     const SizedBox(height: 15.0),
-                    AssetImages.keepLearning,
+                    // AssetImages.keepLearning,
+                    AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Image(
+                        image: AssetImages.keepLearning.image,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                     const SizedBox(height: 15.0),
                     Text(
                       'Available Programs',
@@ -184,7 +191,10 @@ class HomePage extends ConsumerWidget {
                     const SizedBox(height: 15.0),
                     Row(
                       children: <Widget>[
-                        AssetImages.exp1,
+                        Image(
+                          image: AssetImages.exp1.image,
+                          fit: BoxFit.fill,
+                        ),
                         const SizedBox(width: 12.0),
                         AssetImages.exp2,
                       ],
