@@ -30,20 +30,30 @@ class AchievementsPage extends StatelessWidget {
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Icon(Icons.health_and_safety_sharp),
+                      const Icon(Icons.health_and_safety_sharp),
+                      const SizedBox(width: 8.0),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('data'),
-                          Text('data'),
+                          Row(
+                            children: <Widget>[
+                              const Text('Course completed'),
+                              const SizedBox(width: 8.0),
+                              Container(child: const Text('4')),
+                            ],
+                          ),
+                          const Text('Keep real with the challenges won'),
                         ],
-                      )
+                      ),
+                      const Spacer(),
+                      const Icon(Icons.expand_more),
                     ],
                   )
                 ],
