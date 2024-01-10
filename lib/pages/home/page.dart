@@ -23,166 +23,218 @@ class HomePage extends ConsumerWidget {
             children: <Widget>[
               Center(child: AssetImages.examCountTimer),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 10.0,
-                ),
-                child: Row(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Expanded(
-                        child: Text(
-                      'Welcome back, Simisola',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    )),
-                    const SizedBox(width: 8.0),
-                    SizedBox.square(
-                      dimension: 60,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10.0,
                       ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                color: const Color(0xFFF1F1EF),
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                              child: Text(
+                            'Welcome back, Simisola',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          )),
+                          const SizedBox(width: 8.0),
+                          SizedBox.square(
+                            dimension: 60,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: const Color(0xFFF1F1EF),
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              'You have 12 Notifications and 4 carts items',
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                          ),
+                          AssetImages.notification,
+                          const SizedBox(width: 5.0),
+                          AssetImages.bag,
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
                       child: Text(
-                        'You have 12 Notifications and 4 carts items',
+                        'What would you want to learn today?',
                         style: TextStyle(
                           color: Colors.grey.shade600,
                         ),
                       ),
                     ),
-                    AssetImages.notification,
-                    const SizedBox(width: 5.0),
-                    AssetImages.bag,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                      ),
+                      child: TextField(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SearchPage()));
+                        },
+                        onTapOutside: (_) =>
+                            FocusManager.instance.primaryFocus?.unfocus(),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade200,
+                            ),
+                          ),
+                          hintText: 'Courses',
+                          hintStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          prefixIcon: Icon(
+                            CupertinoIcons.search,
+                            color: Colors.grey.shade600,
+                          ),
+                          suffixIcon: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(right: 12.0),
+                                child: Text(
+                                  'Search',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 13.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    //   child: Container(
+                    //       padding: const EdgeInsets.all(10.0),
+                    //       color: Colors.black.withOpacity(.3),
+                    //       child: Column(
+                    //         children: <Widget>[
+                    //           const Icon(
+                    //             Icons.star_border_purple500,
+                    //             color: Colors.white70,
+                    //           ),
+                    //           const Text(
+                    //             'Join the leaderboard',
+                    //             style: TextStyle(
+                    //               fontSize: 16,
+                    //               color: Colors.white70,
+                    //               fontWeight: FontWeight.bold,
+                    //             ),
+                    //           ),
+                    //           const Text(
+                    //             'Participate on the ongoing easy and smooth game with others. Lead!',
+                    //             textAlign: TextAlign.center,
+                    //             style: TextStyle(color: Colors.white70),
+                    //           ),
+                    //           const SizedBox(height: 12.0),
+                    //           ElevatedButton(
+                    //               onPressed: () {},
+                    //               style: ButtonStyle(
+                    //                   shape: MaterialStatePropertyAll(
+                    //                       RoundedRectangleBorder(
+                    //                     borderRadius: BorderRadius.circular(8.0),
+                    //                   )),
+                    //                   backgroundColor: const MaterialStatePropertyAll(
+                    //                       Colors.black),
+                    //                   foregroundColor: const MaterialStatePropertyAll(
+                    //                       Colors.white)),
+                    //               child: const Text('Participate now'))
+                    //         ],
+                    //       )),
+                    // ),
+                    const SizedBox(height: 15.0),
+                    AssetImages.keepLearning,
+                    const SizedBox(height: 15.0),
+                    Text(
+                      'Available Programs',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Text(
+                      'Browse by categories that suits you',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 15.0),
+                    Row(
+                      children: <Widget>[
+                        AssetImages.exp1,
+                        const SizedBox(width: 12.0),
+                        AssetImages.exp2,
+                      ],
+                    ),
+                    const SizedBox(height: 15.0),
+                    Row(
+                      children: <Widget>[
+                        AssetImages.exp3,
+                        const SizedBox(width: 12.0),
+                        AssetImages.exp4,
+                      ],
+                    ),
+                    const SizedBox(height: 15.0),
+                    Container(
+                      color: const Color(0xFFD5D5D5),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 8.0,
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'See more courses',
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          Icon(CupertinoIcons.arrow_right, size: 18),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 15.0),
+                    AssetImages.keepLearning2,
                   ],
                 ),
               ),
-              const SizedBox(height: 8.0),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  'What would you want to learn today?',
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                  vertical: 8.0,
-                ),
-                child: TextField(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SearchPage()));
-                  },
-                  onTapOutside: (_) =>
-                      FocusManager.instance.primaryFocus?.unfocus(),
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.zero,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey.shade200,
-                      ),
-                    ),
-                    hintText: 'Courses',
-                    hintStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                    ),
-                    prefixIcon: Icon(
-                      CupertinoIcons.search,
-                      color: Colors.grey.shade600,
-                    ),
-                    suffixIcon: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 12.0),
-                          child: Text(
-                            'Search',
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    color: Colors.black.withOpacity(.3),
-                    child: Column(
-                      children: <Widget>[
-                        const Icon(
-                          Icons.star_border_purple500,
-                          color: Colors.white70,
-                        ),
-                        const Text(
-                          'Join the leaderboard',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Text(
-                          'Participate on the ongoing easy and smooth game with others. Lead!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                        const SizedBox(height: 12.0),
-                        ElevatedButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                                shape: MaterialStatePropertyAll(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                )),
-                                backgroundColor: const MaterialStatePropertyAll(
-                                    Colors.black),
-                                foregroundColor: const MaterialStatePropertyAll(
-                                    Colors.white)),
-                            child: const Text('Participate now'))
-                      ],
-                    )),
-              ),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 25.0),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 2.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Similar Courses',
+                      'Popular Courses',
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     TextButton(
                       onPressed: () {},
                       style: ButtonStyle(
                         foregroundColor: MaterialStatePropertyAll(
-                          Theme.of(context).primaryColor,
+                          Colors.grey.shade600,
                         ),
                       ),
                       child: const Text('See more'),
@@ -272,7 +324,28 @@ class HomePage extends ConsumerWidget {
                     );
                   }).toList(),
                 ),
-              )
+              ),
+              const SizedBox(height: 40.0),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Spend the time',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Text(
+                      'Students are writing these exams',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 15.0),
+                    AssetImages.hero,
+                    const SizedBox(height: 20.0),
+                    AssetImages.course,
+                  ],
+                ),
+              ),
             ],
           ),
         );

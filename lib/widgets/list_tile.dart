@@ -180,6 +180,7 @@ class SettingsListTile extends StatelessWidget {
     this.leading,
     this.trailing,
     this.textColor,
+    this.padding = const EdgeInsets.symmetric(horizontal: 15.0),
     this.onTap,
     this.isComingSoon = false,
     this.hideTrailing = false,
@@ -189,6 +190,7 @@ class SettingsListTile extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final Color? textColor;
+  final EdgeInsets? padding;
   final VoidCallback? onTap;
   final bool isComingSoon;
   final bool hideTrailing;
@@ -199,11 +201,8 @@ class SettingsListTile extends StatelessWidget {
       onTap: onTap,
       horizontalTitleGap: 18.0,
       minVerticalPadding: 0.0,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
-      visualDensity: const VisualDensity(
-        vertical: -4,
-        horizontal: -4,
-      ),
+      contentPadding: padding,
+      visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
       leading: leading,
       title: Row(
         children: <Widget>[

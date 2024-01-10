@@ -18,6 +18,7 @@ class ProfilePage extends StatelessWidget with ProfileController {
         title: const Text('Profile'),
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 40.0),
         child: Column(
           children: <Widget>[
             Padding(
@@ -40,33 +41,51 @@ class ProfilePage extends StatelessWidget with ProfileController {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Akinyemi'),
-                          Text('Simisola'),
-                          Text('@simibullet'),
+                          Text(
+                            'Simisola',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            '@simibullet',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 20.0),
                   Row(
                     children: <Widget>[
                       const Expanded(child: Divider()),
                       const SizedBox(width: 8.0),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          vertical: 5.0,
+                          vertical: 4.0,
                           horizontal: 12.0,
                         ),
                         decoration: BoxDecoration(
                           color: Colors.grey.shade300,
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        child: const Text('Quick Review'),
+                        child: const Text(
+                          'Quick Review',
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 8.0),
                       const Expanded(child: Divider()),
                     ],
                   ),
-                  const Row(
+                  const SizedBox(height: 20.0),
+                  Row(
                     children: <Widget>[
                       Expanded(
                         child: Column(
@@ -74,11 +93,18 @@ class ProfilePage extends StatelessWidget with ProfileController {
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Icon(Icons.pages_outlined),
-                                Text('0'),
+                                AssetImages.book,
+                                const SizedBox(width: 5.0),
+                                const Text('0'),
                               ],
                             ),
-                            Text('Course Completed')
+                            const SizedBox(height: 10.0),
+                            Text(
+                              'Course Completed',
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -86,17 +112,26 @@ class ProfilePage extends StatelessWidget with ProfileController {
                         child: Column(
                           children: <Widget>[
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Icon(Icons.pages_outlined),
-                                Text('0'),
+                                AssetImages.cup,
+                                const SizedBox(width: 5.0),
+                                const Text('0'),
                               ],
                             ),
-                            Text('Course Completed')
+                            const SizedBox(height: 10.0),
+                            Text(
+                              'Achievements',
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                              ),
+                            )
                           ],
                         ),
                       ),
                     ],
                   ),
+                  const Divider(height: 20.0),
                   const SizedBox(height: 10.0),
                 ],
               ),
@@ -142,6 +177,23 @@ class ProfilePage extends StatelessWidget with ProfileController {
               leading: AssetImages.darkMode,
               title: 'Dark mode view',
               subtitle: 'Switch display view',
+              padding: const EdgeInsets.only(left: 15),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('off'),
+                  Transform.scale(
+                    scale: .7,
+                    child: IgnorePointer(
+                      child: Switch(
+                        value: false,
+                        activeColor: Theme.of(context).primaryColor,
+                        onChanged: (v) {},
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             SettingsListTile(
               onTap: () => onLogout(context),
@@ -152,7 +204,7 @@ class ProfilePage extends StatelessWidget with ProfileController {
               hideTrailing: true,
             ),
             const SizedBox(height: 30.0),
-            Text('Version'),
+            const Text('Version'),
             Text(
               '1.0.0.102',
               style: TextStyle(
@@ -160,7 +212,6 @@ class ProfilePage extends StatelessWidget with ProfileController {
                 color: Colors.grey.shade600,
               ),
             ),
-            const SizedBox(height: 30.0),
           ],
         ),
       ),

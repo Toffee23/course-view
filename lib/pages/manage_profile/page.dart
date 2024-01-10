@@ -1,6 +1,9 @@
+import 'package:course_view/router/route.dart';
 import 'package:course_view/widgets/text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'widgets.dart';
 
 class ManageProfilePage extends StatelessWidget {
   const ManageProfilePage({Key? key}) : super(key: key);
@@ -9,7 +12,10 @@ class ManageProfilePage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const ProfileSaveDialog();
+        return ProfileSaveDialog(
+          onDiscard: () => pop(context),
+          onSave: () => {},
+        );
       },
     );
   }
@@ -204,74 +210,6 @@ class ManageProfilePage extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class ProfileSaveDialog extends StatelessWidget {
-  const ProfileSaveDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Center(child: Text('Save')),
-      contentPadding: EdgeInsets.zero,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-            child: Text(
-              'Please rethink about your decision. '
-              'Once you delete, there will be no going back. '
-              'Please be certain.',
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
-            child: Divider(
-              height: 30.0,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Discard'),
-              ),
-              const SizedBox(width: 10.0),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(
-                    Theme.of(context).primaryColor,
-                  ),
-                  foregroundColor: const MaterialStatePropertyAll(
-                    Colors.white,
-                  ),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  padding: const MaterialStatePropertyAll(
-                    EdgeInsets.symmetric(horizontal: 12.0),
-                  ),
-                  textStyle: const MaterialStatePropertyAll(
-                    TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                child: const Text('Yes, I want to save it'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 50.0),
         ],
       ),
     );

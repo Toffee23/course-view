@@ -1,13 +1,15 @@
 import 'package:course_view/router/route.dart';
 import 'package:flutter/material.dart';
 
+import '../achievements/page.dart';
 import '../manage_profile/page.dart';
 import '../notifications/page.dart';
 import '../payments/page.dart';
+import '../privacy_policy/page.dart';
 
 mixin ProfileController on Widget {
   void onAchievement(BuildContext context) {
-    pushTo(context, const Placeholder());
+    pushTo(context, const AchievementsPage());
   }
 
   void onManageProfile(BuildContext context) {
@@ -23,7 +25,7 @@ mixin ProfileController on Widget {
   }
 
   void onPrivacyPolicy(BuildContext context) {
-    pushTo(context, const Placeholder());
+    pushTo(context, const PrivacyPolicyPage());
   }
 
   void onSupport(BuildContext context) {
@@ -31,7 +33,7 @@ mixin ProfileController on Widget {
   }
 
   void onToggleViewMode(BuildContext context) {
-    pushTo(context, const Placeholder());
+    // pushTo(context, const Placeholder());
   }
 
   void onLogout(BuildContext context) {

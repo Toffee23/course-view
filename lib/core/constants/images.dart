@@ -25,4 +25,14 @@ class AssetImages {
   static final Image language = Image.asset('$base/language.png');
   static final Image logout = Image.asset('$base/logout.png');
   static final Image arrowRight = Image.asset('$base/arrow-right.png');
+  static final Image book = Image.asset('$base/book.png');
+  static final Image cup = Image.asset('$base/cup.png');
+  static final Image exp1 = Image.asset('$base/exp1.png');
+  static final Image exp2 = Image.asset('$base/exp2.png');
+  static final Image exp3 = Image.asset('$base/exp3.png');
+  static final Image exp4 = Image.asset('$base/exp4.png');
+  static final Image keepLearning = Image.asset('$base/keep-learning.png');
+  static final Image keepLearning2 = Image.asset('$base/keep-learning2.png');
+  static final Image hero = Image.asset('$base/hero.png');
+  static final Image course = Image.asset('$base/courses.png');
 }
