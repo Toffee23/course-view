@@ -31,8 +31,15 @@ class AssetImages {
   static final Image exp2 = Image.asset('$base/exp2.png');
   static final Image exp3 = Image.asset('$base/exp3.png');
   static final Image exp4 = Image.asset('$base/exp4.png');
+  static final Image exp5 = Image.asset('$base/exp5.png');
+  static final Image exp6 = Image.asset('$base/exp6.png');
+  static final Image exp7 = Image.asset('$base/exp7.png');
+  static final Image exp8 = Image.asset('$base/exp8.png');
+  static final Image exp9 = Image.asset('$base/exp9.png');
+  static final Image exp10 = Image.asset('$base/exp10.png');
   static final Image keepLearning = Image.asset('$base/keep-learning.png');
   static final Image keepLearning2 = Image.asset('$base/keep-learning2.png');
   static final Image hero = Image.asset('$base/hero.png');
   static final Image course = Image.asset('$base/courses.png');
+  static final Image information = Image.asset('$base/information.png');
 }

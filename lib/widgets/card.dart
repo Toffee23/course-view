@@ -104,52 +104,57 @@ class HomeCard extends StatelessWidget {
   }
 }
 
-// class _VideoAppState extends State<VideoApp> {
-//   late VideoPlayerController _controller;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = VideoPlayerController.networkUrl(Uri.parse(
-//         'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
-//       ..initialize().then((_) {
-//         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-//         setState(() {});
-//       });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Video Demo',
-//       home: Scaffold(
-//         body: Center(
-//           child: _controller.value.isInitialized
-//               ? AspectRatio(
-//             aspectRatio: _controller.value.aspectRatio,
-//             child: VideoPlayer(_controller),
-//           )
-//               : Container(),
-//         ),
-//         floatingActionButton: FloatingActionButton(
-//           onPressed: () {
-//             setState(() {
-//               _controller.value.isPlaying
-//                   ? _controller.pause()
-//                   : _controller.play();
-//             });
-//           },
-//           child: Icon(
-//             _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   @override
-//   void dispose() {
-//     super.dispose();
-//     _controller.dispose();
-//   }
-// }
+class RowListCard extends StatelessWidget {
+  const RowListCard({
+    Key? key,
+    required this.children,
+  }) : super(key: key);
+  final List<Image> children;
+
+  List<List<Image>> get pairedChildren {
+    List<List<Image>> result = [];
+
+    for (int i = 0; i < (children.length / 2).ceil(); i++) {
+      int start = i * 2;
+      int end = (i + 1) * 2;
+      end = end > children.length ? children.length : end;
+      result.add(children.sublist(start, end));
+    }
+    return result;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: pairedChildren.map(
+        (images) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 15.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Image(
+                    image: images.first.image,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                const SizedBox(width: 15.0),
+                if (images.length > 1)
+                  Expanded(
+                    child: Image(
+                      image: images.last.image,
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                else
+                  const Expanded(
+                    child: SizedBox(),
+                  ),
+              ],
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+}

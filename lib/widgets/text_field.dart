@@ -4,24 +4,27 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     Key? key,
     this.hintText,
-    this.margin,
+    this.margin = const EdgeInsets.only(bottom: 15.0),
+    this.prefixIcon,
     this.suffixIcon,
+    this.controller,
+    this.onTap,
   }) : super(key: key);
   final String? hintText;
   final EdgeInsetsGeometry? margin;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final TextEditingController? controller;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: margin,
       child: TextField(
-        onTap: () {
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => const SearchPage()));
-        },
+        onTap: onTap,
+        controller: controller,
+        cursorColor: Theme.of(context).primaryColor,
         onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -31,9 +34,16 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: const BorderSide(
+              color: Color(0xFFD6D6D6),
+              width: 1.2,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
-              color: Colors.grey.shade400,
+              color: Theme.of(context).primaryColor,
               width: 1.2,
             ),
           ),
@@ -42,25 +52,7 @@ class CustomTextField extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.normal,
           ),
-          // prefixIcon: Icon(
-          //   CupertinoIcons.search,
-          //   color: Colors.grey.shade600,
-          // ),
-          // suffixIcon: Column(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     Padding(
-          //       padding: const EdgeInsets.only(right: 12.0),
-          //       child: Text(
-          //         'Search',
-          //         style: TextStyle(
-          //           color: Theme.of(context).primaryColor,
-          //           fontSize: 13.0,
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
         ),
       ),
