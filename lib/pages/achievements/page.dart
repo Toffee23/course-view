@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets.dart';
+
 class AchievementsPage extends StatelessWidget {
   const AchievementsPage({Key? key}) : super(key: key);
 
@@ -35,27 +37,8 @@ class AchievementsPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      const Icon(Icons.health_and_safety_sharp),
-                      const SizedBox(width: 8.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              const Text('Course completed'),
-                              const SizedBox(width: 8.0),
-                              Container(child: const Text('4')),
-                            ],
-                          ),
-                          const Text('Keep real with the challenges won'),
-                        ],
-                      ),
-                      const Spacer(),
-                      const Icon(Icons.expand_more),
-                    ],
-                  )
+                  ...dummyList
+                      .map((data) => AchievementsExpansionTile(data: data)),
                 ],
               ),
             ),
@@ -65,3 +48,16 @@ class AchievementsPage extends StatelessWidget {
     );
   }
 }
+
+final dummyList = [
+  [
+    "Completed the ICAN course for beginners and wish to congratulate you on this achievements",
+    "Completed the ICAN course for beginners and wish to congratulate you on this achievements",
+    "Completed the ICAN course for beginners and wish tot congratulate you on this achievements",
+    "Completed the ICAN course for beginners and wish tot congratulate you on this achievements",
+  ],
+  [
+    "Completed the ICAN course for beginners and wish to congratulate you on this achievements",
+    "Completed the ICAN course for beginners and wish tot congratulate you on this achievements",
+  ]
+];

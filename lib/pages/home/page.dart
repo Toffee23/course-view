@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/images.dart';
 import '../../widgets/card.dart';
 import '../../widgets/snack_bar.dart';
+import '../../widgets/text_field.dart';
 import '../search/page.dart';
 
 class HomePage extends ConsumerWidget {
@@ -21,7 +22,7 @@ class HomePage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Center(child: AssetImages.examCountTimer),
+              // Center(child: AssetImages.examCountTimer),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Column(
@@ -83,52 +84,38 @@ class HomePage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
+                    CustomTextField(
+                      onTap: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SearchPage()))
+                            .whenComplete(() {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        });
+                      },
+                      prefixIcon: Icon(
+                        CupertinoIcons.search,
+                        color: Colors.grey.shade600,
                       ),
-                      child: TextField(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SearchPage()));
-                        },
-                        onTapOutside: (_) =>
-                            FocusManager.instance.primaryFocus?.unfocus(),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.zero,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade200,
+                      hintText: 'Courses',
+                      suffixIcon: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Text(
+                              'Search',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 13.0,
+                              ),
                             ),
                           ),
-                          hintText: 'Courses',
-                          hintStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          prefixIcon: Icon(
-                            CupertinoIcons.search,
-                            color: Colors.grey.shade600,
-                          ),
-                          suffixIcon: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12.0),
-                                child: Text(
-                                  'Search',
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 13.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        ],
                       ),
+                      margin: EdgeInsets.zero,
                     ),
                     // Padding(
                     //   padding: const EdgeInsets.symmetric(horizontal: 15.0),

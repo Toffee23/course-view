@@ -84,23 +84,18 @@ class ManageProfilePage extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   const CustomTextField(
-                    margin: EdgeInsets.only(bottom: 10.0),
                     hintText: 'Firstname',
                   ),
                   const CustomTextField(
-                    margin: EdgeInsets.only(bottom: 15.0),
                     hintText: 'Lastname',
                   ),
                   const CustomTextField(
-                    margin: EdgeInsets.only(bottom: 15.0),
                     hintText: 'Email',
                   ),
                   const CustomTextField(
-                    margin: EdgeInsets.only(bottom: 15.0),
                     hintText: 'Username',
                   ),
                   CustomTextField(
-                    margin: const EdgeInsets.only(bottom: 15.0),
                     hintText: 'Password',
                     suffixIcon: IconButton(
                       onPressed: () {},
@@ -111,7 +106,6 @@ class ManageProfilePage extends StatelessWidget {
                     ),
                   ),
                   CustomTextField(
-                    margin: const EdgeInsets.only(bottom: 15.0),
                     hintText: 'Confirm Password',
                     suffixIcon: IconButton(
                       onPressed: () {},
@@ -155,7 +149,6 @@ class ManageProfilePage extends StatelessWidget {
                     ),
                   ),
                   const CustomTextField(
-                    margin: EdgeInsets.only(bottom: 15.0),
                     hintText: 'Phone number',
                   ),
                   Container(
