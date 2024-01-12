@@ -1,5 +1,4 @@
 import 'package:course_view/core/constants/images.dart';
-import 'package:course_view/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -64,18 +63,35 @@ class ChatScreen extends StatelessWidget {
                 Image(image: AssetImages.theme.image, width: 32),
                 const SizedBox(width: 8.0),
                 Expanded(
-                  child: TextField(
-                    cursorColor: Theme.of(context).primaryColor,
-                    decoration: InputDecoration(
-                      hintText: 'Write a message',
-                      fillColor: const Color(0xFFF1F1EF),
-                      filled: true,
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      suffixIcon: AssetImages.send,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF1F1EF),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            cursorColor: Theme.of(context).primaryColor,
+                            maxLines: 5,
+                            minLines: 1,
+                            decoration: const InputDecoration(
+                              hintText: 'Write a message',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(left: 10.0),
+                              hintStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: AssetImages.send,
+                        ),
+                      ],
                     ),
                   ),
                 ),

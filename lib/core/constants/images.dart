@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AssetImages {
+abstract final class AssetImages {
   static const String base = 'assets/images';
   static final Image cardPos = Image.asset('$base/card-pos.png');
   static final Image cartTrolley = Image.asset('$base/cart-trolley.png');
@@ -47,4 +47,10 @@ class AssetImages {
   static final Image theme = Image.asset('$base/theme.png');
   static final Image pic = Image.asset('$base/pic.png');
   static final Image send = Image.asset('$base/send.png');
+  static final Image notifications = Image.asset('$base/notifications.png');
+  static final Image facebook = Image.asset('$base/facebook.png');
+  static final Image gift = Image.asset('$base/gift.png');
+  static final Image instagram = Image.asset('$base/instagram.png');
+  static final Image link = Image.asset('$base/link.png');
+  static final Image messenger = Image.asset('$base/messenger.png');
 }
