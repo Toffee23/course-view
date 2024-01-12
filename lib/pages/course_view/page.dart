@@ -6,6 +6,8 @@ import 'package:course_view/core/extensions/string.dart';
 import 'package:course_view/pages/course_view/challenges_tab.dart';
 import 'package:course_view/pages/course_view/comments_tab.dart';
 import 'package:course_view/pages/course_view/lectures_tab.dart';
+import 'package:course_view/pages/support/page.dart';
+import 'package:course_view/router/route.dart';
 import 'package:course_view/utils/download.dart';
 import 'package:course_view/widgets/button.dart';
 import 'package:course_view/widgets/list_tile.dart';
@@ -19,8 +21,10 @@ import '../home/model.dart';
 import 'model.dart';
 import 'notes_tab.dart';
 import 'provider.dart';
+import 'controller.dart';
 
-class CourseViewPage extends ConsumerStatefulWidget {
+class CourseViewPage extends ConsumerStatefulWidget
+    with CourseViewPageController {
   const CourseViewPage({
     Key? key,
     required this.course,
@@ -562,9 +566,9 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                             //     decoration: TextDecoration.lineThrough,
                             //   ),
                             // ),
-                            const Text(
-                              'NGN 20,000.00',
-                              style: TextStyle(
+                            Text(
+                              'NGN ${data.price.toString().formatToPrice}',
+                              style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
@@ -572,7 +576,8 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                             ),
                             const SizedBox(height: 15.0),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () =>
+                                  widget.onEnrollNow(context, data),
                               style: ButtonStyle(
                                 backgroundColor: MaterialStatePropertyAll(
                                   Theme.of(context).primaryColor,
@@ -646,7 +651,8 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                           ),
                           const SizedBox(height: 15.0),
                           OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () =>
+                                pushTo(context, const SupportPage()),
                             style: ButtonStyle(
                               foregroundColor: MaterialStatePropertyAll(
                                 Theme.of(context).primaryColor,
@@ -704,7 +710,7 @@ class _CourseViewPageState extends ConsumerState<CourseViewPage> {
                     const SizedBox(width: 15.0),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => widget.onEnrollNow(context, data),
                         style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll(
                             Theme.of(context).primaryColor,

@@ -1,4 +1,8 @@
+import 'package:course_view/router/route.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import '../../widgets/webview.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({Key? key}) : super(key: key);
@@ -166,41 +170,55 @@ class PrivacyPolicyPage extends StatelessWidget {
               'please contact us at info@excelacademyonline.com.',
             ),
             const SizedBox(height: 20.0),
-            RichText(
-              text: TextSpan(
-                children: <InlineSpan>[
-                  TextSpan(
-                    text: 'A PDF of this Privacy Policy '
-                        'available for printing is available  ',
-                    style: TextStyle(
-                      color: Colors.blueGrey.shade600,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                    ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RichText(
+                text: TextSpan(
+                  text: 'A PDF of this Privacy Policy '
+                      'available for printing is available ',
+                  style: TextStyle(
+                    color: Colors.blueGrey.shade600,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
                   ),
-                  TextSpan(
-                    text: 'here',
-                    style: TextStyle(
-                      color: Colors.blueGrey.shade600,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'here',
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          pushTo(
+                            context,
+                            WebView(
+                              url: 'https://excelacademyonline.com/',
+                              showTitle: false,
+                              // redirectUrl: ApiUrl.successful,
+                              onClosed: () {},
+                              onCompleted: () => {},
+                            ),
+                          );
+                        },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            // Text(
-            //   'A PDF of this Privacy Policy available'
-            //   ' for printing is available here', // https://excelacademyonline.com/
-            //   style: TextStyle(
-            //     color: Colors.blueGrey.shade600,
-            //     fontWeight: FontWeight.w500,
-            //     fontSize: 12,
-            //   ),
-            // )
           ],
         ),
       ),
     );
+  }
+
+  void azag() {
+    WebView(
+      url: 'https://checkout.paystack.com/3k1y5dfve81d4f0',
+      // redirectUrl: ApiUrl.successful,
+      onClosed: () {},
+      onCompleted: () => {},
+    );
+    print('object');
   }
 }

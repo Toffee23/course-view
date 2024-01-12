@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AssetImages {
+abstract final class AssetImages {
   static const String base = 'assets/images';
   static final Image cardPos = Image.asset('$base/card-pos.png');
   static final Image cartTrolley = Image.asset('$base/cart-trolley.png');
@@ -13,6 +13,7 @@ class AssetImages {
   static final Image wrappedPresent = Image.asset('$base/wrapped-present.png');
   static final Image examCountTimer = Image.asset('$base/exam-count-timer.png');
   static final Image bag = Image.asset('$base/bag.png');
+  static final Image bag2 = Image.asset('$base/bag2.png');
   static final Image notification = Image.asset('$base/notification-bing.png');
   static final Image achievement = Image.asset('$base/achievement.png');
   static final Image profile = Image.asset('$base/profile.png');
@@ -42,4 +43,15 @@ class AssetImages {
   static final Image hero = Image.asset('$base/hero.png');
   static final Image course = Image.asset('$base/courses.png');
   static final Image information = Image.asset('$base/information.png');
+  static final Image lockCheck = Image.asset('$base/lock-check.png');
+  static final Image people = Image.asset('$base/people.png');
+  static final Image theme = Image.asset('$base/theme.png');
+  static final Image pic = Image.asset('$base/pic.png');
+  static final Image send = Image.asset('$base/send.png');
+  static final Image notifications = Image.asset('$base/notifications.png');
+  static final Image facebook = Image.asset('$base/facebook.png');
+  static final Image gift = Image.asset('$base/gift.png');
+  static final Image instagram = Image.asset('$base/instagram.png');
+  static final Image link = Image.asset('$base/link.png');
+  static final Image messenger = Image.asset('$base/messenger.png');
 }

@@ -5,11 +5,13 @@ class WebView extends StatefulWidget {
   const WebView({
     super.key,
     required this.url,
+    this.showTitle = true,
     this.redirectUrl,
     this.onClosed,
     this.onCompleted,
   });
   final String url;
+  final bool showTitle;
   final String? redirectUrl;
   final VoidCallback? onClosed;
   final VoidCallback? onCompleted;
@@ -58,13 +60,15 @@ class _WebViewState extends State<WebView> {
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => widget.onClosed?.call(),
-            icon: const Icon(Icons.close),
-          ),
-          title: const Text('Course payment'),
-        ),
+        appBar: widget.showTitle
+            ? AppBar(
+                leading: IconButton(
+                  onPressed: () => widget.onClosed?.call(),
+                  icon: const Icon(Icons.close),
+                ),
+                title: const Text('Course payment'),
+              )
+            : null,
         body: WebViewWidget(controller: controller),
       ),
     );

@@ -48,8 +48,11 @@ class _NavigationPageState extends State<NavigationPage> {
             const ProgramPage(),
             const Placeholder(),
             CartPage(
-                onArrowBackPressed: () => widget.switchTab(_pageController, 0)),
-            const ProfilePage(),
+              onArrowBackPressed: () => widget.switchTab(_pageController, 0),
+            ),
+            ProfilePage(
+              onArrowBackPressed: () => widget.switchTab(_pageController, 0),
+            ),
           ],
         ),
         bottomNavigationBar: ValueListenableBuilder(

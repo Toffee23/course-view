@@ -7,6 +7,7 @@ import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/core/extensions/string.dart';
 import 'package:course_view/pages/home/model.dart';
 import 'package:course_view/pages/home/provider.dart';
+import 'package:course_view/router/route.dart';
 import 'package:course_view/widgets/button.dart';
 import 'package:course_view/widgets/dialog.dart';
 import 'package:flutter/material.dart';
@@ -349,15 +350,13 @@ class CartBottomSheet extends StatelessWidget {
       final reference = response.data['reference'];
 
       Navigator.of(context).pop();
-      Navigator.push(
+      pushTo(
         context,
-        MaterialPageRoute(
-          builder: (c) => WebView(
-            url: url,
-            redirectUrl: ApiUrl.successful,
-            onClosed: () {},
-            onCompleted: () => _onCompleted(context, accessCode, reference),
-          ),
+        WebView(
+          url: url,
+          redirectUrl: ApiUrl.successful,
+          onClosed: () {},
+          onCompleted: () => _onCompleted(context, accessCode, reference),
         ),
       );
     } else {

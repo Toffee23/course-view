@@ -1,18 +1,25 @@
 import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/widgets/list_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller.dart';
+import 'provider.dart';
 
-class ProfilePage extends StatelessWidget with ProfileController {
-  const ProfilePage({Key? key}) : super(key: key);
+class ProfilePage extends ConsumerWidget with ProfileController {
+  const ProfilePage({
+    Key? key,
+    required this.onArrowBackPressed,
+  }) : super(key: key);
+  final VoidCallback onArrowBackPressed;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dark = ref.watch(darkProvider);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: onArrowBackPressed,
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Text('Profile'),
@@ -29,13 +36,14 @@ class ProfilePage extends StatelessWidget with ProfileController {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       SizedBox.square(
-                          dimension: 110.0,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          )),
+                        dimension: 110.0,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
                       const SizedBox(width: 8.0),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,6 +169,12 @@ class ProfilePage extends StatelessWidget with ProfileController {
               subtitle: 'An highly secure with payments',
             ),
             SettingsListTile(
+              onTap: () => onRefer(context),
+              leading: AssetImages.language,
+              title: 'Referral',
+              subtitle: 'An highly secure with payments',
+            ),
+            SettingsListTile(
               onTap: () => onPrivacyPolicy(context),
               leading: AssetImages.policy,
               title: 'Privacy Policy',
@@ -173,7 +187,7 @@ class ProfilePage extends StatelessWidget with ProfileController {
               subtitle: 'Get all available help from us',
             ),
             SettingsListTile(
-              onTap: () => onToggleViewMode(context),
+              onTap: () => onToggleViewMode(context, ref),
               leading: AssetImages.darkMode,
               title: 'Dark mode view',
               subtitle: 'Switch display view',
@@ -181,12 +195,12 @@ class ProfilePage extends StatelessWidget with ProfileController {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Text('off'),
+                  Text(dark ? 'On' : 'Off'),
                   Transform.scale(
                     scale: .7,
                     child: IgnorePointer(
                       child: Switch(
-                        value: false,
+                        value: dark,
                         activeColor: Theme.of(context).primaryColor,
                         onChanged: (v) {},
                       ),
