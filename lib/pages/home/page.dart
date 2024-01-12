@@ -10,6 +10,7 @@ import '../../core/constants/images.dart';
 import '../../widgets/card.dart';
 import '../../widgets/snack_bar.dart';
 import '../../widgets/text_field.dart';
+import '../notification/page.dart';
 import '../search/page.dart';
 
 class HomePage extends ConsumerWidget {
@@ -24,7 +25,6 @@ class HomePage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Center(child: AssetImages.examCountTimer),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Column(
@@ -57,7 +57,9 @@ class HomePage extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    Container(
+                    MaterialButton(
+                      onPressed: () =>
+                          pushTo(context, const NotificationPage()),
                       color: const Color(0xFFF1F1EF),
                       padding: const EdgeInsets.all(8),
                       child: Row(

@@ -7,7 +7,11 @@ import 'controller.dart';
 import 'provider.dart';
 
 class ProfilePage extends ConsumerWidget with ProfileController {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({
+    Key? key,
+    required this.onArrowBackPressed,
+  }) : super(key: key);
+  final VoidCallback onArrowBackPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +19,7 @@ class ProfilePage extends ConsumerWidget with ProfileController {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: onArrowBackPressed,
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Text('Profile'),

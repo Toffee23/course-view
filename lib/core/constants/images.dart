@@ -13,6 +13,7 @@ abstract final class AssetImages {
   static final Image wrappedPresent = Image.asset('$base/wrapped-present.png');
   static final Image examCountTimer = Image.asset('$base/exam-count-timer.png');
   static final Image bag = Image.asset('$base/bag.png');
+  static final Image bag2 = Image.asset('$base/bag2.png');
   static final Image notification = Image.asset('$base/notification-bing.png');
   static final Image achievement = Image.asset('$base/achievement.png');
   static final Image profile = Image.asset('$base/profile.png');

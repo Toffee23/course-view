@@ -91,3 +91,65 @@ class SocialMediaButton extends StatelessWidget {
     );
   }
 }
+
+class SubmitButton extends StatelessWidget {
+  const SubmitButton({
+    Key? key,
+    required this.onPressed,
+    required this.text,
+  }) : super(key: key);
+  final VoidCallback onPressed;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+        backgroundColor: const MaterialStatePropertyAll(
+          Color(0xFF626568),
+        ),
+        foregroundColor: const MaterialStatePropertyAll(
+          Colors.white70,
+        ),
+        fixedSize: const MaterialStatePropertyAll(
+          Size(double.maxFinite, 40),
+        ),
+      ),
+      child: Text(text),
+    );
+  }
+}
+
+class LinkTextField extends StatelessWidget {
+  const LinkTextField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      cursorColor: Theme.of(context).primaryColor,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Color(0xFF626568),
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).primaryColor,
+            width: 1.3,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+    );
+  }
+}
