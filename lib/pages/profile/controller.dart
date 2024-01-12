@@ -1,3 +1,4 @@
+import 'package:course_view/pages/support/page.dart';
 import 'package:course_view/router/route.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,7 @@ mixin ProfileController on Widget {
   }
 
   void onSupport(BuildContext context) {
-    pushTo(context, const Placeholder());
+    pushTo(context, const SupportPage());
   }
 
   void onToggleViewMode(BuildContext context) {

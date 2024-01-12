@@ -42,4 +42,8 @@ class AssetImages {
   static final Image hero = Image.asset('$base/hero.png');
   static final Image course = Image.asset('$base/courses.png');
   static final Image information = Image.asset('$base/information.png');
+  static final Image lockCheck = Image.asset('$base/lock-check.png');
+  static final Image people = Image.asset('$base/people.png');
+  static final Image theme = Image.asset('$base/theme.png');
+  static final Image pic = Image.asset('$base/pic.png');
 }
