@@ -181,6 +181,11 @@ class ReferralPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 7.0),
+                      TextField(),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('Submit'),
+                      ),
                     ],
                   ),
                 ],
