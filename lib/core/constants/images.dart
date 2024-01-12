@@ -46,4 +46,5 @@ class AssetImages {
   static final Image people = Image.asset('$base/people.png');
   static final Image theme = Image.asset('$base/theme.png');
   static final Image pic = Image.asset('$base/pic.png');
+  static final Image send = Image.asset('$base/send.png');
 }

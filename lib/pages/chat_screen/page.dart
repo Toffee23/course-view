@@ -39,8 +39,8 @@ class ChatScreen extends StatelessWidget {
                     const SizedBox(height: 2.0),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 4.0,
+                        horizontal: 6.0,
+                        vertical: 3.0,
                       ),
                       color: Colors.black87,
                       child: const Text(
@@ -48,7 +48,7 @@ class ChatScreen extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: 9,
                         ),
                       ),
                     ),
@@ -66,15 +66,16 @@ class ChatScreen extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     cursorColor: Theme.of(context).primaryColor,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Write a message',
-                      fillColor: Color(0xFFF1F1EF),
+                      fillColor: const Color(0xFFF1F1EF),
                       filled: true,
                       border: InputBorder.none,
                       hintStyle: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
+                      suffixIcon: AssetImages.send,
                     ),
                   ),
                 ),
