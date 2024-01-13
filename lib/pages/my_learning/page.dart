@@ -22,10 +22,13 @@ class MyLearningPage extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             ListView.builder(
+              padding: EdgeInsets.all(15.0),
               itemBuilder: (BuildContext context, int index) {
                 return Container(
+                  margin: EdgeInsets.only(bottom: 15.0),
                   padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
                     border: Border.all(
                       color: Color(0xFFF1F1EF),
                     ),
