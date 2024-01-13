@@ -1,3 +1,4 @@
+import 'package:course_view/pages/my_learning/page.dart';
 import 'package:course_view/pages/program/page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _NavigationPageState extends State<NavigationPage> {
           children: <Widget>[
             const HomePage(),
             const ProgramPage(),
-            const Placeholder(),
+            const MyLearningPage(),
             CartPage(
               onArrowBackPressed: () => widget.switchTab(_pageController, 0),
             ),

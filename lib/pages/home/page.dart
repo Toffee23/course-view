@@ -1,5 +1,10 @@
 import 'package:course_view/pages/home/provider.dart';
+import 'package:course_view/pages/my_learning/page.dart';
 import 'package:course_view/pages/program/page.dart';
+import 'package:course_view/pages/program_courses/page.dart';
+import 'package:course_view/pages/program_courses/page.dart';
+import 'package:course_view/pages/program_courses/page.dart';
+import 'package:course_view/pages/program_courses/page.dart';
 import 'package:course_view/router/route.dart';
 import 'package:course_view/widgets/place_holders.dart';
 import 'package:flutter/cupertino.dart';
@@ -175,26 +180,43 @@ class HomePage extends ConsumerWidget {
                     const SizedBox(height: 15.0),
 
                     RowListCard(
-                      children: <Image>[
-                        AssetImages.exp1,
-                        AssetImages.exp2,
-                        AssetImages.exp3,
-                        AssetImages.exp4,
+                      children: <ProgramButton>[
+                        ProgramButton(
+                          program: 'ICAN',
+                          image: AssetImages.exp1,
+                          onPressed: () => pushTo(
+                              context, const ProgramCourses(program: 'ICAN')),
+                        ),
+                        ProgramButton(
+                          program: 'ACCA',
+                          image: AssetImages.exp2,
+                          onPressed: () => pushTo(
+                              context, const ProgramCourses(program: 'ACCA')),
+                        ),
+                        ProgramButton(
+                          program: 'CITN',
+                          image: AssetImages.exp3,
+                          onPressed: () => pushTo(
+                              context, const ProgramCourses(program: 'CITN')),
+                        ),
+                        ProgramButton(
+                          program: 'CIMA',
+                          image: AssetImages.exp4,
+                          onPressed: () => pushTo(
+                              context, const ProgramCourses(program: 'CIMA')),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 15.0),
                     MaterialButton(
                       onPressed: () => pushTo(context, const ProgramPage()),
-                      color: const Color(0xFFD5D5D5),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 8.0,
-                      ),
+                      color: const Color(0xFFF1F1EF),
+                      padding: const EdgeInsets.all(10.0),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            'See more courses',
+                            'See more programs',
                             style: TextStyle(fontSize: 13),
                           ),
                           Icon(CupertinoIcons.arrow_right, size: 18),
@@ -202,7 +224,12 @@ class HomePage extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 15.0),
-                    AssetImages.keepLearning2,
+                    MaterialButton(
+                      onPressed: () => pushTo(context, const MyLearningPage()),
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      padding: const EdgeInsets.all(4.0),
+                      child: AssetImages.keepLearning2,
+                    ),
                   ],
                 ),
               ),

@@ -109,10 +109,10 @@ class RowListCard extends StatelessWidget {
     Key? key,
     required this.children,
   }) : super(key: key);
-  final List<Image> children;
+  final List<ProgramButton> children;
 
-  List<List<Image>> get pairedChildren {
-    List<List<Image>> result = [];
+  List<List<ProgramButton>> get pairedChildren {
+    List<List<ProgramButton>> result = [];
 
     for (int i = 0; i < (children.length / 2).ceil(); i++) {
       int start = i * 2;
@@ -127,24 +127,18 @@ class RowListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: pairedChildren.map(
-        (images) {
+        (buttons) {
           return Container(
-            margin: const EdgeInsets.only(bottom: 15.0),
+            margin: const EdgeInsets.only(bottom: 8.0),
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Image(
-                    image: images.first.image,
-                    fit: BoxFit.fill,
-                  ),
+                  child: buttons.first,
                 ),
-                const SizedBox(width: 15.0),
-                if (images.length > 1)
+                const SizedBox(width: 8.0),
+                if (buttons.length > 1)
                   Expanded(
-                    child: Image(
-                      image: images.last.image,
-                      fit: BoxFit.fill,
-                    ),
+                    child: buttons.last,
                   )
                 else
                   const Expanded(
@@ -155,6 +149,31 @@ class RowListCard extends StatelessWidget {
           );
         },
       ).toList(),
+    );
+  }
+}
+
+class ProgramButton extends StatelessWidget {
+  const ProgramButton({
+    Key? key,
+    required this.program,
+    required this.image,
+    this.onPressed,
+  }) : super(key: key);
+  final String program;
+  final Image image;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      onPressed: onPressed,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: const EdgeInsets.all(4.0),
+      child: Image(
+        image: image.image,
+        fit: BoxFit.fill,
+      ),
     );
   }
 }
