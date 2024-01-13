@@ -2,9 +2,6 @@ import 'package:course_view/pages/home/provider.dart';
 import 'package:course_view/pages/my_learning/page.dart';
 import 'package:course_view/pages/program/page.dart';
 import 'package:course_view/pages/program_courses/page.dart';
-import 'package:course_view/pages/program_courses/page.dart';
-import 'package:course_view/pages/program_courses/page.dart';
-import 'package:course_view/pages/program_courses/page.dart';
 import 'package:course_view/router/route.dart';
 import 'package:course_view/widgets/place_holders.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +16,11 @@ import '../notification/page.dart';
 import '../search/page.dart';
 
 class HomePage extends ConsumerWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({
+    Key? key,
+    required this.onCartIconPressed,
+  }) : super(key: key);
+  final VoidCallback onCartIconPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,9 +63,7 @@ class HomePage extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    MaterialButton(
-                      onPressed: () =>
-                          pushTo(context, const NotificationPage()),
+                    Container(
                       color: const Color(0xFFF1F1EF),
                       padding: const EdgeInsets.all(8),
                       child: Row(
@@ -77,9 +76,21 @@ class HomePage extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          AssetImages.notification,
-                          const SizedBox(width: 5.0),
-                          AssetImages.bag,
+                          IconButton(
+                            icon: AssetImages.notification,
+                            onPressed: () =>
+                                pushTo(context, const NotificationPage()),
+                            style: const ButtonStyle(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
+                          IconButton(
+                            icon: AssetImages.bag,
+                            onPressed: () => onCartIconPressed(),
+                            style: const ButtonStyle(
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
                         ],
                       ),
                     ),

@@ -1,3 +1,6 @@
+import 'package:course_view/core/constants/colors.dart';
+import 'package:course_view/core/constants/images.dart';
+import 'package:course_view/pages/my_learning/widgets.dart';
 import 'package:flutter/material.dart';
 
 class MyLearningPage extends StatelessWidget {
@@ -22,60 +25,49 @@ class MyLearningPage extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             ListView.builder(
-              padding: EdgeInsets.all(15.0),
+              itemCount: data.length,
+              padding: const EdgeInsets.all(15.0),
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.only(bottom: 15.0),
-                  padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(
-                      color: Color(0xFFF1F1EF),
-                    ),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        width: 80,
-                        height: 80,
-                        color: Colors.grey.shade50,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Strategic Financial',
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                'Take Exam',
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                              SizedBox(width: 12.0),
-                              Text(
-                                '2 hrs 45 mins',
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+                final course = data.elementAt(index);
+                return CourseCard(
+                  image: course.image,
+                  title: course.title,
+                  progress: course.progress,
+                  progressColor: course.progressColor,
+                  duration: course.duration,
+                  state: CourseState.onGoing,
                 );
               },
             ),
-            Center(
-              child: Text('Tab 2 Content'),
+            ListView.builder(
+              itemCount: data.length,
+              padding: const EdgeInsets.all(15.0),
+              itemBuilder: (BuildContext context, int index) {
+                final course = data.elementAt(index);
+                return CourseCard(
+                  image: course.image,
+                  title: course.title,
+                  progress: course.progress,
+                  progressColor: course.progressColor,
+                  duration: course.duration,
+                  state: CourseState.completed,
+                );
+              },
             ),
-            Center(
-              child: Text('Tab 3 Content'),
+            ListView.builder(
+              itemCount: data.length,
+              padding: const EdgeInsets.all(15.0),
+              itemBuilder: (BuildContext context, int index) {
+                final course = data.elementAt(index);
+                return CourseCard(
+                  image: course.image,
+                  title: course.title,
+                  progress: course.progress,
+                  progressColor: course.progressColor,
+                  duration: course.duration,
+                  state: CourseState.bookmark,
+                );
+              },
             ),
           ],
         ),
@@ -83,3 +75,50 @@ class MyLearningPage extends StatelessWidget {
     );
   }
 }
+
+class DummyData {
+  final Image image;
+  final String title;
+  final double progress;
+  final Color progressColor;
+  final Duration duration;
+
+  DummyData({
+    required this.image,
+    required this.title,
+    required this.progress,
+    required this.progressColor,
+    required this.duration,
+  });
+}
+
+final data = [
+  DummyData(
+    image: AssetImages.course1,
+    title: 'Strategic Financial Management',
+    progress: .68,
+    progressColor: PlaneColors.green,
+    duration: const Duration(hours: 2, minutes: 45),
+  ),
+  DummyData(
+    image: AssetImages.course2,
+    title: 'Corporate Reporting',
+    progress: .52,
+    progressColor: PlaneColors.teal,
+    duration: const Duration(hours: 2, minutes: 45),
+  ),
+  DummyData(
+    image: AssetImages.course3,
+    title: 'ACCA Advanced Financial',
+    progress: .36,
+    progressColor: PlaneColors.blue,
+    duration: const Duration(hours: 2, minutes: 45),
+  ),
+  DummyData(
+    image: AssetImages.course4,
+    title: 'ACCA - F4 Corporate and Business Law',
+    progress: .81,
+    progressColor: PlaneColors.purple,
+    duration: const Duration(hours: 2, minutes: 45),
+  ),
+];

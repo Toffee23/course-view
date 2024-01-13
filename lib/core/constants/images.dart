@@ -54,4 +54,9 @@ abstract final class AssetImages {
   static final Image instagram = Image.asset('$base/instagram.png');
   static final Image link = Image.asset('$base/link.png');
   static final Image messenger = Image.asset('$base/messenger.png');
+  static final Image course1 = Image.asset('$base/course-0.png');
+  static final Image course2 = Image.asset('$base/course-1.png');
+  static final Image course3 = Image.asset('$base/course-2.png');
+  static final Image course4 = Image.asset('$base/course-3.png');
+  static final Image bookmark = Image.asset('$base/bookmark.png');
 }

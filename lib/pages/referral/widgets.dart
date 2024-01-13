@@ -41,16 +41,18 @@ class SocialMediaButton extends StatelessWidget {
     Key? key,
     required this.image,
     required this.text,
+    this.onPressed,
   }) : super(key: key);
   final Image image;
   final String text;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 10.0),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ButtonStyle(
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: MaterialStatePropertyAll(

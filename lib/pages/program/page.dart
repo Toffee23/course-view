@@ -15,7 +15,7 @@ class ProgramPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Program'),
+        title: const Text('Programs'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
