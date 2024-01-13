@@ -47,7 +47,7 @@ class MyLearningPage extends StatelessWidget {
                 return CourseCard(
                   image: course.image,
                   title: course.title,
-                  progress: course.progress,
+                  progress: 1.0, // course.progress,
                   progressColor: course.progressColor,
                   duration: course.duration,
                   state: CourseState.completed,
