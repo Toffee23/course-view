@@ -4,6 +4,9 @@ import 'package:course_view/widgets/text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../router/route.dart';
+import '../program_courses/page.dart';
+
 class ProgramPage extends StatelessWidget {
   const ProgramPage({Key? key}) : super(key: key);
 
@@ -83,17 +86,67 @@ class ProgramPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             RowListCard(
-              children: <Image>[
-                AssetImages.exp1,
-                AssetImages.exp2,
-                AssetImages.exp3,
-                AssetImages.exp4,
-                AssetImages.exp5,
-                AssetImages.exp6,
-                AssetImages.exp7,
-                AssetImages.exp8,
-                AssetImages.exp9,
-                AssetImages.exp10,
+              children: <ProgramButton>[
+                ProgramButton(
+                  program: 'ICAN',
+                  image: AssetImages.exp1,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'ICAN')),
+                ),
+                ProgramButton(
+                  program: 'ACCA',
+                  image: AssetImages.exp2,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'ACCA')),
+                ),
+                ProgramButton(
+                  program: 'CITN',
+                  image: AssetImages.exp3,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'CITN')),
+                ),
+                ProgramButton(
+                  program: 'CIMA',
+                  image: AssetImages.exp4,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'CIMA')),
+                ),
+                ProgramButton(
+                  program: 'CIS',
+                  image: AssetImages.exp5,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'CIS')),
+                ),
+                ProgramButton(
+                  program: 'AMAN',
+                  image: AssetImages.exp6,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'AMAN')),
+                ),
+                ProgramButton(
+                  program: 'CIBN',
+                  image: AssetImages.exp7,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'CIBN')),
+                ),
+                ProgramButton(
+                  program: 'CFA',
+                  image: AssetImages.exp8,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'CFA')),
+                ),
+                ProgramButton(
+                  program: 'CPA',
+                  image: AssetImages.exp9,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'CPA')),
+                ),
+                ProgramButton(
+                  program: 'CIPM',
+                  image: AssetImages.exp10,
+                  onPressed: () =>
+                      pushTo(context, const ProgramCourses(program: 'CIPM')),
+                ),
               ],
             ),
             const SizedBox(height: 10.0),
