@@ -13,15 +13,12 @@ class ReferralPage extends StatelessWidget with ReferralPageController {
 
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 0,
-        leading: const SizedBox.shrink(),
         title: const Text(
           'Refer and win big!',
         ),
-        backgroundColor: Colors.transparent,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.all(15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
