@@ -1,47 +1,22 @@
+import 'package:course_view/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'core/constants/themes.dart';
 import 'pages/navigation/page.dart';
 
 void main() => runApp(const ProviderScope(child: ExcelAcademy()));
 
-class ExcelAcademy extends StatelessWidget {
+class ExcelAcademy extends ConsumerWidget {
   const ExcelAcademy({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Excel Academy',
-      theme: ThemeData(
-        primaryColor: const Color(0xFFFF822B),
-        useMaterial3: true,
-        textTheme: TextTheme(
-          titleSmall: TextStyle(
-            color: Colors.blueGrey.shade700,
-            fontWeight: FontWeight.bold,
-            letterSpacing: .8,
-            fontSize: 16,
-          ),
-          titleMedium: TextStyle(
-            fontSize: 19,
-            letterSpacing: 1,
-            fontWeight: FontWeight.bold,
-            color: Colors.blueGrey.shade800,
-          ),
-        ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: const Color(0xFFF0F0F0),
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Theme.of(context).scaffoldBackgroundColor,
-            statusBarIconBrightness: Brightness.dark,
-          ),
-          titleTextStyle:
-              Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
-        ),
-      ),
+      theme: AppThemeData.light(),
+      darkTheme: AppThemeData.dark(),
+      themeMode: ref.watch(themeModeProvider),
       home: const NavigationPage(),
     );
   }

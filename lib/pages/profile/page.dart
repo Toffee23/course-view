@@ -3,6 +3,7 @@ import 'package:course_view/widgets/list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers.dart';
 import 'controller.dart';
 import 'provider.dart';
 
@@ -11,7 +12,7 @@ class ProfilePage extends ConsumerWidget with ProfileController {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dark = ref.watch(darkProvider);
+    final themeMode = ref.watch(themeModeProvider);
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -184,12 +185,12 @@ class ProfilePage extends ConsumerWidget with ProfileController {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(dark ? 'On' : 'Off'),
+                  Text(themeMode.name == 'dark' ? 'On' : 'Off'),
                   Transform.scale(
                     scale: .7,
                     child: IgnorePointer(
                       child: Switch(
-                        value: dark,
+                        value: themeMode.name == 'dark',
                         activeColor: Theme.of(context).primaryColor,
                         onChanged: (v) {},
                       ),
