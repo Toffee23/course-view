@@ -40,14 +40,6 @@ class CartPage extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        AppBar(
-          leading: IconButton(
-            onPressed: onArrowBackPressed,
-            icon: const Icon(Icons.arrow_back),
-          ),
-          backgroundColor: const Color(0XFFF1F1EF),
-          title: const Text('Course cart'),
-        ),
         if (carts.isEmpty) ...[
           Expanded(
             child: Center(

@@ -12,13 +12,19 @@ class MyLearningPage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('My Learning'),
-          centerTitle: true,
-          bottom: const TabBar(
-            tabs: <Tab>[
-              Tab(text: 'Ongoing'),
-              Tab(text: 'Completed'),
-              Tab(text: 'Bookmark'),
+          toolbarHeight: 0,
+          bottom: TabBar(
+            isScrollable: true,
+            labelColor: Colors.blueGrey,
+            unselectedLabelStyle: const TextStyle(
+              color: Colors.grey,
+              fontSize: 14,
+            ),
+            indicatorColor: Theme.of(context).primaryColor,
+            tabs: const <Tab>[
+              Tab(text: 'Ongoing', height: 40),
+              Tab(text: 'Completed', height: 40),
+              Tab(text: 'Bookmark', height: 40),
             ],
           ),
         ),
@@ -29,13 +35,18 @@ class MyLearningPage extends StatelessWidget {
               padding: const EdgeInsets.all(15.0),
               itemBuilder: (BuildContext context, int index) {
                 final course = data.elementAt(index);
-                return CourseCard(
-                  image: course.image,
-                  title: course.title,
-                  progress: course.progress,
-                  progressColor: course.progressColor,
-                  duration: course.duration,
-                  state: CourseState.onGoing,
+                return TweenAnimationBuilder(
+                  duration: const Duration(seconds: 2),
+                  tween: Tween<double>(begin: 0, end: course.progress),
+                  builder: (BuildContext context, double progress, _) {
+                    return OnGoingCard(
+                      image: course.image,
+                      title: course.title,
+                      progress: progress,
+                      progressColor: course.progressColor,
+                      duration: course.duration,
+                    );
+                  },
                 );
               },
             ),
@@ -44,13 +55,18 @@ class MyLearningPage extends StatelessWidget {
               padding: const EdgeInsets.all(15.0),
               itemBuilder: (BuildContext context, int index) {
                 final course = data.elementAt(index);
-                return CourseCard(
-                  image: course.image,
-                  title: course.title,
-                  progress: 1.0, // course.progress,
-                  progressColor: course.progressColor,
-                  duration: course.duration,
-                  state: CourseState.completed,
+                return TweenAnimationBuilder(
+                  duration: const Duration(seconds: 2),
+                  tween: Tween<double>(begin: 0, end: 1),
+                  builder: (BuildContext context, double progress, _) {
+                    return CompletedCard(
+                      image: course.image,
+                      title: course.title,
+                      progress: progress,
+                      progressColor: course.progressColor,
+                      duration: course.duration,
+                    );
+                  },
                 );
               },
             ),
@@ -59,13 +75,12 @@ class MyLearningPage extends StatelessWidget {
               padding: const EdgeInsets.all(15.0),
               itemBuilder: (BuildContext context, int index) {
                 final course = data.elementAt(index);
-                return CourseCard(
+                return BookmarkCard(
                   image: course.image,
                   title: course.title,
                   progress: course.progress,
                   progressColor: course.progressColor,
                   duration: course.duration,
-                  state: CourseState.bookmark,
                 );
               },
             ),

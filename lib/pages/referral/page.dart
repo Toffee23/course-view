@@ -9,6 +9,8 @@ class ReferralPage extends StatelessWidget with ReferralPageController {
 
   @override
   Widget build(BuildContext context) {
+    const link = 'https://excelacademy.com/invite/potns?ruukjd';
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
@@ -60,7 +62,7 @@ class ReferralPage extends StatelessWidget with ReferralPageController {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  'https://excelacademy.com/invite/potns?ruukjd',
+                                  link,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: 12,
@@ -70,8 +72,7 @@ class ReferralPage extends StatelessWidget with ReferralPageController {
                               ),
                               const SizedBox(width: 8.0),
                               ElevatedButton(
-                                onPressed: () => onCopy(context,
-                                    'https://excelacademy.com/invite/potns?ruukjd'),
+                                onPressed: () => onCopy(context, link),
                                 style: ButtonStyle(
                                   tapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
@@ -110,19 +111,24 @@ class ReferralPage extends StatelessWidget with ReferralPageController {
                               SocialMediaButton(
                                 image: AssetImages.facebook,
                                 text: 'Facebook',
-                                onPressed: () => share(context),
+                                onPressed: () => shareToFacebook(context, link),
                               ),
                               SocialMediaButton(
                                 image: AssetImages.instagram,
                                 text: 'Instagram',
+                                onPressed: () =>
+                                    shareToInstagram(context, link),
                               ),
                               SocialMediaButton(
                                 image: AssetImages.messenger,
                                 text: 'Inbox',
+                                onPressed: () =>
+                                    shareToMessenger(context, link),
                               ),
                               SocialMediaButton(
                                 image: AssetImages.link,
                                 text: 'Share link',
+                                onPressed: () => share(context, link),
                               ),
                             ],
                           ),
