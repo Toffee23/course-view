@@ -240,7 +240,8 @@ class SettingsListTile extends StatelessWidget {
         subtitle,
         style: TextStyle(
           fontSize: 12.0,
-          color: textColor ?? Colors.grey.shade600,
+          // color: textColor ?? Colors.grey.shade600,
+          color: Theme.of(context).hintColor,
         ),
       ),
       trailing: hideTrailing ? null : trailing ?? AssetImages.arrowRight,

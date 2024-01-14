@@ -1,5 +1,6 @@
 import 'package:course_view/pages/referral/page.dart';
 import 'package:course_view/pages/support/page.dart';
+import 'package:course_view/providers.dart';
 import 'package:course_view/router/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,7 +42,9 @@ mixin ProfileController on Widget {
   }
 
   void onToggleViewMode(BuildContext context, WidgetRef ref) {
-    ref.read(darkProvider.notifier).update((state) => !state);
+    ref.read(themeModeProvider.notifier).update((state) {
+      return state.name == 'dark' ? ThemeMode.light : ThemeMode.dark;
+    });
   }
 
   void onLogout(BuildContext context) {

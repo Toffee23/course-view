@@ -137,46 +137,6 @@ class HomePage extends ConsumerWidget {
                       ),
                       margin: EdgeInsets.zero,
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    //   child: Container(
-                    //       padding: const EdgeInsets.all(10.0),
-                    //       color: Colors.black.withOpacity(.3),
-                    //       child: Column(
-                    //         children: <Widget>[
-                    //           const Icon(
-                    //             Icons.star_border_purple500,
-                    //             color: Colors.white70,
-                    //           ),
-                    //           const Text(
-                    //             'Join the leaderboard',
-                    //             style: TextStyle(
-                    //               fontSize: 16,
-                    //               color: Colors.white70,
-                    //               fontWeight: FontWeight.bold,
-                    //             ),
-                    //           ),
-                    //           const Text(
-                    //             'Participate on the ongoing easy and smooth game with others. Lead!',
-                    //             textAlign: TextAlign.center,
-                    //             style: TextStyle(color: Colors.white70),
-                    //           ),
-                    //           const SizedBox(height: 12.0),
-                    //           ElevatedButton(
-                    //               onPressed: () {},
-                    //               style: ButtonStyle(
-                    //                   shape: MaterialStatePropertyAll(
-                    //                       RoundedRectangleBorder(
-                    //                     borderRadius: BorderRadius.circular(8.0),
-                    //                   )),
-                    //                   backgroundColor: const MaterialStatePropertyAll(
-                    //                       Colors.black),
-                    //                   foregroundColor: const MaterialStatePropertyAll(
-                    //                       Colors.white)),
-                    //               child: const Text('Participate now'))
-                    //         ],
-                    //       )),
-                    // ),
                     const SizedBox(height: 15.0),
                     // AssetImages.keepLearning,
                     AspectRatio(
@@ -355,7 +315,49 @@ class HomePage extends ConsumerWidget {
                   }).toList(),
                 ),
               ),
-              const SizedBox(height: 40.0),
+              const SizedBox(height: 30.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
+                  color: Colors.black.withOpacity(.3),
+                  child: Column(
+                    children: <Widget>[
+                      const Icon(
+                        Icons.star_border_purple500,
+                        color: Colors.white70,
+                      ),
+                      const Text(
+                        'Join the leaderboard',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                        'Participate on the ongoing easy and smooth game with others. Lead!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      const SizedBox(height: 12.0),
+                      ElevatedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              )),
+                              backgroundColor:
+                                  const MaterialStatePropertyAll(Colors.black),
+                              foregroundColor:
+                                  const MaterialStatePropertyAll(Colors.white)),
+                          child: const Text('Participate now'))
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10.0),
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
