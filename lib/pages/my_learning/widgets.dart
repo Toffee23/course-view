@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/core/extensions/duration.dart';
 import 'package:flutter/material.dart';
 
@@ -9,22 +10,20 @@ enum CourseState {
   bookmark,
 }
 
-class CourseCard extends StatelessWidget {
-  const CourseCard({
+class OnGoingCard extends StatelessWidget {
+  const OnGoingCard({
     Key? key,
     required this.image,
     required this.title,
     required this.progress,
     required this.progressColor,
     required this.duration,
-    required this.state,
   }) : super(key: key);
   final Image image;
   final String title;
   final double progress;
   final Color progressColor;
   final Duration duration;
-  final CourseState state;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +51,7 @@ class CourseCard extends StatelessWidget {
                       .titleSmall!
                       .copyWith(height: 1.2),
                 ),
-                const SizedBox(height: 0.0),
+                const SizedBox(height: 10.0),
                 Row(
                   children: <Widget>[
                     TextButton(
@@ -69,41 +68,18 @@ class CourseCard extends StatelessWidget {
                         textStyle: const MaterialStatePropertyAll(
                           TextStyle(fontSize: 12),
                         ),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: Text(
-                        state == CourseState.onGoing
-                            ? 'Take Exam'
-                            : 'Retake Exam',
-                      ),
+                      child: const Text('Take Exam'),
                     ),
                     const SizedBox(width: 6.0),
-                    if (state == CourseState.onGoing)
-                      Text(
-                        duration.toStrWithUnits(),
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 12,
-                        ),
-                      )
-                    else
-                      TextButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          minimumSize:
-                              const MaterialStatePropertyAll(Size.zero),
-                          padding: const MaterialStatePropertyAll(
-                              EdgeInsets.symmetric(
-                            horizontal: 3.0,
-                            vertical: 5.0,
-                          )),
-                          foregroundColor: MaterialStatePropertyAll(
-                              Theme.of(context).primaryColor),
-                          textStyle: const MaterialStatePropertyAll(
-                            TextStyle(fontSize: 12),
-                          ),
-                        ),
-                        child: const Text('Start Challenge'),
+                    Text(
+                      duration.toStrWithUnits(),
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 12,
                       ),
+                    ),
                   ],
                 )
               ],
@@ -114,6 +90,184 @@ class CourseCard extends StatelessWidget {
             progress: progress,
             progressColor: progressColor,
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class CompletedCard extends StatelessWidget {
+  const CompletedCard({
+    Key? key,
+    required this.image,
+    required this.title,
+    required this.progress,
+    required this.progressColor,
+    required this.duration,
+  }) : super(key: key);
+  final Image image;
+  final String title;
+  final double progress;
+  final Color progressColor;
+  final Duration duration;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 10.0, 0.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        border: Border.all(
+          color: const Color(0xFFD6D6D6),
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          image,
+          const SizedBox(width: 10.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            title,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(height: 1.2),
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            duration.toStrWithUnits(),
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    CustomCircularProgressBar(
+                      progress: progress,
+                      progressColor: progressColor,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        minimumSize: const MaterialStatePropertyAll(Size.zero),
+                        padding:
+                            const MaterialStatePropertyAll(EdgeInsets.symmetric(
+                          horizontal: 3.0,
+                          vertical: 5.0,
+                        )),
+                        foregroundColor: MaterialStatePropertyAll(
+                            Theme.of(context).primaryColor),
+                        textStyle: const MaterialStatePropertyAll(
+                          TextStyle(fontSize: 12),
+                        ),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: const Text('Retake Exam'),
+                    ),
+                    const SizedBox(width: 6.0),
+                    TextButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        minimumSize: const MaterialStatePropertyAll(Size.zero),
+                        padding:
+                            const MaterialStatePropertyAll(EdgeInsets.symmetric(
+                          horizontal: 3.0,
+                          vertical: 5.0,
+                        )),
+                        foregroundColor: MaterialStatePropertyAll(
+                            Theme.of(context).primaryColor),
+                        textStyle: const MaterialStatePropertyAll(
+                          TextStyle(fontSize: 12),
+                        ),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: const Text('Start Challenge'),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BookmarkCard extends StatelessWidget {
+  const BookmarkCard({
+    Key? key,
+    required this.image,
+    required this.title,
+    required this.progress,
+    required this.progressColor,
+    required this.duration,
+  }) : super(key: key);
+  final Image image;
+  final String title;
+  final double progress;
+  final Color progressColor;
+  final Duration duration;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 10.0, 0.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        border: Border.all(
+          color: const Color(0xFFD6D6D6),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          image,
+          const SizedBox(width: 10.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall!
+                      .copyWith(height: 1.2),
+                ),
+                const SizedBox(height: 15.0),
+                Text(
+                  duration.toStrWithUnits(),
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10.0),
+          AssetImages.bookmark,
         ],
       ),
     );

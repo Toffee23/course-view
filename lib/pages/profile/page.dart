@@ -7,25 +7,14 @@ import 'controller.dart';
 import 'provider.dart';
 
 class ProfilePage extends ConsumerWidget with ProfileController {
-  const ProfilePage({
-    Key? key,
-    required this.onArrowBackPressed,
-  }) : super(key: key);
-  final VoidCallback onArrowBackPressed;
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dark = ref.watch(darkProvider);
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: onArrowBackPressed,
-          icon: const Icon(Icons.arrow_back),
-        ),
-        title: const Text('Profile'),
-      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 40.0),
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: Column(
           children: <Widget>[
             Padding(
