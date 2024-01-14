@@ -1,9 +1,10 @@
 import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/pages/referral/widgets.dart';
-import 'package:course_view/widgets/button.dart';
 import 'package:flutter/material.dart';
 
-class ReferralPage extends StatelessWidget {
+import 'controller.dart';
+
+class ReferralPage extends StatelessWidget with ReferralPageController {
   const ReferralPage({Key? key}) : super(key: key);
 
   @override
@@ -14,7 +15,6 @@ class ReferralPage extends StatelessWidget {
         leading: const SizedBox.shrink(),
         title: const Text(
           'Refer and win big!',
-          // style: Theme.of(context).textTheme.titleMedium,
         ),
         backgroundColor: Colors.transparent,
       ),
@@ -24,7 +24,9 @@ class ReferralPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Existing users can refer their friends and family here and take amazing bonuses including slashes on prices.',
+              'Existing users can refer their friends '
+              'and family here and take amazing '
+              'bonuses including slashes on prices.',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 20.0),
@@ -68,7 +70,8 @@ class ReferralPage extends StatelessWidget {
                               ),
                               const SizedBox(width: 8.0),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () => onCopy(context,
+                                    'https://excelacademy.com/invite/potns?ruukjd'),
                                 style: ButtonStyle(
                                   tapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
@@ -107,6 +110,7 @@ class ReferralPage extends StatelessWidget {
                               SocialMediaButton(
                                 image: AssetImages.facebook,
                                 text: 'Facebook',
+                                onPressed: () => share(context),
                               ),
                               SocialMediaButton(
                                 image: AssetImages.instagram,

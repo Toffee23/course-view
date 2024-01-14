@@ -45,7 +45,9 @@ class _NavigationPageState extends State<NavigationPage> {
           physics: const NeverScrollableScrollPhysics(),
           onPageChanged: (index) => tabIndexNotifier.value = index,
           children: <Widget>[
-            const HomePage(),
+            HomePage(
+              onCartIconPressed: () => widget.switchTab(_pageController, 3),
+            ),
             const ProgramPage(),
             const MyLearningPage(),
             CartPage(

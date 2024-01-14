@@ -95,6 +95,9 @@ class ManageProfilePage extends StatelessWidget {
                   const CustomTextField(
                     hintText: 'Username',
                   ),
+                  const CustomTextField(
+                    hintText: 'Phone number',
+                  ),
                   CustomTextField(
                     hintText: 'Password',
                     suffixIcon: IconButton(
@@ -115,89 +118,39 @@ class ManageProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 15.0),
-                    child: MaterialButton(
-                      onPressed: () {},
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 12.0,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        side: BorderSide(
-                          color: Colors.grey.shade400,
-                          width: 1.2,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            'Select Gender',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                          Icon(
-                            Icons.expand_more,
-                            color: Colors.grey.shade600,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const CustomTextField(
-                    hintText: 'Phone number',
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 15.0),
-                    child: MaterialButton(
-                      onPressed: () {},
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 12.0,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        side: BorderSide(
-                          color: Colors.grey.shade400,
-                          width: 1.2,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            'Date of Birth',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                          Icon(
-                            CupertinoIcons.calendar_circle,
-                            color: Colors.grey.shade600,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40.0),
-                  Divider(color: Colors.grey.shade300, height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text(
-                      'Email and username can only be changed twice in a month. '
-                      'While Gender & DOB are optional.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.only(bottom: 15.0),
+                  //   child: MaterialButton(
+                  //     onPressed: () {},
+                  //     padding: const EdgeInsets.symmetric(
+                  //       horizontal: 10.0,
+                  //       vertical: 12.0,
+                  //     ),
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(12.0),
+                  //       side: BorderSide(
+                  //         color: Colors.grey.shade400,
+                  //         width: 1.2,
+                  //       ),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: <Widget>[
+                  //         Text(
+                  //           'Select Gender',
+                  //           style: TextStyle(
+                  //             fontWeight: FontWeight.normal,
+                  //             color: Colors.grey.shade600,
+                  //           ),
+                  //         ),
+                  //         Icon(
+                  //           Icons.expand_more,
+                  //           color: Colors.grey.shade600,
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 40.0),
                 ],
               ),
