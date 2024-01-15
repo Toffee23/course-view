@@ -1,6 +1,6 @@
 import 'package:course_view/pages/home/provider.dart';
 import 'package:course_view/pages/my_learning/page.dart';
-import 'package:course_view/pages/program/page.dart';
+import 'package:course_view/pages/programs/page.dart';
 import 'package:course_view/pages/program_courses/page.dart';
 import 'package:course_view/router/route.dart';
 import 'package:course_view/widgets/place_holders.dart';
@@ -180,7 +180,7 @@ class HomePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 15.0),
                     MaterialButton(
-                      onPressed: () => pushTo(context, const ProgramPage()),
+                      onPressed: () => pushTo(context, const ProgramsPage()),
                       color: const Color(0xFFF1F1EF),
                       padding: const EdgeInsets.all(10.0),
                       child: const Row(

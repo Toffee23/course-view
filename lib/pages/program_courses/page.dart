@@ -19,7 +19,7 @@ class ProgramCourses extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(program),
+        title: Text('$program Courses'),
         centerTitle: true,
       ),
       body: Column(

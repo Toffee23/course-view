@@ -1,5 +1,5 @@
 import 'package:course_view/pages/my_learning/page.dart';
-import 'package:course_view/pages/program/page.dart';
+import 'package:course_view/pages/programs/page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +68,7 @@ class _NavigationPageState extends State<NavigationPage> {
                     onCartIconPressed: () =>
                         widget.switchTab(_pageController, 3),
                   ),
-                  const ProgramPage(),
+                  const ProgramsPage(),
                   const MyLearningPage(),
                   CartPage(
                     onArrowBackPressed: () =>

@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import '../../router/route.dart';
 import '../program_courses/page.dart';
 
-class ProgramPage extends StatelessWidget {
-  const ProgramPage({Key? key}) : super(key: key);
+class ProgramsPage extends StatelessWidget {
+  const ProgramsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
