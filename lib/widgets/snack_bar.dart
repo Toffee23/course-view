@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
 
-void showSnackbar(BuildContext context, String title, [String? subtitle]) {
+enum SnackbarState { success, error, warning }
+
+Color _getColor(SnackbarState state) {
+  switch (state) {
+    case SnackbarState.success:
+      return const Color(0xFF1FAF73);
+    case SnackbarState.error:
+      return const Color(0xFFAF1FA9);
+    case SnackbarState.warning:
+      return Colors.amber;
+  }
+}
+
+void showSnackbar({
+  required BuildContext context,
+  required String title,
+  String? subtitle,
+  SnackbarState state = SnackbarState.success,
+}) {
   final snackBar = SnackBar(
     content: Container(
-      color: const Color(0xFF1FAF73).withOpacity(.12),
+      color: _getColor(state).withOpacity(.12),
       child: Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
-                const Icon(
+                Icon(
                   Icons.check_circle,
-                  color: Color(0xFF1FAF73),
+                  color: _getColor(state),
                 ),
                 const SizedBox(width: 8.0),
                 Expanded(
@@ -21,8 +39,8 @@ void showSnackbar(BuildContext context, String title, [String? subtitle]) {
                     children: <Widget>[
                       Text(
                         title,
-                        style: const TextStyle(
-                          color: Color(0xFF1FAF73),
+                        style: TextStyle(
+                          color: _getColor(state),
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                         ),
@@ -43,10 +61,10 @@ void showSnackbar(BuildContext context, String title, [String? subtitle]) {
             ),
           ),
           const SizedBox(height: 10.0),
-          const Divider(
+          Divider(
             height: 0.0,
             thickness: 4.0,
-            color: Color(0xFF1FAF73),
+            color: _getColor(state),
           ),
         ],
       ),

@@ -59,6 +59,7 @@ abstract final class AssetImages {
   static final Image course3 = Image.asset('$base/course-2.png');
   static final Image course4 = Image.asset('$base/course-3.png');
   static final Image bookmark = Image.asset('$base/bookmark.png');
+  static final Image keyCircle = Image.asset('$base/key-circle.png');
 
   // FOR QUIZ
   static final Image gameLogo = Image.asset('$base/gameLogo.png');

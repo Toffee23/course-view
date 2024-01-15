@@ -9,39 +9,80 @@ import '../../widgets/snack_bar.dart';
 mixin ReferralPageController on Widget {
   void onCopy(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
-    showSnackbar(context, 'Text successfully copied to clipboard');
+    showSnackbar(
+      context: context,
+      title: 'Text successfully copied to clipboard',
+    );
   }
 
-  void shareToFacebook(BuildContext context, String text) async {
+  void shareToFacebook(BuildContext context, String text) {
+    _shareToFacebook(context, text).then((successful) {
+      if (!successful) {
+        showSnackbar(
+          context: context,
+          title: 'Could not launch facebook',
+          subtitle: 'Please check if facebook is installed.',
+          state: SnackbarState.error,
+        );
+      }
+    });
+  }
+
+  Future<bool> _shareToFacebook(BuildContext context, String text) async {
     final facebookUrl = Uri.parse('${SocialMediaLinks.facebook}$text');
 
     if (await canLaunchUrl(facebookUrl)) {
-      await launchUrl(facebookUrl);
+      return await launchUrl(facebookUrl);
     } else {
-      print('Could not launch $facebookUrl');
+      return false;
     }
   }
 
-  void shareToInstagram(BuildContext context, String text) async {
+  void shareToInstagram(BuildContext context, String text) {
+    _shareToInstagram(context, text).then((successful) {
+      if (!successful) {
+        showSnackbar(
+          context: context,
+          title: 'Could not launch instagram',
+          subtitle: 'Please check if instagram is installed.',
+          state: SnackbarState.error,
+        );
+      }
+    });
+  }
+
+  Future<bool> _shareToInstagram(BuildContext context, String text) async {
     final instagram = Uri.parse(SocialMediaLinks.instagram);
     final instagramApp = Uri.parse('${SocialMediaLinks.instagramApp}$text');
     final instagramWeb = Uri.parse('${SocialMediaLinks.instagramWeb}$text');
 
     if (await canLaunchUrl(instagram)) {
-      await launchUrl(instagramApp);
+      return await launchUrl(instagramApp);
     } else {
-      await launchUrl(instagramWeb);
+      return await launchUrl(instagramWeb);
     }
   }
 
-  void shareToMessenger(BuildContext context, String text) async {
-    final messenger = Uri.parse(SocialMediaLinks.messenger);
-    final messengerApp = Uri.parse('${SocialMediaLinks.messengerApp}$text');
-    final messengerWeb = Uri.parse('${SocialMediaLinks.messengerWeb}$text');
-    if (await canLaunchUrl(messenger)) {
-      await launchUrl(messengerApp);
+  void shareToSms(BuildContext context, String text) async {
+    _shareToSms(context, text).then((successful) {
+      if (!successful) {
+        showSnackbar(
+          context: context,
+          title: 'Could not launch SMS',
+          subtitle: 'Please check if sms app is installed.',
+          state: SnackbarState.error,
+        );
+      }
+    });
+  }
+
+  Future<bool> _shareToSms(BuildContext context, String text) async {
+    final smsUri = Uri.parse(SocialMediaLinks.sms);
+
+    if (await canLaunchUrl(smsUri)) {
+      return launchUrl(smsUri);
     } else {
-      await launchUrl(messengerWeb);
+      return false;
     }
   }
 

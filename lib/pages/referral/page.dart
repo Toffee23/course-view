@@ -120,7 +120,7 @@ class ReferralPage extends StatelessWidget with ReferralPageController {
                                 image: AssetImages.messenger,
                                 text: 'Inbox',
                                 onPressed: () =>
-                                    shareToMessenger(context, link),
+                                    shareToSms(context, link),
                               ),
                               SocialMediaButton(
                                 image: AssetImages.link,
