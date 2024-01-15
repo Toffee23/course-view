@@ -13,6 +13,7 @@ import '../../widgets/card.dart';
 import '../../widgets/snack_bar.dart';
 import '../../widgets/text_field.dart';
 import '../notification/page.dart';
+import '../quiz_view/quizView1.dart';
 import '../search/page.dart';
 
 class HomePage extends ConsumerWidget {
@@ -335,17 +336,18 @@ class HomePage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 12.0),
                       ElevatedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                              shape: MaterialStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              )),
-                              backgroundColor:
-                                  const MaterialStatePropertyAll(Colors.black),
-                              foregroundColor:
-                                  const MaterialStatePropertyAll(Colors.white)),
-                          child: const Text('Participate now'))
+                        onPressed: () => pushTo(context, const QuizView()),
+                        style: ButtonStyle(
+                            shape:
+                                MaterialStatePropertyAll(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            )),
+                            backgroundColor:
+                                const MaterialStatePropertyAll(Colors.black),
+                            foregroundColor:
+                                const MaterialStatePropertyAll(Colors.white)),
+                        child: const Text('Participate now'),
+                      )
                     ],
                   ),
                 ),
