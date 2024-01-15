@@ -36,10 +36,5 @@ class AppThemeData {
     );
   }
 
-  static dark() => ThemeData(
-        // Define your dark theme properties here
-        primarySwatch: Colors.teal,
-        hintColor: Colors.deepOrange,
-        // ... other properties
-      );
+  static dark() => ThemeData.dark(useMaterial3: true);
 }
