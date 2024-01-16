@@ -207,7 +207,7 @@ class CartPage extends ConsumerWidget {
                       Container(
                         padding: const EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
-                          color: const Color(0XFFF1F1EF),
+                          color: Theme.of(context).canvasColor,
                           borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Column(

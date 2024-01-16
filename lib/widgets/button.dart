@@ -193,7 +193,7 @@ class CustomElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       style: ButtonStyle(
         backgroundColor: MaterialStatePropertyAll(
-          Theme.of(context).primaryColor,
+          onPressed == null ? null : Theme.of(context).primaryColor,
         ),
         foregroundColor: const MaterialStatePropertyAll(
           Colors.white,

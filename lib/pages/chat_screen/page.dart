@@ -65,7 +65,7 @@ class ChatScreen extends StatelessWidget {
                 Expanded(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF1F1EF),
+                      color: Theme.of(context).canvasColor,
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: Row(

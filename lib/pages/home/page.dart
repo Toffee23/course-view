@@ -1,5 +1,4 @@
 import 'package:course_view/pages/home/provider.dart';
-import 'package:course_view/pages/my_learning/page.dart';
 import 'package:course_view/pages/programs/page.dart';
 import 'package:course_view/pages/program_courses/page.dart';
 import 'package:course_view/router/route.dart';
@@ -13,15 +12,15 @@ import '../../widgets/card.dart';
 import '../../widgets/snack_bar.dart';
 import '../../widgets/text_field.dart';
 import '../notification/page.dart';
-import '../quiz_view/quizView1.dart';
+import '../quiz_view/quiz_view1.dart';
 import '../search/page.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({
     Key? key,
-    required this.onCartIconPressed,
+    required this.onTabSwitch,
   }) : super(key: key);
-  final VoidCallback onCartIconPressed;
+  final ValueChanged<int> onTabSwitch;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,13 +43,11 @@ class HomePage extends ConsumerWidget {
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                              child: Text(
-                            'Welcome back, Simisola',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          )),
+                            child: Text(
+                              'Welcome back, Simisola',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                          ),
                           const SizedBox(width: 8.0),
                           SizedBox.square(
                             dimension: 60,
@@ -65,16 +62,14 @@ class HomePage extends ConsumerWidget {
                       ),
                     ),
                     Container(
-                      color: const Color(0xFFF1F1EF),
+                      color: Theme.of(context).canvasColor,
                       padding: const EdgeInsets.all(8),
                       child: Row(
                         children: <Widget>[
                           Expanded(
                             child: Text(
                               'You have 12 Notifications and 4 carts items',
-                              style: TextStyle(
-                                color: Colors.grey.shade600,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ),
                           IconButton(
@@ -87,7 +82,7 @@ class HomePage extends ConsumerWidget {
                           ),
                           IconButton(
                             icon: AssetImages.bag,
-                            onPressed: () => onCartIconPressed(),
+                            onPressed: () => onTabSwitch(3),
                             style: const ButtonStyle(
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
@@ -100,9 +95,7 @@ class HomePage extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 15.0),
                       child: Text(
                         'What would you want to learn today?',
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
                     CustomTextField(
@@ -181,22 +174,22 @@ class HomePage extends ConsumerWidget {
                     const SizedBox(height: 15.0),
                     MaterialButton(
                       onPressed: () => pushTo(context, const ProgramsPage()),
-                      color: const Color(0xFFF1F1EF),
+                      color: Theme.of(context).canvasColor,
                       padding: const EdgeInsets.all(10.0),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
                             'See more programs',
-                            style: TextStyle(fontSize: 13),
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
-                          Icon(CupertinoIcons.arrow_right, size: 18),
+                          const Icon(CupertinoIcons.arrow_right, size: 18),
                         ],
                       ),
                     ),
                     const SizedBox(height: 15.0),
                     MaterialButton(
-                      onPressed: () => pushTo(context, const MyLearningPage()),
+                      onPressed: () => onTabSwitch(2),
                       color: Theme.of(context).scaffoldBackgroundColor,
                       padding: const EdgeInsets.all(4.0),
                       child: AssetImages.keepLearning2,
@@ -218,7 +211,7 @@ class HomePage extends ConsumerWidget {
                       onPressed: () {},
                       style: ButtonStyle(
                         foregroundColor: MaterialStatePropertyAll(
-                          Colors.grey.shade600,
+                          Theme.of(context).hintColor,
                         ),
                       ),
                       child: const Text('See more'),
@@ -263,20 +256,17 @@ class HomePage extends ConsumerWidget {
                   children: <Widget>[
                     Text(
                       'You might like',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey.shade700,
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                     TextButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          foregroundColor: MaterialStatePropertyAll(
-                            Theme.of(context).primaryColor,
-                          ),
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStatePropertyAll(
+                          Theme.of(context).primaryColor,
                         ),
-                        child: const Text('See more'))
+                      ),
+                      child: const Text('See more'),
+                    )
                   ],
                 ),
               ),

@@ -14,8 +14,8 @@ class ExcelAcademy extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Excel Academy',
-      theme: AppThemeData.light(),
-      darkTheme: AppThemeData.dark(),
+      theme: AppThemeData.light(context),
+      darkTheme: AppThemeData.dark(context),
       themeMode: ref.watch(themeModeProvider),
       home: const NavigationPage(),
     );

@@ -65,4 +65,17 @@ abstract final class AssetImages {
   static final Image gameLogo = Image.asset('$base/gameLogo.png');
   static final Image leaderBoard = Image.asset('$base/leaderboard.png');
   static final Image femaleDP = Image.asset('$base/femaleDP.png');
+
+// FOR PROGRAMS
+  static const String program = '$base/programs';
+  static final Image acca = Image.asset('$program/ACCA.png');
+  static final Image anan = Image.asset('$program/ANAN.png');
+  static final Image cfa = Image.asset('$program/CFA Institute.png');
+  static final Image cibn = Image.asset('$program/CIBN Logo 1 1.png');
+  static final Image cima = Image.asset('$program/CIMA.png');
+  static final Image cipm = Image.asset('$program/CIPM.png');
+  static final Image cis = Image.asset('$program/CIS.png');
+  static final Image citn = Image.asset('$program/CITN.png');
+  static final Image cpa = Image.asset('$program/CPA.png');
+  static final Image ican = Image.asset('$program/ICAN.png');
 }
