@@ -23,7 +23,7 @@ class PageContainer extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
-        color: const Color(0xFFF1F1EF),
+        color: Theme.of(context).canvasColor,
         border: Border.all(
           color: Colors.grey,
         ),

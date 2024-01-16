@@ -72,10 +72,10 @@ class ProgramsPage extends StatelessWidget {
                 const SizedBox(width: 8.0),
                 Text(
                   'Simply tap on the category you need',
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 12,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(fontSize: 12),
                 ),
               ],
             ),

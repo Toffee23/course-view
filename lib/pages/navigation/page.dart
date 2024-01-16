@@ -65,8 +65,8 @@ class _NavigationPageState extends State<NavigationPage> {
                 onPageChanged: (index) => tabIndexNotifier.value = index,
                 children: <Widget>[
                   HomePage(
-                    onCartIconPressed: () =>
-                        widget.switchTab(_pageController, 3),
+                    onTabSwitch: (index) =>
+                        widget.switchTab(_pageController, index),
                   ),
                   const ProgramsPage(),
                   const MyLearningPage(),

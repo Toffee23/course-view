@@ -18,12 +18,14 @@ class OnGoingCard extends StatelessWidget {
     required this.progress,
     required this.progressColor,
     required this.duration,
+    this.onPressed,
   }) : super(key: key);
   final Image image;
   final String title;
   final double progress;
   final Color progressColor;
   final Duration duration;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class OnGoingCard extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     TextButton(
-                      onPressed: () {},
+                      onPressed: onPressed,
                       style: ButtonStyle(
                         minimumSize: const MaterialStatePropertyAll(Size.zero),
                         padding:
