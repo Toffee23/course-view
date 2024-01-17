@@ -136,6 +136,122 @@ class RowData extends StatelessWidget {
   }
 }
 
+class _CircleScore extends StatelessWidget {
+  const _CircleScore({
+    Key? key,
+    required this.image,
+    required this.score,
+  }) : super(key: key);
+  final Image image;
+  final String score;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: 150,
+      child: DecoratedBox(
+        decoration: const ShapeDecoration(
+          shape: CircleBorder(
+            side: BorderSide(color: Color(0xFFD6D6D6)),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: DecoratedBox(
+            decoration: const ShapeDecoration(
+              shape: CircleBorder(
+                side: BorderSide(
+                  width: 2,
+                  color: Color(0xFFBBBBBB),
+                ),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                const SizedBox(height: 8.0),
+                Image(
+                  image: AssetImages.theme.image,
+                  width: 32,
+                ),
+                Text(
+                  'Game Score',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                Text(
+                  '0',
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ScoreBoard extends StatelessWidget {
+  const ScoreBoard({
+    Key? key,
+    required this.player1Image,
+    required this.player2Image,
+    required this.player1Score,
+    required this.player2Score,
+  }) : super(key: key);
+  final Image player1Image;
+  final Image player2Image;
+  final int player1Score;
+  final int player2Score;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 18.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _CircleScore(
+                image: player1Image,
+                score: player1Score.toString(),
+              ),
+              const SizedBox(width: 8.0),
+              _CircleScore(
+                image: player2Image,
+                score: player2Score.toString(),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          width: 140,
+          height: 32,
+          decoration: const BoxDecoration(
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.amber,
+                blurRadius: 4,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              'Versus',
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium!
+                  .copyWith(fontWeight: FontWeight.w900),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
 class ScoreTable extends StatelessWidget {
   const ScoreTable({
     Key? key,

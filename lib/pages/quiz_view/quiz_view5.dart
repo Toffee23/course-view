@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/constants/images.dart';
+
 class QuizView5 extends StatelessWidget {
   const QuizView5({super.key});
 
@@ -8,127 +10,167 @@ class QuizView5 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: <Widget>[
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Adegoke",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade600)),
-                    Text("Simisola",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade600)),
-                  ],
-                ),
-                Container(
-                  color: Colors.black,
-                  height: MediaQuery.of(context).size.height / 20,
-                  width: MediaQuery.of(context).size.width / 250,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "Questions",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade600),
+                  children: <Widget>[
+                    Image(
+                      image: AssetImages.theme.image,
+                      width: 32,
                     ),
-                    const Text("24",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        )),
+                    const SizedBox(height: 4.0),
+                    const Row(
+                      children: <Widget>[
+                        Icon(Icons.control_point, size: 18),
+                        SizedBox(width: 4.0),
+                        Text('0 Pts'),
+                      ],
+                    ),
+                    const SizedBox(height: 4.0),
+                    Container(
+                      width: 55,
+                      height: 10,
+                      color: Colors.purple,
+                    ),
                   ],
                 ),
-                Container(
-                  color: Colors.black,
-                  height: MediaQuery.of(context).size.height / 20,
-                  width: MediaQuery.of(context).size.width / 250,
+                SizedBox.square(
+                  dimension: 70,
+                  child: DecoratedBox(
+                    decoration: ShapeDecoration(
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '00:25',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                  ),
                 ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Ezekiel",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade600)),
-                    Text("Tomisayu",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade600)),
+                  children: <Widget>[
+                    Image(
+                      image: AssetImages.theme.image,
+                      width: 32,
+                    ),
+                    const SizedBox(height: 4.0),
+                    Row(
+                      children: <Widget>[
+                        AssetImages.coin,
+                        const SizedBox(width: 4.0),
+                        const Text('0 Pts'),
+                      ],
+                    ),
+                    const SizedBox(height: 4.0),
+                    Container(
+                      width: 55,
+                      height: 10,
+                      color: Colors.blue,
+                    ),
                   ],
                 ),
               ],
             ),
-          ),
-          Row(
-            children: [
-              Container(
-                width: 150.0,
-                height: 150.0,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green,
-                    border: Border.all(color: Colors.yellow, width: 3)),
-                child: Container(
-                  child: Container(
-                    width: 100.0,
-                    height: 100.0,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
-                        border: Border.all(color: Colors.red, width: 2)),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("data"),
-                          Text("data"),
-                          Text("data"),
-                        ]),
-                  ),
-                ),
-              )
-            ],
-          ),
-          const Expanded(
-              child: Row(
-            children: [Text("Ranking Row")],
-          )),
-          ElevatedButton(
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => (const quizView4())),
-              // );
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-                Theme.of(context).primaryColor,
+            const SizedBox(height: 50.0),
+            Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(8.0),
               ),
-              foregroundColor: const MaterialStatePropertyAll(
-                Colors.white,
-              ),
-              shape: MaterialStatePropertyAll(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-              ),
-              minimumSize: const MaterialStatePropertyAll(
-                Size(double.infinity, 48.0),
+              child: Text(
+                'What are the different types of '
+                'costs in management accounting?',
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            child: const Text('START GAME'),
-          ),
-        ]),
+            const SizedBox(height: 20.0),
+            Expanded(
+              child: GridView(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15.0,
+                  crossAxisSpacing: 15.0,
+                ),
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Indirect costs',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontSize: 15),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Variable costs',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontSize: 15),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Semi-variable costs',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontSize: 15),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Performance evaluation',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontSize: 15),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
