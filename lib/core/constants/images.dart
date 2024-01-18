@@ -61,6 +61,11 @@ abstract final class AssetImages {
   static final Image bookmark = Image.asset('$base/bookmark.png');
   static final Image keyCircle = Image.asset('$base/key-circle.png');
   static final Image coin = Image.asset('$base/coin.png');
+  static final Image infoCircle = Image.asset('$base/info-circle.png');
+  static final Image repeat = Image.asset('$base/repeat.png');
+  static final Image flag = Image.asset('$base/flag.png');
+  static final Image stop = Image.asset('$base/stop.png');
+  static final Image pause = Image.asset('$base/pause.png');
 
   // FOR QUIZ
   static final Image gameLogo = Image.asset('$base/gameLogo.png');
