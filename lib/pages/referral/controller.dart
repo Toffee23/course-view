@@ -22,7 +22,7 @@ mixin ReferralPageController on Widget {
           context: context,
           title: 'Could not launch facebook',
           subtitle: 'Please check if facebook is installed.',
-          state: SnackbarState.error,
+          type: SnackbarType.error,
         );
       }
     });
@@ -45,7 +45,7 @@ mixin ReferralPageController on Widget {
           context: context,
           title: 'Could not launch instagram',
           subtitle: 'Please check if instagram is installed.',
-          state: SnackbarState.error,
+          type: SnackbarType.error,
         );
       }
     });
@@ -70,7 +70,7 @@ mixin ReferralPageController on Widget {
           context: context,
           title: 'Could not launch SMS',
           subtitle: 'Please check if sms app is installed.',
-          state: SnackbarState.error,
+          type: SnackbarType.error,
         );
       }
     });

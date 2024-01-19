@@ -66,6 +66,16 @@ abstract final class AssetImages {
   static final Image flag = Image.asset('$base/flag.png');
   static final Image stop = Image.asset('$base/stop.png');
   static final Image pause = Image.asset('$base/pause.png');
+  static final Image tickCirle = Image.asset('$base/tick-circle.png');
+  static final Image closeCirle = Image.asset('$base/close-circle.png');
+  static final Image level = Image.asset('$base/level.png');
+  static final Image confetti = Image.asset('$base/confetti.png');
+  static final Image checkCircleOutline =
+      Image.asset('$base/check-circle-outline.png');
+  static final Image closeCircleOutline =
+      Image.asset('$base/close-circle-outline.png');
+  static final Image nextCircleOutline =
+      Image.asset('$base/next-circle-outline.png');
 
   // FOR QUIZ
   static final Image gameLogo = Image.asset('$base/gameLogo.png');
