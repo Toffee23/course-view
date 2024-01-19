@@ -28,7 +28,7 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
     final questions = ref.read(questionsProvider);
     _scrollControllers =
         List.generate(questions.length, (index) => ScrollController());
-    timer = QuizTimer(const Duration(minutes: 60), _onTimeout);
+    timer = QuizTimer(const Duration(minutes: 1), _onTimeout);
     timer.start();
     super.initState();
   }
