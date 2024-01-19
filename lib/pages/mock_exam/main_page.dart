@@ -1,3 +1,6 @@
+import 'dart:developer' as az;
+import 'dart:math';
+
 import 'package:course_view/core/constants/images.dart';
 import 'package:course_view/router/route.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller.dart';
 import 'providers.dart';
+import 'timer.dart';
 
 class MainExamPage extends ConsumerStatefulWidget with MockExamController {
   const MainExamPage({Key? key}) : super(key: key);
@@ -17,22 +21,30 @@ class MainExamPage extends ConsumerStatefulWidget with MockExamController {
 class _MainExamPageState extends ConsumerState<MainExamPage> {
   final PageController _pageController = PageController();
   List<ScrollController> _scrollControllers = [];
+  late QuizTimer timer;
 
   @override
   void initState() {
     final questions = ref.read(questionsProvider);
     _scrollControllers =
         List.generate(questions.length, (index) => ScrollController());
+    timer = QuizTimer(const Duration(minutes: 60), _onTimeout);
+    timer.start();
     super.initState();
   }
 
   @override
   void dispose() {
+    timer.dispose();
     _pageController.dispose();
     for (var c in _scrollControllers) {
       c.dispose();
     }
     super.dispose();
+  }
+
+  void _onTimeout() {
+    print('Time is up!');
   }
 
   void _showFullQuestion(BuildContext context, String question) {
@@ -263,6 +275,32 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
                                               fontWeight: FontWeight.w500),
                                     ),
                                   ],
+                                ),
+                                StreamBuilder<int>(
+                                  stream: timer.remainingTimeStream,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      int remainingTime = snapshot.data!;
+                                      String formattedTime =
+                                          "${(remainingTime ~/ 60).toString().padLeft(2, '0')}:${(remainingTime % 60).toString().padLeft(2, '0')}";
+
+                                      return CustomCircularProgressBar(
+                                        unit: 'S',
+                                        progress: remainingTime.toDouble() / 60,
+                                        progressColor:
+                                            Theme.of(context).primaryColor,
+                                        backgroundColor: Theme.of(context)
+                                            .primaryColor
+                                            .withOpacity(.12),
+                                      );
+                                      return Text(
+                                        formattedTime,
+                                        style: const TextStyle(fontSize: 40),
+                                      );
+                                    } else {
+                                      return const Text('Loading...');
+                                    }
+                                  },
                                 ),
                               ],
                             ),
@@ -608,4 +646,96 @@ class StopPauseDialog extends StatelessWidget {
       actionsPadding: const EdgeInsets.only(bottom: 10, right: 24),
     );
   }
+}
+
+class CustomCircularProgressBar extends StatelessWidget {
+  const CustomCircularProgressBar({
+    Key? key,
+    required this.unit,
+    required this.progress,
+    this.progressColor,
+    this.backgroundColor,
+    this.dimension = 50,
+    this.strokeWidth = 4,
+  }) : super(key: key);
+  final String unit;
+  final double progress;
+  final Color? backgroundColor;
+  final Color? progressColor;
+  final double? dimension;
+  final double? strokeWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: dimension,
+      child: CustomPaint(
+        painter: Painter(
+          progress: progress,
+          progressColor: progressColor,
+          backgroundColor: backgroundColor,
+          strokeWidth: strokeWidth,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              (progress * 100).round().toString(),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall!
+                  .copyWith(fontSize: 14),
+            ),
+            Text(
+              unit,
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall!
+                  .copyWith(fontSize: 10),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Painter extends CustomPainter {
+  Painter({
+    super.repaint,
+    required this.progress,
+    this.backgroundColor = const Color(0xFFD6D6D6),
+    this.progressColor = const Color(0xFF1FAF73),
+    this.strokeWidth = 4.0,
+  });
+  final double progress;
+  final Color? backgroundColor;
+  final Color? progressColor;
+  final double? strokeWidth;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint backgroundPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth!
+      ..color = backgroundColor!;
+
+    final Paint progressPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = strokeWidth!
+      ..color = progressColor!;
+
+    final Offset center = Offset(size.width / 2, size.height / 2);
+    final double radius = size.width / 2;
+
+    canvas.drawCircle(center, radius, backgroundPaint);
+
+    final Rect rect = Rect.fromCircle(center: center, radius: radius);
+    final double sweepAngle = 360 * progress * (pi / 180);
+    canvas.drawArc(rect, -90 * (pi / 180), sweepAngle, false, progressPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

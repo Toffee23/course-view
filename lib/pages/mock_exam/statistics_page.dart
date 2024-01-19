@@ -52,7 +52,8 @@ class StatisticsPage extends StatelessWidget {
               'Statistics',
               style: Theme.of(context).textTheme.labelLarge,
             ),
-            ResultTabView(questions: questions),
+            const SizedBox(height: 6.0),
+            ResultTabView2(questions: questions),
             const SizedBox(height: 50.0),
             CustomElevatedButton(
               text: 'View Mock Statistics',
