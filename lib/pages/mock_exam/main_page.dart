@@ -1,4 +1,3 @@
-import 'dart:developer' as az;
 import 'dart:math';
 
 import 'package:course_view/core/constants/images.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller.dart';
 import 'providers.dart';
-import 'timer.dart';
 
 class MainExamPage extends ConsumerStatefulWidget with MockExamController {
   const MainExamPage({Key? key}) : super(key: key);
@@ -21,21 +19,23 @@ class MainExamPage extends ConsumerStatefulWidget with MockExamController {
 class _MainExamPageState extends ConsumerState<MainExamPage> {
   final PageController _pageController = PageController();
   List<ScrollController> _scrollControllers = [];
-  late QuizTimer timer;
+  late QuizTimer _quizTimer;
 
   @override
   void initState() {
-    final questions = ref.read(questionsProvider);
-    _scrollControllers =
-        List.generate(questions.length, (index) => ScrollController());
-    timer = QuizTimer(const Duration(minutes: 1), _onTimeout);
-    timer.start();
+    final len = ref.read(questionsProvider).length;
+    _scrollControllers = List.generate(len, (index) => ScrollController());
+    _quizTimer = QuizTimer(
+      duration: const Duration(minutes: 60),
+      progress: const Duration(minutes: 60),
+      onTimeout: _onTimeout,
+    );
     super.initState();
   }
 
   @override
   void dispose() {
-    timer.dispose();
+    // timer.dispose();
     _pageController.dispose();
     for (var c in _scrollControllers) {
       c.dispose();
@@ -58,7 +58,7 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
     );
   }
 
-  void _onStop(BuildContext context) {
+  void _onStop() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -72,13 +72,20 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
     );
   }
 
-  void _onPause(BuildContext context) {
+  void _onPause(QuizTimer quizTimer) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return StopPauseDialog(
           onNo: () {},
-          onYes: () {},
+          onYes: () {
+            if (quizTimer.inProgress) {
+              quizTimer.pause();
+            } else {
+              quizTimer.resume();
+            }
+            pop(context);
+          },
           title: 'Do you want to pause this?',
           subtitle: 'You can always resume the exam from previous test.',
         );
@@ -90,6 +97,13 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
   Widget build(BuildContext context) {
     final currentIndex = ref.watch(currentIndexProvider);
     final questions = ref.watch(questionsProvider);
+    final quizTimer = ref.watch(quizTimerProvider1(_quizTimer));
+
+    final elapsedTime = quizTimer.progress.inSeconds;
+    final totalTime = quizTimer.duration.inSeconds;
+    final minute = elapsedTime ~/ 60;
+    final second = elapsedTime % 60;
+    final progress = (elapsedTime / totalTime).clamp(0.0, 1.0);
 
     return Scaffold(
       appBar: AppBar(),
@@ -210,14 +224,14 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
                             image: AssetImages.stop,
                             text: 'Stop',
                             color: const Color(0xFFDA2949),
-                            onPressed: () => _onStop(context),
+                            onPressed: _onStop,
                           ),
                           const SizedBox(width: 5.0),
                           _ControlButton(
                             image: AssetImages.pause,
-                            text: 'Pause',
+                            text: quizTimer.inProgress ? 'Pause' : 'Resume',
                             color: const Color(0xFF1FAF73),
-                            onPressed: () => _onPause(context),
+                            onPressed: () => _onPause(quizTimer),
                           ),
                           Expanded(
                             child: Row(
@@ -276,31 +290,62 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
                                     ),
                                   ],
                                 ),
-                                StreamBuilder<int>(
-                                  stream: timer.remainingTimeStream,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      int remainingTime = snapshot.data!;
-                                      String formattedTime =
-                                          "${(remainingTime ~/ 60).toString().padLeft(2, '0')}:${(remainingTime % 60).toString().padLeft(2, '0')}";
-
-                                      return CustomCircularProgressBar(
-                                        unit: 'S',
-                                        progress: remainingTime.toDouble() / 60,
-                                        progressColor:
-                                            Theme.of(context).primaryColor,
-                                        backgroundColor: Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(.12),
-                                      );
-                                      return Text(
-                                        formattedTime,
-                                        style: const TextStyle(fontSize: 40),
-                                      );
-                                    } else {
-                                      return const Text('Loading...');
-                                    }
-                                  },
+                                CustomCircularProgressBar(
+                                  unit: 'S',
+                                  progress: progress,
+                                  progressColor: Theme.of(context).primaryColor,
+                                  backgroundColor: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.12),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            (minute > 1 ? minute : second)
+                                                .toString(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall!
+                                                .copyWith(fontSize: 14),
+                                          ),
+                                          Text(
+                                            minute > 1 ? 'm' : 's',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall!
+                                                .copyWith(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                      if (minute > 1)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              second.toString(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall!
+                                                  .copyWith(
+                                                      fontSize: 12, height: 1),
+                                            ),
+                                            Text(
+                                              's',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall!
+                                                  .copyWith(
+                                                      fontSize: 8, height: 1),
+                                            ),
+                                          ],
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -657,6 +702,7 @@ class CustomCircularProgressBar extends StatelessWidget {
     this.backgroundColor,
     this.dimension = 50,
     this.strokeWidth = 4,
+    this.child,
   }) : super(key: key);
   final String unit;
   final double progress;
@@ -664,6 +710,7 @@ class CustomCircularProgressBar extends StatelessWidget {
   final Color? progressColor;
   final double? dimension;
   final double? strokeWidth;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -676,25 +723,7 @@ class CustomCircularProgressBar extends StatelessWidget {
           backgroundColor: backgroundColor,
           strokeWidth: strokeWidth,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              (progress * 100).round().toString(),
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall!
-                  .copyWith(fontSize: 14),
-            ),
-            Text(
-              unit,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall!
-                  .copyWith(fontSize: 10),
-            ),
-          ],
-        ),
+        child: child,
       ),
     );
   }
@@ -704,9 +733,9 @@ class Painter extends CustomPainter {
   Painter({
     super.repaint,
     required this.progress,
-    this.backgroundColor = const Color(0xFFD6D6D6),
-    this.progressColor = const Color(0xFF1FAF73),
-    this.strokeWidth = 4.0,
+    this.backgroundColor,
+    this.progressColor,
+    this.strokeWidth,
   });
   final double progress;
   final Color? backgroundColor;
@@ -718,13 +747,13 @@ class Painter extends CustomPainter {
     final Paint backgroundPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth!
-      ..color = backgroundColor!;
+      ..color = backgroundColor ?? const Color(0xFFD6D6D6);
 
     final Paint progressPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = strokeWidth!
-      ..color = progressColor!;
+      ..strokeWidth = strokeWidth ?? 4.0
+      ..color = progressColor ?? const Color(0xFF1FAF73);
 
     final Offset center = Offset(size.width / 2, size.height / 2);
     final double radius = size.width / 2;

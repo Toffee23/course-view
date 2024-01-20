@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -24,13 +27,12 @@ class Questions {
       options: options,
       selection: selection ?? this.selection,
       isCorrect: selection == answer,
-      // isCorrect: isCorrect ?? this.isCorrect,
     );
   }
 }
 
 final questionsProvider =
-    StateNotifierProvider<UserNotifier, List<Questions>>((ref) {
+    StateNotifierProvider<QuestionNotifier, List<Questions>>((ref) {
   final questions = List.generate(
     23,
     (index) => Questions(
@@ -45,11 +47,11 @@ final questionsProvider =
       ],
     ),
   );
-  return UserNotifier(ref, questions);
+  return QuestionNotifier(ref, questions);
 });
 
-class UserNotifier extends StateNotifier<List<Questions>> {
-  UserNotifier(this.ref, this.questions) : super(questions);
+class QuestionNotifier extends StateNotifier<List<Questions>> {
+  QuestionNotifier(this.ref, this.questions) : super(questions);
   final Ref ref;
   final List<Questions> questions;
 
@@ -59,5 +61,132 @@ class UserNotifier extends StateNotifier<List<Questions>> {
       state[index].copyWith(selection),
       ...state.sublist(index + 1),
     ];
+  }
+}
+
+final quizTimerProvider1 =
+    StateNotifierProvider.family<QuizTimerNotifier, QuizTimer, QuizTimer>(
+        (ref, quizTimer) {
+  return QuizTimerNotifier(ref, quizTimer);
+});
+
+class QuizTimerNotifier extends StateNotifier<QuizTimer> {
+  QuizTimerNotifier(this.ref, this.quizTimer) : super(quizTimer) {
+    final timer = _QuizTimer(
+      duration: quizTimer.duration,
+      onProgress: _onProgress,
+      onTimeout: quizTimer.onTimeout,
+    );
+    timer.start();
+  }
+  final Ref ref;
+  final QuizTimer quizTimer;
+
+  void _onProgress(Duration duration) {
+    state = state.copyWith(progress: duration);
+  }
+}
+
+class QuizTimer {
+  final Duration duration;
+  final Duration progress;
+  final bool inProgress;
+  final VoidCallback? onTimeout;
+
+  QuizTimer({
+    required this.duration,
+    required this.progress,
+    this.inProgress = false,
+    this.onTimeout,
+  });
+
+  QuizTimer copyWith({
+    Duration? duration,
+    Duration? progress,
+    bool? inProgress,
+  }) {
+    return QuizTimer(
+      duration: duration ?? this.duration,
+      progress: progress ?? this.progress,
+      inProgress: inProgress ?? this.inProgress,
+    );
+  }
+
+  void pause() {}
+  void resume() {}
+}
+
+class _QuizTimer {
+  late Timer _timer;
+  late Duration _duration;
+  final VoidCallback? onTimeout;
+  final ValueChanged<Duration>? onProgress;
+
+  bool _isRunning = false;
+  bool get isRunning => _isRunning;
+
+  _QuizTimer({
+    required Duration duration,
+    this.onProgress,
+    this.onTimeout,
+  }) {
+    _duration = duration;
+  }
+
+  void start() {
+    if (!_isRunning) {
+      _isRunning = true;
+      _timer = _getTimer;
+    }
+  }
+
+  void pause() {
+    if (_isRunning) {
+      _timer.cancel();
+      _isRunning = false;
+    }
+  }
+
+  void resume() {
+    if (!_isRunning) {
+      _isRunning = true;
+      _timer = _getTimer;
+    }
+  }
+
+  void cancel() => _timer.cancel();
+
+  void stop() {
+    _isRunning = false;
+    _timer.cancel();
+  }
+
+  void reset() {
+    stop();
+    // _duration = Duration.zero;
+    onProgress?.call(_duration);
+  }
+
+  void restart(Duration newDuration) {
+    reset();
+    _duration = newDuration;
+    start();
+  }
+
+  void dispose() {
+    _timer.cancel();
+    onProgress?.call(_duration);
+  }
+
+  Timer get _getTimer =>
+      Timer.periodic(const Duration(seconds: 1), _timerCallback);
+
+  void _timerCallback(Timer timer) {
+    _duration -= const Duration(seconds: 1);
+    if (_duration <= Duration.zero) {
+      stop();
+      onTimeout?.call();
+    }
+    onProgress?.call(_duration);
   }
 }
