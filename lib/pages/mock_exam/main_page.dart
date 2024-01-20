@@ -229,7 +229,7 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
                           const SizedBox(width: 5.0),
                           _ControlButton(
                             image: AssetImages.pause,
-                            text: quizTimer.inProgress ? 'Pause' : 'Resume',
+                            text: quizTimer.inProgress ? 'Resume' : 'Pause',
                             color: const Color(0xFF1FAF73),
                             onPressed: () => _onPause(quizTimer),
                           ),

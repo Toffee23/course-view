@@ -112,7 +112,12 @@ class QuizTimer {
     );
   }
 
-  void pause() {}
+  void pause() {
+    // if (_isRunning) {
+    //   _timer.cancel();
+    //   _isRunning = false;
+    // }
+  }
   void resume() {}
 }
 
