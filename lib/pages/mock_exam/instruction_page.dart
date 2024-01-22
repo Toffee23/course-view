@@ -1,6 +1,5 @@
 import 'package:course_view/router/route.dart';
 import 'package:course_view/widgets/button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'main_page.dart';

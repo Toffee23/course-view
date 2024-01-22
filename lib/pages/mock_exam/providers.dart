@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -64,134 +64,111 @@ class QuestionNotifier extends StateNotifier<List<Questions>> {
   }
 }
 
-final quizTimerProvider1 =
-    StateNotifierProvider.family<QuizTimerNotifier, QuizTimer, QuizTimer>(
-        (ref, quizTimer) {
-  return QuizTimerNotifier(ref, quizTimer);
-});
-
-class QuizTimerNotifier extends StateNotifier<QuizTimer> {
-  QuizTimerNotifier(this.ref, this.quizTimer) : super(quizTimer) {
-    final timer = _QuizTimer(
-      duration: quizTimer.duration,
-      onProgress: _onProgress,
-      onTimeout: quizTimer.onTimeout,
-    );
-    timer.start();
-  }
-  final Ref ref;
-  final QuizTimer quizTimer;
-
-  void _onProgress(Duration duration) {
-    state = state.copyWith(progress: duration);
-  }
-}
-
 class QuizTimer {
-  final Duration duration;
-  final Duration progress;
-  final bool inProgress;
-  final VoidCallback? onTimeout;
-
   QuizTimer({
+    required this.ref,
     required this.duration,
-    required this.progress,
-    this.inProgress = false,
     this.onTimeout,
-  });
+  }) : _duration = duration;
 
-  QuizTimer copyWith({
-    Duration? duration,
-    Duration? progress,
-    bool? inProgress,
-  }) {
-    return QuizTimer(
-      duration: duration ?? this.duration,
-      progress: progress ?? this.progress,
-      inProgress: inProgress ?? this.inProgress,
-    );
-  }
-
-  void pause() {
-    // if (_isRunning) {
-    //   _timer.cancel();
-    //   _isRunning = false;
-    // }
-  }
-  void resume() {}
-}
-
-class _QuizTimer {
-  late Timer _timer;
-  late Duration _duration;
+  final WidgetRef ref;
+  final Duration duration;
   final VoidCallback? onTimeout;
-  final ValueChanged<Duration>? onProgress;
 
-  bool _isRunning = false;
-  bool get isRunning => _isRunning;
+  late Duration _duration;
+  Timer _timer = Timer.periodic(const Duration(seconds: 1), (timer) {});
 
-  _QuizTimer({
-    required Duration duration,
-    this.onProgress,
-    this.onTimeout,
-  }) {
-    _duration = duration;
-  }
-
-  void start() {
-    if (!_isRunning) {
-      _isRunning = true;
-      _timer = _getTimer;
+  void start([Duration? duration]) {
+    if (ref.read(quizTimerProvider).isRunning) {
+      stop();
     }
+    if (duration != null) {
+      _duration = duration;
+    }
+    _timer = _getTimer;
+    ref.read(quizTimerProvider.notifier).update(isRunning: true);
   }
 
   void pause() {
-    if (_isRunning) {
+    if (ref.read(quizTimerProvider).isRunning) {
       _timer.cancel();
-      _isRunning = false;
+      ref.read(quizTimerProvider.notifier).update(isRunning: false);
     }
   }
 
   void resume() {
-    if (!_isRunning) {
-      _isRunning = true;
+    if (!ref.read(quizTimerProvider).isRunning) {
       _timer = _getTimer;
+      ref.read(quizTimerProvider.notifier).update(isRunning: true);
     }
   }
 
   void cancel() => _timer.cancel();
 
   void stop() {
-    _isRunning = false;
     _timer.cancel();
-  }
-
-  void reset() {
-    stop();
-    // _duration = Duration.zero;
-    onProgress?.call(_duration);
-  }
-
-  void restart(Duration newDuration) {
-    reset();
-    _duration = newDuration;
-    start();
+    ref.read(quizTimerProvider.notifier).update(
+        isRunning: false, isTimedOut: true, currentDuration: Duration.zero);
   }
 
   void dispose() {
     _timer.cancel();
-    onProgress?.call(_duration);
   }
 
   Timer get _getTimer =>
-      Timer.periodic(const Duration(seconds: 1), _timerCallback);
+      Timer.periodic(const Duration(microseconds: 1), _timerCallback);
 
   void _timerCallback(Timer timer) {
     _duration -= const Duration(seconds: 1);
     if (_duration <= Duration.zero) {
       stop();
       onTimeout?.call();
+      ref.read(quizTimerProvider.notifier).update(isTimedOut: true);
     }
-    onProgress?.call(_duration);
+    ref.read(quizTimerProvider.notifier).update(currentDuration: _duration);
+  }
+}
+
+final quizTimerProvider = StateNotifierProvider<_TimerNotifier, TimerModel>(
+    (ref) => _TimerNotifier(ref, TimerModel()));
+
+class _TimerNotifier extends StateNotifier<TimerModel> {
+  _TimerNotifier(this.ref, this.timerModel) : super(timerModel);
+  final Ref ref;
+  final TimerModel timerModel;
+
+  void update({
+    bool? isRunning,
+    bool? isTimedOut,
+    Duration? currentDuration,
+  }) {
+    state = state.copyWith(
+      isRunning: isRunning,
+      isTimedOut: isTimedOut,
+      currentDuration: currentDuration,
+    );
+  }
+}
+
+class TimerModel {
+  TimerModel({
+    this.isRunning = false,
+    this.isTimedOut = false,
+    this.currentDuration = Duration.zero,
+  });
+  final bool isRunning;
+  final bool isTimedOut;
+  final Duration currentDuration;
+
+  TimerModel copyWith({
+    bool? isRunning,
+    bool? isTimedOut,
+    Duration? currentDuration,
+  }) {
+    return TimerModel(
+      isRunning: isRunning ?? this.isRunning,
+      isTimedOut: isTimedOut ?? this.isTimedOut,
+      currentDuration: currentDuration ?? this.currentDuration,
+    );
   }
 }

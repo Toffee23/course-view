@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:course_view/core/constants/images.dart';
-import 'package:course_view/router/route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller.dart';
+import 'dialogs.dart';
 import 'providers.dart';
 
 class MainExamPage extends ConsumerStatefulWidget with MockExamController {
@@ -20,31 +20,32 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
   final PageController _pageController = PageController();
   List<ScrollController> _scrollControllers = [];
   late QuizTimer _quizTimer;
+  final duration = const Duration(minutes: 60);
 
   @override
   void initState() {
     final len = ref.read(questionsProvider).length;
     _scrollControllers = List.generate(len, (index) => ScrollController());
     _quizTimer = QuizTimer(
-      duration: const Duration(minutes: 60),
-      progress: const Duration(minutes: 60),
-      onTimeout: _onTimeout,
+      ref: ref,
+      duration: duration,
+      onTimeout: () => widget.onTimeout(context, ref),
     );
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _quizTimer.start();
+    });
   }
 
   @override
   void dispose() {
-    // timer.dispose();
+    _quizTimer.dispose();
     _pageController.dispose();
     for (var c in _scrollControllers) {
       c.dispose();
     }
     super.dispose();
-  }
-
-  void _onTimeout() {
-    print('Time is up!');
   }
 
   void _showFullQuestion(BuildContext context, String question) {
@@ -58,368 +59,353 @@ class _MainExamPageState extends ConsumerState<MainExamPage> {
     );
   }
 
-  void _onStop() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StopPauseDialog(
-          onNo: () {},
-          onYes: () {},
-          title: 'Do you want to end this?',
-          subtitle: 'This means you have ended the completion of the test.',
-        );
-      },
-    );
-  }
-
-  void _onPause(QuizTimer quizTimer) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StopPauseDialog(
-          onNo: () {},
-          onYes: () {
-            if (quizTimer.inProgress) {
-              quizTimer.pause();
-            } else {
-              quizTimer.resume();
-            }
-            pop(context);
-          },
-          title: 'Do you want to pause this?',
-          subtitle: 'You can always resume the exam from previous test.',
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final currentIndex = ref.watch(currentIndexProvider);
     final questions = ref.watch(questionsProvider);
-    final quizTimer = ref.watch(quizTimerProvider1(_quizTimer));
+    final quizTimer = ref.watch(quizTimerProvider);
 
-    final elapsedTime = quizTimer.progress.inSeconds;
-    final totalTime = quizTimer.duration.inSeconds;
+    final elapsedTime = quizTimer.currentDuration.inSeconds;
+    final totalTime = _quizTimer.duration.inSeconds;
     final minute = elapsedTime ~/ 60;
     final second = elapsedTime % 60;
     final progress = (elapsedTime / totalTime).clamp(0.0, 1.0);
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  child: PageView.builder(
-                    itemCount: questions.length,
-                    controller: _pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    onPageChanged: (index) => ref
-                        .read(currentIndexProvider.notifier)
-                        .update((state) => index),
-                    itemBuilder: (BuildContext context, int queIndex) {
-                      final question = questions.elementAt(queIndex);
-                      final controller = _scrollControllers.elementAt(queIndex);
-                      return Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: <Widget>[
-                            RawScrollbar(
-                              controller: controller,
-                              thumbVisibility: true,
-                              trackVisibility: true,
-                              interactive: true,
-                              thickness: 8.0,
-                              trackBorderColor: Colors.transparent,
-                              radius: const Radius.circular(12),
-                              trackRadius: const Radius.circular(12),
-                              thumbColor: Theme.of(context).primaryColor,
-                              trackColor: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(.12),
-                              scrollbarOrientation: ScrollbarOrientation.left,
-                              child: Container(
-                                height: 150,
-                                margin: const EdgeInsets.only(left: 15.0),
-                                child: MaterialButton(
-                                  onPressed: () => _showFullQuestion(
-                                      context, question.question),
-                                  padding: EdgeInsets.zero,
-                                  color: Theme.of(context).cardColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: SingleChildScrollView(
-                                    controller: controller,
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Text(
-                                      question.question,
+    return WillPopScope(
+      onWillPop: () async => true,
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: PageView.builder(
+                      itemCount: questions.length,
+                      controller: _pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      onPageChanged: (index) => ref
+                          .read(currentIndexProvider.notifier)
+                          .update((state) => index),
+                      itemBuilder: (BuildContext context, int queIndex) {
+                        final question = questions.elementAt(queIndex);
+                        final controller =
+                            _scrollControllers.elementAt(queIndex);
+                        return Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: <Widget>[
+                              RawScrollbar(
+                                controller: controller,
+                                thumbVisibility: true,
+                                trackVisibility: true,
+                                interactive: true,
+                                thickness: 8.0,
+                                trackBorderColor: Colors.transparent,
+                                radius: const Radius.circular(12),
+                                trackRadius: const Radius.circular(12),
+                                thumbColor: Theme.of(context).primaryColor,
+                                trackColor: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(.12),
+                                scrollbarOrientation: ScrollbarOrientation.left,
+                                child: Container(
+                                  height: 150,
+                                  margin: const EdgeInsets.only(left: 15.0),
+                                  child: MaterialButton(
+                                    onPressed: () => _showFullQuestion(
+                                        context, question.question),
+                                    padding: EdgeInsets.zero,
+                                    color: Theme.of(context).cardColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: SingleChildScrollView(
+                                      controller: controller,
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Text(
+                                        question.question,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 10.0),
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: question.options.length,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10.0),
-                                itemBuilder:
-                                    (BuildContext context, int optIndex) {
-                                  final option =
-                                      question.options.elementAt(optIndex);
-                                  return _OptionButton(
-                                    question: question,
-                                    option: option,
-                                    selection: question.selection,
-                                    onPressed: () => widget.onSelect(
-                                      context,
-                                      ref,
-                                      queIndex,
-                                      option,
-                                    ),
-                                  );
-                                },
+                              const SizedBox(height: 10.0),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: question.options.length,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  itemBuilder:
+                                      (BuildContext context, int optIndex) {
+                                    final option =
+                                        question.options.elementAt(optIndex);
+                                    return _OptionButton(
+                                      question: question,
+                                      option: option,
+                                      selection: question.selection,
+                                      onPressed: () => widget.onSelect(
+                                        context,
+                                        ref,
+                                        queIndex,
+                                        option,
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 12.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(
-                            color: const Color(0xFFD6D6D6),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 12.0),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.circular(12.0),
+                            border: Border.all(
+                              color: const Color(0xFFD6D6D6),
+                            ),
+                          ),
+                          child: Text(
+                            'Please tap on the question box to get a '
+                            'grasp of the entire questions if you '
+                            'are bit confused to get the questions.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(fontSize: 12),
                           ),
                         ),
-                        child: Text(
-                          'Please tap on the question box to get a '
-                          'grasp of the entire questions if you '
-                          'are bit confused to get the questions.',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(fontSize: 12),
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          _ControlButton(
-                            image: AssetImages.stop,
-                            text: 'Stop',
-                            color: const Color(0xFFDA2949),
-                            onPressed: _onStop,
-                          ),
-                          const SizedBox(width: 5.0),
-                          _ControlButton(
-                            image: AssetImages.pause,
-                            text: quizTimer.inProgress ? 'Resume' : 'Pause',
-                            color: const Color(0xFF1FAF73),
-                            onPressed: () => _onPause(quizTimer),
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          (currentIndex + 1).toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium!
-                                              .copyWith(height: 1),
-                                        ),
-                                        Text(
-                                          '/${questions.length}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium!
-                                              .copyWith(fontSize: 10),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 2.0),
-                                    Text(
-                                      'Questions',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Text(
-                                      'ATS 1',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium!
-                                          .copyWith(height: 1, fontSize: 16),
-                                    ),
-                                    const SizedBox(height: 2.0),
-                                    Text(
-                                      'Level',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                                CustomCircularProgressBar(
-                                  unit: 'S',
-                                  progress: progress,
-                                  progressColor: Theme.of(context).primaryColor,
-                                  backgroundColor: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.12),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                        Row(
+                          children: <Widget>[
+                            _ControlButton(
+                              image: Image(
+                                  image: AssetImages.stop.image, width: 17),
+                              text: 'Stop',
+                              color: const Color(0xFFDA2949),
+                              onPressed: () =>
+                                  widget.onStop(context, _quizTimer, questions),
+                            ),
+                            const SizedBox(width: 5.0),
+                            _ControlButton(
+                              image: quizTimer.isRunning
+                                  ? Image(
+                                      image: AssetImages.pause.image, width: 17)
+                                  : const Icon(CupertinoIcons.play, size: 17),
+                              text: quizTimer.isRunning ? 'Pause' : 'Resume',
+                              color: const Color(0xFF1FAF73),
+                              onPressed: () => widget.onPauseResume(
+                                  context, quizTimer, _quizTimer),
+                            ),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Column(
                                     children: <Widget>[
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            (minute > 1 ? minute : second)
-                                                .toString(),
+                                            (currentIndex + 1).toString(),
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .labelSmall!
-                                                .copyWith(fontSize: 14),
+                                                .titleMedium!
+                                                .copyWith(height: 1),
                                           ),
                                           Text(
-                                            minute > 1 ? 'm' : 's',
+                                            '/${questions.length}',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .labelSmall!
+                                                .titleMedium!
                                                 .copyWith(fontSize: 10),
                                           ),
                                         ],
                                       ),
-                                      if (minute > 1)
+                                      const SizedBox(height: 2.0),
+                                      Text(
+                                        'Questions',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Text(
+                                        'ATS 1',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .copyWith(height: 1, fontSize: 16),
+                                      ),
+                                      const SizedBox(height: 2.0),
+                                      Text(
+                                        'Level',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                  CustomCircularProgressBar(
+                                    unit: 'S',
+                                    progress: progress,
+                                    progressColor:
+                                        Theme.of(context).primaryColor,
+                                    backgroundColor: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.12),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              second.toString(),
+                                              (minute > 1 ? minute : second)
+                                                  .toString(),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall!
-                                                  .copyWith(
-                                                      fontSize: 12, height: 1),
+                                                  .copyWith(fontSize: 14),
                                             ),
                                             Text(
-                                              's',
+                                              minute > 1 ? 'm' : 's',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall!
-                                                  .copyWith(
-                                                      fontSize: 8, height: 1),
+                                                  .copyWith(fontSize: 10),
                                             ),
                                           ],
                                         ),
-                                    ],
+                                        if (minute > 1)
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text(
+                                                second.toString(),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall!
+                                                    .copyWith(
+                                                        fontSize: 12,
+                                                        height: 1),
+                                              ),
+                                              Text(
+                                                's',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall!
+                                                    .copyWith(
+                                                        fontSize: 8, height: 1),
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            Container(
+              color: Theme.of(context).cardColor,
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      const Text('Keep going Buddy! ✌'),
+                      const Spacer(),
+                      Image(image: AssetImages.repeat.image, width: 18),
+                      const SizedBox(width: 12.0),
+                      Image(image: AssetImages.flag.image, width: 18),
+                      const SizedBox(width: 12.0),
+                      Image(image: AssetImages.infoCircle.image, width: 18),
                     ],
                   ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          Container(
-            color: Theme.of(context).cardColor,
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    const Text('Keep going Buddy! ✌'),
-                    const Spacer(),
-                    Image(image: AssetImages.repeat.image, width: 18),
-                    const SizedBox(width: 12.0),
-                    Image(image: AssetImages.flag.image, width: 18),
-                    const SizedBox(width: 12.0),
-                    Image(image: AssetImages.infoCircle.image, width: 18),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  children: <Widget>[
-                    _PageNavigationButton(
-                      onPressed: currentIndex < 1
-                          ? null
-                          : () =>
-                              widget.onNavigate(ref, _pageController, false),
-                      iconData: CupertinoIcons.arrow_left,
-                      text: 'Previous',
-                    ),
-                    _PageNavigationButton(
-                      onPressed: currentIndex == questions.length - 1
-                          ? null
-                          : () => widget.onNavigate(ref, _pageController, true),
-                      iconData: CupertinoIcons.arrow_right,
-                      text: 'Next',
-                      arrowInFront: true,
-                    ),
-                    const SizedBox(width: 8.0),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => widget.onSubmit(context, questions),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(
-                            Theme.of(context).primaryColor,
-                          ),
-                          foregroundColor: const MaterialStatePropertyAll(
-                            Colors.white,
-                          ),
-                          shape: MaterialStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: <Widget>[
+                      _PageNavigationButton(
+                        onPressed: currentIndex < 1
+                            ? null
+                            : !quizTimer.isRunning && !quizTimer.isTimedOut
+                                ? null
+                                : () => widget.onNavigate(
+                                    ref, _pageController, false),
+                        iconData: CupertinoIcons.arrow_left,
+                        text: 'Previous',
+                      ),
+                      _PageNavigationButton(
+                        onPressed: currentIndex == questions.length - 1
+                            ? null
+                            : !quizTimer.isRunning && !quizTimer.isTimedOut
+                                ? null
+                                : () => widget.onNavigate(
+                                    ref, _pageController, true),
+                        iconData: CupertinoIcons.arrow_right,
+                        text: 'Next',
+                        arrowInFront: true,
+                      ),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => widget.onSubmit(
+                              context, quizTimer.isRunning, questions),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                              Theme.of(context).primaryColor,
+                            ),
+                            foregroundColor: const MaterialStatePropertyAll(
+                              Colors.white,
+                            ),
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
                             ),
                           ),
+                          child: const Text('Submit'),
                         ),
-                        child: const Text('Submit'),
-                      ),
-                    )
-                  ],
-                ),
-              ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -433,7 +419,7 @@ class _ControlButton extends StatelessWidget {
     required this.color,
     required this.onPressed,
   }) : super(key: key);
-  final Image image;
+  final Widget image;
   final String text;
   final Color color;
   final VoidCallback onPressed;
@@ -465,7 +451,8 @@ class _ControlButton extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          Image(image: image.image, width: 17),
+          image,
+          // Image(image: image.image, width: 17),
           const SizedBox(width: 4.0),
           Text(text),
         ],
@@ -585,110 +572,6 @@ class _OptionButton extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class QuestionDialog extends StatelessWidget {
-  const QuestionDialog({
-    Key? key,
-    required this.question,
-  }) : super(key: key);
-  final String question;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusDirectional.circular(12.0),
-      ),
-      scrollable: true,
-      content: Text(question),
-      actions: <Widget>[
-        ElevatedButton(
-          onPressed: () => pop(context),
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(
-              Theme.of(context).primaryColor,
-            ),
-            foregroundColor: const MaterialStatePropertyAll(Colors.white),
-            shape: MaterialStatePropertyAll(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadiusDirectional.circular(8.0),
-              ),
-            ),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            minimumSize: const MaterialStatePropertyAll(Size(0, 36)),
-          ),
-          child: const Text('Dismiss'),
-        ),
-      ],
-      actionsPadding: const EdgeInsets.only(top: 10, bottom: 10, right: 24),
-    );
-  }
-}
-
-class StopPauseDialog extends StatelessWidget {
-  const StopPauseDialog({
-    Key? key,
-    this.onNo,
-    this.onYes,
-    required this.title,
-    required this.subtitle,
-  }) : super(key: key);
-  final String title;
-  final String subtitle;
-  final VoidCallback? onNo;
-  final VoidCallback? onYes;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusDirectional.circular(12.0),
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const SizedBox(height: 8.0),
-          Text(title),
-          const SizedBox(height: 20.0),
-          Text(subtitle),
-        ],
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            pop(context);
-            onNo?.call();
-          },
-          style: ButtonStyle(
-            foregroundColor: MaterialStatePropertyAll(
-              Theme.of(context).primaryColor,
-            ),
-          ),
-          child: const Text('No'),
-        ),
-        ElevatedButton(
-          onPressed: onYes,
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(
-              Theme.of(context).primaryColor,
-            ),
-            foregroundColor: const MaterialStatePropertyAll(Colors.white),
-            shape: MaterialStatePropertyAll(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadiusDirectional.circular(8.0),
-              ),
-            ),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            minimumSize: const MaterialStatePropertyAll(Size(0, 36)),
-          ),
-          child: const Text('Yes'),
-        ),
-      ],
-      actionsPadding: const EdgeInsets.only(bottom: 10, right: 24),
     );
   }
 }
