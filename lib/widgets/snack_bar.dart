@@ -1,15 +1,27 @@
+import 'package:course_view/core/constants/images.dart';
 import 'package:flutter/material.dart';
 
-enum SnackbarState { success, error, warning }
+enum SnackbarType { success, error, warning }
 
-Color _getColor(SnackbarState state) {
+Color _getColor(SnackbarType state) {
   switch (state) {
-    case SnackbarState.success:
+    case SnackbarType.success:
       return const Color(0xFF1FAF73);
-    case SnackbarState.error:
+    case SnackbarType.error:
       return const Color(0xFFAF1FA9);
-    case SnackbarState.warning:
+    case SnackbarType.warning:
       return Colors.amber;
+  }
+}
+
+Widget _getIcon(SnackbarType state) {
+  switch (state) {
+    case SnackbarType.success:
+      return AssetImages.tickCirle;
+    case SnackbarType.error:
+      return AssetImages.closeCirle;
+    case SnackbarType.warning:
+      return AssetImages.infoCircle;
   }
 }
 
@@ -17,21 +29,22 @@ void showSnackbar({
   required BuildContext context,
   required String title,
   String? subtitle,
-  SnackbarState state = SnackbarState.success,
+  SnackbarType type = SnackbarType.success,
 }) {
   final snackBar = SnackBar(
     content: Container(
-      color: _getColor(state).withOpacity(.12),
+      color: _getColor(type).withOpacity(.12),
       child: Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
-                Icon(
-                  Icons.check_circle,
-                  color: _getColor(state),
-                ),
+                // Icon(
+                //   Icons.check_circle,
+                //   color: _getColor(type),
+                // ),
+                _getIcon(type),
                 const SizedBox(width: 8.0),
                 Expanded(
                   child: Column(
@@ -40,7 +53,7 @@ void showSnackbar({
                       Text(
                         title,
                         style: TextStyle(
-                          color: _getColor(state),
+                          color: _getColor(type),
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                         ),
@@ -64,7 +77,7 @@ void showSnackbar({
           Divider(
             height: 0.0,
             thickness: 4.0,
-            color: _getColor(state),
+            color: _getColor(type),
           ),
         ],
       ),

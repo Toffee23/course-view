@@ -22,18 +22,24 @@ class QuizView4 extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Adegoke",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade600)),
-                      Text("Simisola",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade600)),
+                    children: <Widget>[
+                      Text(
+                        "Adegoke",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      Text(
+                        "Simisola",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
                     ],
                   ),
                   Container(
@@ -82,98 +88,11 @@ class QuizView4 extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        SizedBox.square(
-                          dimension: 150,
-                          child: DecoratedBox(
-                            decoration: const ShapeDecoration(
-                              shape: CircleBorder(
-                                side: BorderSide(color: Color(0xFFD6D6D6)),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: DecoratedBox(
-                                decoration: const ShapeDecoration(
-                                  shape: CircleBorder(
-                                    side: BorderSide(
-                                      width: 2,
-                                      color: Color(0xFFBBBBBB),
-                                    ),
-                                  ),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    const SizedBox(height: 8.0),
-                                    Image(
-                                        image: AssetImages.theme.image,
-                                        width: 32),
-                                    Text(
-                                      'Game Score',
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                    Text(
-                                      '0',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8.0),
-                        SizedBox.square(
-                          dimension: 150,
-                          child: DecoratedBox(
-                            decoration: const ShapeDecoration(
-                              shape: CircleBorder(
-                                side: BorderSide(color: Color(0xFFD6D6D6)),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: DecoratedBox(
-                                decoration: const ShapeDecoration(
-                                  shape: CircleBorder(
-                                    side: BorderSide(
-                                      width: 2,
-                                      color: Color(0xFFBBBBBB),
-                                    ),
-                                  ),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    const SizedBox(height: 8.0),
-                                    Image(
-                                        image: AssetImages.theme.image,
-                                        width: 32),
-                                    Text(
-                                      'Game Score',
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                    Text(
-                                      '0',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    ScoreBoard(
+                      player1Image: AssetImages.theme,
+                      player2Image: AssetImages.theme,
+                      player1Score: 0,
+                      player2Score: 0,
                     ),
                     const SizedBox(height: 50.0),
                     const ScoreTable(

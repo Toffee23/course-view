@@ -6,7 +6,7 @@ class AppThemeData {
     return ThemeData(
       useMaterial3: true,
       primaryColor: const Color(0xFFFF822B),
-      canvasColor: const Color(0xFFF1F1EF),
+      cardColor: const Color(0xFFF1F1EF),
       hintColor: const Color(0xFF767676),
       textTheme: TextTheme(
         titleSmall: TextStyle(

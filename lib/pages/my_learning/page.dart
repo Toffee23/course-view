@@ -5,6 +5,8 @@ import 'package:course_view/pages/quiz_view/quiz_view1.dart';
 import 'package:course_view/router/route.dart';
 import 'package:flutter/material.dart';
 
+import '../mock_exam/page.dart';
+
 class MyLearningPage extends StatelessWidget {
   const MyLearningPage({Key? key}) : super(key: key);
 
@@ -47,7 +49,7 @@ class MyLearningPage extends StatelessWidget {
                       progress: progress,
                       progressColor: course.progressColor,
                       duration: course.duration,
-                      onPressed: () => pushTo(context, const QuizView()),
+                      onPressed: () => pushTo(context, const MockExamPage()),
                     );
                   },
                 );
@@ -68,6 +70,7 @@ class MyLearningPage extends StatelessWidget {
                       progress: progress,
                       progressColor: course.progressColor,
                       duration: course.duration,
+                      onPressed: () => pushTo(context, const MockExamPage()),
                     );
                   },
                 );
